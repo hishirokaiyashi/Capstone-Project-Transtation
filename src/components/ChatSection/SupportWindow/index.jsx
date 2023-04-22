@@ -78,7 +78,7 @@ const SupportWindow = ({ visible, showPopUp }) => {
 
   const getGiao = async () => {
     const giaoAdmin = await getDoc(
-      doc(firestore, "users", "ZeXfUsunrIMw8efUUcB4cuSuBU72")
+      doc(firestore, "users", "nP6o7LowBFNHXhNfNICV1Zu2j013")
     );
     const userData = giaoAdmin.data();
 
@@ -134,7 +134,7 @@ const SupportWindow = ({ visible, showPopUp }) => {
           className={`
         transition-all duration-700 ease-in-out fixed bg-white overflow-hidden bottom-[116px] right-[24px] w-[420px] h-[530px]
         max-w-[100%-48px] max-h-[100%-48px] border-2 border-[#7a39e0] rounded-md flex flex-col justify-between
-        ${visible ? "opacity-0" : "opacity-100"}`}
+        ${visible ? "hidden z-[1]" : "block"}`}
         >
           <div className="flex justify-between  border-b-2 items-center border-gray-400 p-[4px] bg-slate-500">
             <div className="flex items-center w-[70%]">

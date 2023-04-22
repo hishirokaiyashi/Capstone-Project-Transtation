@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import MainLayout from "../layouts/MainLayout";
 import {
   registerWithEmailAndPassword,
   checkUserExists,
@@ -451,6 +450,7 @@ const Register = () => {
             "phoneNumber",
             "address",
             "dateOfBirth",
+            "idCard",
           ].includes(key) && value !== ""
         );
       })
@@ -473,6 +473,7 @@ const Register = () => {
       avatar,
       gender,
       userName,
+      idCard,
     } = input;
 
     if (firstName == "") {
@@ -492,6 +493,10 @@ const Register = () => {
         ...error,
         dateOfBirth: "Please enter a valid date",
       });
+      return;
+    } else if (idCard == "") {
+      setError({ ...error, idCard: "ID card number cannot be empty" });
+      document.getElementById("idCard").focus();
       return;
     } else if (Object.keys(address).length === 0) {
       setError({ ...error, address: "Address cannot be empty" });
@@ -518,6 +523,7 @@ const Register = () => {
             avatar: url,
             gender,
             userName,
+            idCard,
           };
 
           signUp(signedUpUser);
@@ -546,6 +552,7 @@ const Register = () => {
             avatar: url,
             gender,
             userName,
+            idCard,
           };
           signUp(signedUpUser);
           setInput({ ...input, avatar: url });
@@ -570,7 +577,7 @@ const Register = () => {
   };
 
   return (
-    <MainLayout>
+    <>
       <h2 className="text-3xl">Register section</h2>
       <form onSubmit={handleRegister} className="flex flex-col mt-4">
         {!display ? (
@@ -863,7 +870,7 @@ const Register = () => {
           Login
         </Link>
       </div>
-    </MainLayout>
+    </>
   );
 };
 

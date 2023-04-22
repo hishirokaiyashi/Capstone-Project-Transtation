@@ -34,6 +34,8 @@ import {
 import { toast } from "react-toastify";
 import axios from "axios";
 
+import { convertFromTimestamp } from "../utils/convertDatetime.js";
+
 const auth = getAuth(app);
 const db = getFirestore(app);
 const googleProvider = new GoogleAuthProvider();
@@ -72,17 +74,19 @@ const signInWithGoogle = async () => {
         isVerified: true,
       };
       await setDoc(doc(db, "users", user.uid), newUser);
-      store.dispatch(setUser(newUser));
+      const createdAt = convertFromTimestamp(newUser.createdAt);
+      store.dispatch(setUser({ ...newUser, createdAt }));
       store.dispatch(setLoading(false));
       store.dispatch(setToken(res.user.accessToken));
-      toast.success(`Welcome to My App, ${user.displayName}!`);
+      toast.success(`Welcome to Capstone, ${user.displayName}!`);
     } else {
       const userDoc = await getDoc(doc(db, "users", res.user.uid));
-      // Chuyển về thời gian
-      store.dispatch(setUser(userDoc.data()));
+      const userData = userDoc.data();
+      const createdAt = convertFromTimestamp(userData.createdAt);
+      store.dispatch(setUser({ ...userData, createdAt }));
       store.dispatch(setLoading(false));
       store.dispatch(setToken(res.user.accessToken));
-      toast.success(`Welcome back to My App, ${user.displayName}!`);
+      toast.success(`Welcome back to Capstone, ${user.displayName}!`);
     }
   } catch (err) {
     console.error(err);
@@ -125,9 +129,8 @@ const logInWithEmailAndPassword = async (email, password) => {
     const userData = userDoc.data();
 
     if (!res.user.emailVerified) {
-      toast.error("Please verify your email before signing in.");
       signout();
-      return;
+      return "Please verify your email before signing in.";
     }
 
     if (!userData.isVerified) {
@@ -136,16 +139,17 @@ const logInWithEmailAndPassword = async (email, password) => {
       });
     }
 
-    // Chuyển về thời gian
-    store.dispatch(setUser(userDoc.data()));
+    const createdAt = convertFromTimestamp(userData.createdAt);
+    store.dispatch(setUser({ ...userData, createdAt }));
     store.dispatch(setLoading(false));
     const userToken = await res.user.getIdToken();
-    console.log("user token from login", typeof userToken, userToken);
+    // console.log("user token from login", typeof userToken, userToken);
     store.dispatch(setToken(userToken));
-    // toast.success(`Welcome back to My App, ${email}!`);
+    // return userToken;
+    return null;
   } catch (err) {
-    console.error(err);
-    // toast.error(err.message);
+    // return false;
+    return "Login failed. Please check your email and password.";
   }
 };
 
@@ -174,12 +178,12 @@ const registerWithEmailAndPassword = async (user, email, password) => {
     const res = await createUserWithEmailAndPassword(auth, email, password);
     // Get created user
     const currentUser = res.user;
-    console.log(currentUser);
+    // console.log(currentUser);
     const verify = await sendEmailVerification(currentUser, {
       url: "http://localhost:5173/login",
       handleCodeInApp: true,
     });
-    console.log(verify);
+    // console.log(verify);
     // Set a new user to users collection
     await setDoc(doc(db, "users", currentUser.uid), {
       uid: currentUser.uid,
@@ -197,8 +201,9 @@ const registerWithEmailAndPassword = async (user, email, password) => {
       photoURL: user.avatar,
       admin: false,
       isVerified: false,
+      idCard: user.idCard,
     });
-    toast.success("You signed up successfully to My App!");
+    toast.success("You signed up successfully to Capstone!");
     logout();
   } catch (err) {
     console.error(err);

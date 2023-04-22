@@ -21,7 +21,7 @@ const BoxChatIcon = ({ showPopUp, visible }) => {
       >
         <div
           className={`transition-all duration-700 ease-in-out w-[150px] absolute right-[100px] bottom-[50px] z-10000 shadow-[0px_0px_16px_6px_rgba(0,0,0,0.33)]
-           ${hovered ? " opacity-100 " : "opacity-0"}`}
+           ${hovered ? " block " : "hidden"}`}
         >
           Hey, Can I Help You?
         </div>

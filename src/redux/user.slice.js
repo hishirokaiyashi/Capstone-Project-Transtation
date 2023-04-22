@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { logInWithToken } from "../firebase/auth.js";
 
-import { toast } from "react-toastify";
+import { convertFromTimestamp } from "../utils/convertDatetime.js";
 
 const initialState = {
   isAuthenticated: false,
@@ -30,13 +30,15 @@ export const initUser = () => async (dispatch) => {
     try {
       dispatch(setLoading(true));
       const userDoc = await logInWithToken(JSON.parse(token));
-      if (userDoc.exists()) {
-        const userData = userDoc.data();
-        dispatch(setUser(userData));
-        dispatch(setLoading(false));
+      if (userDoc !== undefined) {
+        if (userDoc.exists()) {
+          const userData = userDoc.data();
+          const createdAt = convertFromTimestamp(userData.createdAt);
+          dispatch(setUser({ ...userData, createdAt }));
+          dispatch(setLoading(false));
+        }
       }
     } catch (error) {
-      toast.info("Bạn đã đăng xuất khỏi tầm mắt tui!");
       dispatch(logout);
       console.error(error);
     }
@@ -62,7 +64,6 @@ const userSlice = createSlice({
       state.isAuthenticated = false;
       state.token = null;
       localStorage.removeItem("token");
-      console.log("Đăng xuất")
       // state = initialState;
       localStorage.removeItem("token");
     },

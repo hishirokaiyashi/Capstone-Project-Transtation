@@ -4,8 +4,6 @@ import { useSelector } from "react-redux";
 
 const PrivateRoute = ({ children }) => {
   const { isAuthenticated, isLoading } = useSelector((state) => state.user);
-  console.log("isAuthen", isAuthenticated);
-  console.log("isLoading", isLoading);
 
   if (!isLoading) {
     return (
@@ -23,20 +21,3 @@ const PrivateRoute = ({ children }) => {
 };
 
 export default PrivateRoute;
-
-// const PrivateRoute = ({ component: Component, ...rest }) => {
-//   const { isAuthenticated } = useSelector((state) => state.user);
-
-//   return (
-//     <Route
-//       {...rest}
-//       render={(props) =>
-//         isAuthenticated ? (
-//           <Component {...props} />
-//         ) : (
-//           <Navigate to="/login" replace />
-//         )
-//       }
-//     />
-//   );
-// };

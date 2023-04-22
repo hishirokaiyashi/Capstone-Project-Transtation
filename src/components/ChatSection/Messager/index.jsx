@@ -9,9 +9,9 @@ const Messager = () => {
     setVisible(data);
   };
 
-  useEffect(()=>{
-    setVisible(true)
-  },[])
+  useEffect(() => {
+    setVisible(true);
+  }, []);
 
   useEffect(() => {
     const handleClickOutSide = (e) => {
@@ -24,7 +24,7 @@ const Messager = () => {
       document.addEventListener("mousedown", handleClickOutSide);
     };
   }, [wapperRef]);
-  
+
   return (
     <div ref={wapperRef}>
       <SupportWindow showPopUp={handleChangeVisible} visible={visible} />
