@@ -149,7 +149,7 @@ const logInWithEmailAndPassword = async (email, password) => {
     return null;
   } catch (err) {
     // return false;
-    return "Login failed. Please check your email and password.";
+    return err.message;
   }
 };
 

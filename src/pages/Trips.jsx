@@ -1,8 +1,12 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useMemo } from "react";
 import { toast } from "react-toastify";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 
-import { getDateTripsFromId } from "../firebase/firestore";
+import {
+  getDateTripsFromId,
+  getRouteFromId,
+  createSeats,
+} from "../firebase/firestore";
 
 import MainLayout from "../layouts/MainLayout";
 import SearchTrip from "../components/SearchTrip";
@@ -10,6 +14,7 @@ import InputFilter from "../components/InputFilter";
 import TripsInfo from "../components/TripsInfo";
 
 import getRoute from "../utils/getRoute";
+
 import {
   plusDay,
   formatDateToWords,
@@ -30,18 +35,18 @@ import { Style, Icon, Stroke } from "ol/style";
 
 const HCMCenterGeoPoint = [106.660172, 10.762622];
 
-const locationList = [
-  {
-    id: "SG",
-    name: "Bến xe miền Tây",
-    geoPoint: "106.6190185,10.7406102",
-  },
-  {
-    id: "CD",
-    name: "Bến xe Châu Đốc",
-    geoPoint: "105.1371585,10.6953553",
-  },
-];
+// const locationList = [
+//   {
+//     id: "SG",
+//     name: "Bến xe miền Tây",
+//     geoPoint: "106.6190185,10.7406102",
+//   },
+//   {
+//     id: "CD",
+//     name: "Bến xe Châu Đốc",
+//     geoPoint: "105.1371585,10.6953553",
+//   },
+// ];
 
 const Trips = () => {
   const location = useLocation();
@@ -61,21 +66,24 @@ const Trips = () => {
   const [endPoint, setEndPoint] = useState(null);
 
   const [trips, setTrips] = useState(null);
+  const [route, setRoute] = useState(null);
 
-  const getTrips = async () => {
-    try {
-      const res = await getDateTripsFromId(departureId + destinationId + date);
-      setTrips(res.docs.map((doc) => doc.data()));
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  const memoizedGetDateTripsFromId = useMemo(
+    () => getDateTripsFromId,
+    [getDateTripsFromId]
+  );
 
   useEffect(() => {
-    if (departureId && destinationId && date) {
-      getTrips();
-    }
-  }, [departureId, destinationId, date]);
+    const unsubscribe = memoizedGetDateTripsFromId(
+      departureId + destinationId + date,
+      (data) => {
+        setTrips(data);
+        getTripRoute(data[0].route_id);
+      }
+    );
+
+    return unsubscribe;
+  }, [memoizedGetDateTripsFromId, departureId, destinationId, date]);
 
   useEffect(() => {
     const initialMap = new Map({
@@ -95,27 +103,46 @@ const Trips = () => {
     // map = initialMap;
   }, [centerPoint]);
 
+  // useEffect(() => {
+  //   displayRouteOnMap(route);
+  // }, [route]);
+
+  // Get trip information
+  const getTripRoute = async (routeId) => {
+    const res = await getRouteFromId(routeId);
+    setRoute(res);
+    // displayRouteOnMap(res);
+  };
+
   // Define icon points
   const startIcon = new Icon({
     anchor: [0.5, 1],
-    src: "https://openlayers.org/en/latest/examples/data/icon.png",
+    src: "https://i.imgur.com/JXF25tb.png",
   });
 
   const endIcon = new Icon({
     anchor: [0.5, 1],
-    src: "https://openlayers.org/en/latest/examples/data/icon.png",
+    src: "https://i.imgur.com/FC0e57V.png",
   });
 
-  // Display SG-CD
-  const displayCDSG = async () => {
-    // setStartPoint(fromLonLat(locationList[0].geoPoint));
-    // setEndPoint(fromLonLat(locationList[1].geoPoint));
+  // Display trip route on map
+  const displayRouteOnMap = async (routeInfo) => {
+    if (!routeInfo) {
+      return;
+    }
+
+    const latitude1 = routeInfo.startGeo.latitude;
+    const longitude1 = routeInfo.startGeo.longitude;
+
+    const latitude2 = routeInfo.endGeo.latitude;
+    const longitude2 = routeInfo.endGeo.longitude;
 
     // Call api to get route from HCD-ChauDok
     const res = await getRoute(
-      locationList[0].geoPoint,
-      locationList[1].geoPoint
+      `${longitude1},${latitude1}`,
+      `${longitude2},${latitude2}`
     );
+
     const routeData = res.features[0].geometry.coordinates;
 
     // Define vector layer for SG-CD route
@@ -139,12 +166,16 @@ const Trips = () => {
     });
 
     const startMarker = new Feature({
-      geometry: new Point(fromLonLat(locationList[0].geoPoint.split(","))),
+      geometry: new Point(
+        fromLonLat([longitude1.toString(), latitude1.toString()])
+      ),
       name: "Start",
     });
 
     const endMarker = new Feature({
-      geometry: new Point(fromLonLat(locationList[1].geoPoint.split(","))),
+      geometry: new Point(
+        fromLonLat([longitude2.toString(), latitude2.toString()])
+      ),
       name: "End",
     });
 
@@ -183,15 +214,28 @@ const Trips = () => {
         destinationId,
         date: plusDay(date, -1),
       };
+
       navigate(`/trips?${new URLSearchParams(params).toString()}`);
     }
   };
+
+  const handleCreateSeats = () => {
+    const tripID = "SGAG01052309";
+    createSeats(tripID);
+  };
+
   return (
     <MainLayout>
+      <p className="bg-black-background w-full text-white text-center py-[22px] font-Ballo text-[1rem] font-semibold tracking-wide">
+        FREE TRANSIT SERVICE FOR EVERY DESTINATION
+      </p>
       <div>
-        <p className="bg-black-background w-full text-white text-center py-[22px] font-Ballo text-[1rem] font-semibold tracking-wide">
-          FREE TRANSIT SERVICE FOR EVERY DESTINATION
-        </p>
+        <button
+          className="p-2 bg-black text-white"
+          onClick={() => handleCreateSeats()}
+        >
+          Thêm dữ liệu
+        </button>
         <div className="bg-banner-trip bg-no-repeat bg-cover h-[157px]"></div>
         <div className="max-w-screen-xl mx-auto flex mt-[19px]">
           <div className="w-[25%] pr-[65px]">
@@ -207,7 +251,7 @@ const Trips = () => {
           <div className="w-[75%]">
             <SearchTrip from={departureId} to={destinationId} date={date} />
             <div>
-              <div className="grid grid-cols-3 ">
+              <div className="grid grid-cols-3">
                 <p
                   className="text-center py-[12px] px-[30px] cursor-pointer"
                   onClick={handleYesterday}
@@ -224,23 +268,16 @@ const Trips = () => {
                   {formatDateToWords(plusDay(date, 1))}
                 </p>
               </div>
-              <div className=" bg-my-bg-gray-trips pl-[43px] pr-[60px] pt-[45px] pb-[150px]">
-                {trips?.map((trip) => (
-                  <TripsInfo key={trip.uid} tripInfo={trip} />
+              <div className="bg-my-bg-gray-trips pl-[43px] pr-[60px] pt-[45px] pb-[150px]">
+                {trips?.map((trip, index) => (
+                  <TripsInfo key={index} tripInfo={trip} route={route} />
                 ))}
               </div>
             </div>
           </div>
         </div>
+        <div ref={mapRef} className="h-[500px] w-full z-1" />
       </div>
-
-      {/* <div ref={mapRef} className="h-[500px] w-full z-1" />
-      <div
-        className="py-1.5 px-3 bg-black text-white text-center cursor-pointer"
-        onClick={displayCDSG}
-      >
-        Chau Doc - Sai Gon
-      </div> */}
     </MainLayout>
   );
 };

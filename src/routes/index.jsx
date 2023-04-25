@@ -37,9 +37,9 @@ export default function App() {
           <Route
             path="/trips"
             element={
-              <PrivateRoute>
-                <Trips />
-              </PrivateRoute>
+              // <PrivateRoute>
+              <Trips />
+              // </PrivateRoute>
             }
           />
 

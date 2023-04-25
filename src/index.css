@@ -40,3 +40,15 @@
     @apply bg-white;
   }
 }
+
+.alice-carousel__prev-btn {
+  @apply absolute w-0 top-1/2 -left-4 -translate-y-1/2;
+}
+
+.alice-carousel__next-btn {
+  @apply absolute w-0 top-1/2 right-8 -translate-y-1/2;
+}
+
+.alice-carousel__stage-item {
+  @apply px-4;
+}
