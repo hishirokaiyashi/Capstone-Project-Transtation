@@ -26,18 +26,39 @@ const initialState = {
 
 export const initUser = () => async (dispatch) => {
   const token = localStorage.getItem("token");
+  const user = localStorage.getItem("user");
   if (token) {
     try {
       dispatch(setLoading(true));
-      const userDoc = await logInWithToken(JSON.parse(token));
-      if (userDoc !== undefined) {
-        if (userDoc.exists()) {
-          const userData = userDoc.data();
-          const createdAt = convertFromTimestamp(userData.createdAt);
-          dispatch(setUser({ ...userData, createdAt }));
-          dispatch(setLoading(false));
-        }
-      }
+      // const userDoc = await logInWithToken(JSON.parse(token));
+      // if (userDoc !== undefined) {
+      //   if (userDoc.exists()) {
+      //     const userData = userDoc.data();
+      //     const createdAt = convertFromTimestamp(userData.createdAt);
+      //     dispatch(setUser({ ...userData, createdAt }));
+      //     dispatch(setLoading(false));
+      //   }
+      // }
+
+      // let userData = {
+      //   uid: "11131",
+      //   userName: "ancute",
+      //   admin: false,
+      //   fullName: "An Cute",
+      //   avatar:
+      //     "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRLqdxcGBTj3BkfW5gUu98uF7riVVIfB5Ir3SBzhph9uBoGoQcmunBLrZ0fGbVooPTE1no&usqp=CAU",
+      //   address: "Ở đâu ai biết",
+      //   age: 3,
+      //   createdAt: "",
+      //   email: "ancute@gmail.com",
+      //   gender: "Male",
+      //   phoneNumber: "0783767650",
+      //   authProvider: "email",
+      // };
+
+      const userData = JSON.parse(user);
+      dispatch(setUser({ ...userData }));
+      dispatch(setLoading(false));
     } catch (error) {
       dispatch(logout);
       console.error(error);
@@ -55,6 +76,7 @@ const userSlice = createSlice({
     setUser(state, action) {
       state.user = action.payload;
       state.isAuthenticated = true;
+      localStorage.setItem("user", JSON.stringify(action.payload));
     },
     setError(state, action) {
       state.error = action.payload;
