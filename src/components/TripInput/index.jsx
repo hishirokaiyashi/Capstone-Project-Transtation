@@ -2,7 +2,7 @@ import React, { useState, useCallback } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { setUserInfo } from "../../redux/order.slice";
 
-const TripInp = () => {
+const TripInput = () => {
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.user);
 
@@ -216,4 +216,4 @@ const TripInp = () => {
   );
 };
 
-export default TripForm;
+export default TripInput;

@@ -17,8 +17,8 @@ import {
 
 import TripSeat from "../TripSeat";
 import TripsPoint from "../TripsPoint";
-import TripForm from "../TripForm";
-
+// import TripInput from "../TripInput";
+import TripInput from "../TripInput";
 const TripsInfo = ({ tripInfo, route }) => {
   const dispatch = useDispatch();
 
@@ -279,7 +279,15 @@ const TripsInfo = ({ tripInfo, route }) => {
                 : "hidden"
             }
           >
-            <TripForm />
+            <form
+              action=""
+              className="flex flex-col justify-center items-center w-[400px] m-auto"
+            >
+              <TripInput />
+              <TripInput />
+              <TripInput />
+              <TripInput />
+            </form>
             <div className="flex justify-between items-center pt-[16px] pb-[8px]">
               <button
                 className="flex items-center justify-center px-[15px] text-center"
