@@ -6,18 +6,28 @@ const TripSeat = ({ typeSeat, seats, handleQuanitySeats }) => {
   const [currentSeats, setCurrentSeats] = useState(null);
 
   useEffect(() => {
-    setCurrentSeats(seats);
+    if (!currentSeats) {
+      setCurrentSeats(seats);
+    } else {
+      const selectedSeats = currentSeats
+        .filter((seat) => seat.status === "Selected")
+        .map((seat) => seat.id); // ["A03", "A04"] // quá khứ được chọn
+
+      setCurrentSeats(
+        seats.map((seat) => {
+          if (selectedSeats.includes(seat.id) && seat.status === "Available") {
+            return {
+              ...seat,
+              status: "Selected",
+            };
+          }
+          return seat;
+        })
+      ); // hiện tại tất cả
+    }
   }, [seats]);
 
   const handlePickSeats = (seatId) => {
-    // const oldSelectedSeats = currentSeats?.filter(
-    //   (seat) => seat.status === "Selected"
-    // );
-    // if (oldSelectedSeats.length >= 8) {
-    //   toast.info("You can only select 8 tickets for an order!");
-    //   return;
-    // }
-
     const updatedSeats = currentSeats.map((seat) => {
       if (seat.id === seatId) {
         return {
@@ -26,11 +36,12 @@ const TripSeat = ({ typeSeat, seats, handleQuanitySeats }) => {
         };
       }
       return seat;
-    });
+    }); // cái màu ghế xanh
 
     const newSelectedSeats = updatedSeats.filter(
       (seat) => seat.status === "Selected"
-    );
+    ); // đi qua từng cái ghế xanh
+
     if (newSelectedSeats.length > 8) {
       toast.info("You can only select 8 tickets for an order!");
       return;

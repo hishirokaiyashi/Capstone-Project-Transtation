@@ -23,6 +23,7 @@ const initialState = {
     paymentMethod: null,
     paymentStatus: "Unpaid",
     paidTime: null,
+    note: "",
   },
 };
 
@@ -39,7 +40,7 @@ const orderSlice = createSlice({
       state.order.seatAmount = action.payload.seats.lenght;
       state.order.ticketPrice = action.payload.ticketPrice;
       state.order.totalPrice =
-        action.payload.seats.lenght * action.payload.ticketPrice;
+        action.payload.seats.length * action.payload.ticketPrice;
     },
     setPoints(state, action) {
       state.order.pickUp = action.payload.pickUp;
@@ -56,9 +57,10 @@ const orderSlice = createSlice({
       state.order.email = action.payload.email;
       state.order.address = action.payload.address;
       state.order.displayName = action.payload.displayName;
-      state.order.trip_id = action.payload.trip_id;
       state.order.transitFrom = action.payload.transitFrom;
       state.order.transitTo = action.payload.transitTo;
+      state.order.phoneNumber = action.payload.phoneNumber;
+      state.order.note = action.payload.note;
     },
     setMethod(state, action) {
       state.paymentMethod = action;

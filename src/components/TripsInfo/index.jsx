@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { setTripInfo, setPoints } from "../../redux/order.slice";
+import { useDispatch, useSelector } from "react-redux";
+
+import { setTripInfo, setUserInfo, setPoints } from "../../redux/order.slice";
 import { Icon } from "@iconify/react";
 import { substractHHMMToHour } from "../../utils/convertDatetime";
 import { addDot, removeDot } from "../../utils/currencyFormat";
@@ -10,7 +11,6 @@ import { getSeatsFromTripId } from "../../firebase/firestore";
 import {
   validateEmail,
   validateFirstName,
-  validateLastName,
   validatePhoneNumber,
   validateAddress,
 } from "../../utils/validation";
@@ -20,12 +20,164 @@ import TripsPoint from "../TripsPoint";
 // import TripInput from "../TripInput";
 import TripInput from "../TripInput";
 const TripsInfo = ({ tripInfo, route }) => {
+  // selectedSeats
+  const navigate = useNavigate();
   const dispatch = useDispatch();
-
+  const { user } = useSelector((state) => state.user);
   const [seats, setSeats] = useState(null);
-  const [quanitySeats, setQuanitySeats] = useState([]); // chọn ghế
+  const [selectedSeats, setSelectedSeats] = useState([]);
   const [openMore, setOpenMore] = useState(false);
   const [activeTabIndex, setActiveTabIndex] = useState(0);
+  const [input, setInput] = useState({
+    fullName: user.displayName || "",
+    phoneNumber: user.phoneNumber || "",
+    email: user.email || "",
+    note: "",
+    // transitFrom: "",
+    // transitTo: "",
+    // address:
+    //   (user.address && user.address.home ? user.address.home + ", " : "") +
+    //   (user.address && user.address.village && user.address.village.name + ", "
+    //     ? user.address.village.name
+    //     : "") +
+    //   (user.address && user.address.district && user.address.district.name
+    //     ? user.address.district.name
+    //     : ""),
+  });
+
+  const [error, setError] = useState({
+    fullName: "",
+    phoneNumber: "",
+    email: "",
+  });
+  // const [isTransit, setIsTransit] = useState(false);
+  const handleChangeFirstName = useCallback(
+    (e) => {
+      if (e.currentTarget.value === "") {
+        setError({ ...error, fullName: "Full name cannot be empty" });
+      } else {
+        if (e.currentTarget.value.length > 40) {
+          setError({
+            ...error,
+            fullName: "Full name cannot be longer than 40 characters",
+          });
+        } else if (!validateFirstName(e.currentTarget.value)) {
+          setError({
+            ...error,
+            fullName: "Full name is invalid ",
+          });
+        } else setError({ ...error, fullName: "" });
+      }
+      setInput({ ...input, fullName: e.target.value });
+    },
+    [error, input]
+  );
+
+  const handleChangeEmail = useCallback(
+    (e) => {
+      if (e.currentTarget.value === "") {
+        setError({ ...error, email: "Email cannot be empty" });
+      } else {
+        if (validateEmail(e.currentTarget.value)) {
+          setError({
+            ...error,
+            email: "Email is invalid ",
+          });
+        } else setError({ ...error, email: "" });
+      }
+      setInput({ ...input, email: e.target.value });
+    },
+    [error, input]
+  );
+
+  const handlePhoneNumber = useCallback(
+    (e) => {
+      if (e.currentTarget.value === "") {
+        setError({ ...error, phoneNumber: "Phone number cannot be empty" });
+      } else {
+        if (
+          e.currentTarget.value.length < 9 ||
+          e.currentTarget.value.length > 10
+        ) {
+          setError({
+            ...error,
+            phoneNumber: "Phone number is invalid",
+          });
+        } else if (!validatePhoneNumber(e.currentTarget.value)) {
+          setError({
+            ...error,
+            phoneNumber: "Phone number is invalid ",
+          });
+        } else setError({ ...error, phoneNumber: "" });
+      }
+      setInput({ ...input, phoneNumber: e.target.value });
+    },
+    [error, input]
+  );
+
+  const handleChangeNote = useCallback(
+    (e) => {
+      setInput({ ...input, note: e.target.value });
+    },
+    [input]
+  );
+
+  // const handleTransitFrom = useCallback(
+  //   (e) => {
+  //     if (e.currentTarget.value === "") {
+  //       setError({ ...error, transitFrom: "Transit from cannot be empty" });
+  //     } else {
+  //       setError({ ...error, transitFrom: "" });
+  //     }
+  //     setInput({ ...input, transitFrom: e.target.value });
+  //   },
+  //   [error, input]
+  // );
+
+  // const handleTransitTo = useCallback(
+  //   (e) => {
+  //     if (e.currentTarget.value === "") {
+  //       setError({ ...error, transitTo: "Transit to cannot be empty" });
+  //     } else {
+  //       setError({ ...error, transitTo: "" });
+  //     }
+  //     setInput({ ...input, transitTo: e.target.value });
+  //   },
+  //   [error, input]
+  // );
+  // const handleHomeAddress = useCallback(
+  //   (e) => {
+  //     switch (true) {
+  //       case e.currentTarget.value === "":
+  //         setError({ ...error, address: "Address cannot be empty" });
+  //         break;
+  //       case e.currentTarget.value.length < 5:
+  //         setError({
+  //           ...error,
+  //           address: "Address is too short! Please try again ",
+  //         });
+  //         break;
+  //       case e.currentTarget.value.length > 100:
+  //         setError({
+  //           ...error,
+  //           address: "Address is too long! Please try again ",
+  //         });
+  //         break;
+  //       case !validateAddress(e.currentTarget.value):
+  //         setError({
+  //           ...error,
+  //           address: "Address is invalid ",
+  //         });
+  //         break;
+  //       default:
+  //         setError({ ...error, address: "" });
+  //         break;
+  //     }
+  //     const home = e.target.value;
+  //     setInput({ ...input, address: home });
+  //   },
+  //   [error, input]
+  // );
 
   useEffect(() => {
     if (openMore) {
@@ -36,18 +188,46 @@ const TripsInfo = ({ tripInfo, route }) => {
     }
   }, [tripInfo, openMore]);
 
+  useEffect(() => {
+    if (selectedSeats.length !== 0 && selectedSeats.length !== 0) {
+      const availableSeats = seats
+        ?.filter((seat) => seat.status !== "Available")
+        .map((seat) => seat.id);
+      // ["A03":unavailable, "A04", "A05", "A06", "A07": unavailable, "A08", "A09]
+      // ["A03","A07"]
+
+      const filteredSeats = selectedSeats.filter(
+        (seat) => !availableSeats.includes(seat)
+      );
+      // selectedSeats ["A03","A04","A05"]
+      // filteredSeats ["A04","A05"]
+
+      if (filteredSeats.length !== 0) {
+        if (filteredSeats.length !== selectedSeats.length) {
+          toast.info(
+            `The following seats are already taken: ${selectedSeats
+              .filter((seat) => !filteredSeats.includes(seat))
+              .join(", ")}`
+          );
+          // console.log(filteredSeats);
+          setSelectedSeats(filteredSeats);
+        }
+      }
+    }
+  }, [seats, selectedSeats]);
+
   const handleQuanitySeats = (selectedSeats) => {
-    setQuanitySeats((prevSeats) => {
+    setSelectedSeats((prevSeats) => {
       const selectedSeatIds = selectedSeats.map((seat) => seat.id);
       return selectedSeatIds;
     });
   };
 
   const handleTabClick = (index) => {
-    if (quanitySeats != 0) {
+    if (selectedSeats != 0) {
       const selectedTrip = {
         trip_id: tripInfo.uid,
-        seats: quanitySeats,
+        seats: selectedSeats,
         ticketPrice: tripInfo.ticketPrice,
       };
       dispatch(setTripInfo(selectedTrip));
@@ -61,6 +241,75 @@ const TripsInfo = ({ tripInfo, route }) => {
     } else {
       toast.info("You must select at least one seat!");
     }
+  };
+
+  const handleContinueForm = (e) => {
+    e.preventDefault();
+    const errors = Object.fromEntries(
+      Object.entries(error).filter(([key, value]) => {
+        return (
+          [
+            "fullName",
+            "phoneNumber",
+            "email",
+            // "transitFrom",
+            // "transitTo",
+            // "address",
+          ].includes(key) && value !== ""
+        );
+      })
+    );
+    // If there appears any existing error messages, show toast
+    if (Object.keys(errors).length > 0) {
+      toast.error("Please enter information fields properly!");
+      // Focus first error input
+      document.getElementById(Object.keys(errors)[0]).focus();
+      return;
+    }
+    const { fullName, phoneNumber, email, transitFrom, transitTo, address } =
+      input;
+    if (fullName == "") {
+      setError({ ...error, fullName: "FullName cannot be empty" });
+      document.getElementById("FullName").focus();
+      return;
+    } else if (phoneNumber == "") {
+      setError({ ...error, phoneNumber: "Phone number cannot be empty" });
+      document.getElementById("PhoneNumber").focus();
+      return;
+    } else if (email == "") {
+      setError({ ...error, email: "Email cannot be empty" });
+      document.getElementById("Email").focus();
+      return;
+    }
+    // else if (address == "") {
+    //   setError({ ...error, address: "Address cannot be empty" });
+    //   document.getElementById("Address").focus();
+    //   return;
+    // }
+    // if (isTransit) {
+    //   if (transitFrom == "") {
+    //     setError({ ...error, transitFrom: "transitFrom cannot be empty" });
+    //     document.getElementById("transitFrom").focus();
+    //     return;
+    //   } else if (transitTo == "") {
+    //     setError({ ...error, transitTo: "transitTo cannot be empty" });
+    //     document.getElementById("transitTo").focus();
+    //     return;
+    //   }
+    // }
+    dispatch(
+      setUserInfo({
+        user_id: user.uid,
+        email: input.email,
+        address: input.address,
+        displayName: input.fullName,
+        note: input.note,
+        // transitFrom: input.transitFrom,
+        // transitTo: input.transitTo,
+        // phoneNumber: input.phoneNumber,
+      })
+    );
+    navigate("/test");
   };
 
   return (
@@ -125,7 +374,7 @@ const TripsInfo = ({ tripInfo, route }) => {
                 <div className="w-[50%]">
                   <p className="text-[1.25rem] font-Ballo text-my-text-gray-second font-semibold">
                     {/* {seats?.filter((seat) => seat.status == "Available").length}{" "} */}
-                    {tripInfo.availableSeat} seats left
+                    {tripInfo.availableSeats} seats left
                   </p>
                   <Link className="text-[0.75rem] w-full text-[#1D7ED8] underline underline-offset-2">
                     View more trip details
@@ -219,15 +468,15 @@ const TripsInfo = ({ tripInfo, route }) => {
             <div className="flex justify-between items-center py-[10px]">
               <div>
                 <span>Seats: </span>
-                {quanitySeats.map((seat, index) => {
+                {selectedSeats.map((seat, index) => {
                   return <span key={index}>{seat}, </span>;
                 })}
               </div>
-              <div className="flex gap-[10px] items-center">
+              <div className="flex gap-[10px] items-center  text-[1.6875rem] text-[#1F83DF]">
                 <p>Total: </p>
-                <p>{addDot(quanitySeats?.length * tripInfo.ticketPrice)}</p>
+                <p>{addDot(selectedSeats?.length * tripInfo.ticketPrice)}</p>
                 <button
-                  className="p-[10px] bg-blue-100 text-black"
+                  className="px-[16px] py-[16px] bg-[#E04141] text-white  text-[1.25rem]"
                   onClick={() => handleTabClick(1)}
                 >
                   Continue
@@ -240,21 +489,29 @@ const TripsInfo = ({ tripInfo, route }) => {
               activeTabIndex === 1 ? "block pt-[50px] pb-[20px]" : "hidden"
             }
           >
-            <div className="flex py-[20px] border-b-2">
-              <div className="w-[50%] border-r-2 p-[1rem] ">
-                <dir className="">pick up point</dir>
+            <div className="flex pt-[40px] pb-[44px] border-b-2 border-dashed">
+              <div className="w-[50%] border-r-2 px-[46px]">
+                <div className="text-[1.5rem] font-semibold text-center mb-[30px]">
+                  Pick up point
+                </div>
                 <TripsPoint
                   type="pickUps"
-                  pickUpsPoint={route.pickUps}
-                  finalsPoint={route.finals}
+                  pickUpsPoint={route?.pickUps}
+                  finalsPoint={route?.finals}
+                  arrivalTime={tripInfo?.arrivalTime}
+                  departureTime={tripInfo?.departureTime}
                 />
               </div>
-              <div className="w-[50%] p-[1rem]">
-                <dir className="">Pay point</dir>
+              <div className="w-[50%] px-[46px]">
+                <div className="text-[1.5rem] font-semibold text-center mb-[30px]">
+                  Pay point
+                </div>
                 <TripsPoint
                   type="finals"
-                  finalsPoint={route.finals}
-                  pickUpsPoint={route.pickUps}
+                  finalsPoint={route?.finals}
+                  pickUpsPoint={route?.pickUps}
+                  arrivalTime={tripInfo?.arrivalTime}
+                  departureTime={tripInfo?.departureTime}
                 />
               </div>
             </div>
@@ -263,12 +520,19 @@ const TripsInfo = ({ tripInfo, route }) => {
                 className="flex items-center justify-center px-[15px] text-center"
                 onClick={() => handleTabClick(0)}
               >
-                <span>&lt; Back</span>
+                <span className="px-[36px] py-[16px] bg-[#C0BEBE] text-white text-[1.25rem]">
+                  BACK
+                </span>
               </button>
-              <div className="flex gap-[10px] items-center">
+              <div className="flex gap-[10px] items-center text-[1.6875rem] text-[#1F83DF]">
                 <p>Total: </p>
-                <p>{addDot(quanitySeats?.length * tripInfo.ticketPrice)}</p>
-                <button onClick={() => handleTabClick(2)}>Next</button>
+                <p>{addDot(selectedSeats?.length * tripInfo.ticketPrice)}</p>
+                <button
+                  onClick={() => handleTabClick(2)}
+                  className="px-[36px] py-[16px] bg-[#E04141] text-white text-[1.25rem]"
+                >
+                  Next
+                </button>
               </div>
             </div>
           </div>
@@ -283,22 +547,111 @@ const TripsInfo = ({ tripInfo, route }) => {
               action=""
               className="flex flex-col justify-center items-center w-[400px] m-auto"
             >
-              <TripInput />
-              <TripInput />
-              <TripInput />
-              <TripInput />
+              <TripInput
+                label="Full name"
+                id="FullName"
+                type="text"
+                placeholder="Your full name"
+                value={input.fullName}
+                error={error.fullName}
+                onChange={handleChangeFirstName}
+                required
+              />
+              <TripInput
+                label="Phone number"
+                id="PhoneNumber"
+                type="text"
+                placeholder="Your Phone number"
+                value={input.phoneNumber}
+                error={error.phoneNumber}
+                onChange={handlePhoneNumber}
+                required
+              />
+              <TripInput
+                label="Email"
+                id="Email"
+                type="text"
+                placeholder="Your Email"
+                value={input.email}
+                error={error.email}
+                onChange={handleChangeEmail}
+                required
+              />
+              <div className="flex flex-col justify-center mt-[10px] w-[400px] m-auto">
+                <label htmlFor="Note" className="text-[1rem] font-semibold">
+                  Note
+                </label>
+                <input
+                  id="Note"
+                  type="text"
+                  placeholder=""
+                  className="h-[38px] w-full outline-none border border-blue rounded py-1 px-3 mt-[3px]"
+                  value={input.note}
+                  onChange={handleChangeNote}
+                />
+              </div>
+              {/* <TripInput
+                label="Address"
+                id="Address"
+                type="text"
+                placeholder="Your Address"
+                value={input.address}
+                error={error.address}
+                onChange={handleHomeAddress}
+                required
+              /> */}
+              {/* <div className="flex w-full mt-[12px]">
+                <input
+                  type="checkbox"
+                  className="cursor-pointer mr-[5px]"
+                  checked={isTransit}
+                  onChange={(e) => setIsTransit(e.target.checked)}
+                />
+                <span>Transit(optional)</span>
+              </div>
+              {isTransit && (
+                <>
+                  <TripInput
+                    label="Transit From"
+                    id="TransitFrom"
+                    type="text"
+                    placeholder="Transit from..."
+                    value={input.transitFrom}
+                    error={error.transitFrom}
+                    onChange={handleTransitFrom}
+                    required
+                  />
+                  <TripInput
+                    label="Transit To"
+                    id="transitTo"
+                    type="text"
+                    placeholder="Transit to..."
+                    value={input.transitTo}
+                    error={error.transitTo}
+                    onChange={handleTransitTo}
+                    required
+                  />
+                </>
+              )} */}
             </form>
             <div className="flex justify-between items-center pt-[16px] pb-[8px]">
               <button
-                className="flex items-center justify-center px-[15px] text-center"
+                className="flex items-center justify-center  text-center"
                 onClick={() => handleTabClick(1)}
               >
-                <span>&lt; Back</span>
+                <span className="px-[36px] py-[16px] bg-[#C0BEBE] text-white">
+                  Back
+                </span>
               </button>
-              <div className="flex gap-[10px] items-center">
+              <div className="flex gap-[10px] items-center  text-[1.6875rem] text-[#1F83DF]">
                 <p>Total: </p>
-                <p>{addDot(quanitySeats?.length * tripInfo.ticketPrice)}</p>
-                <button>Continue</button>
+                <p>{addDot(selectedSeats?.length * tripInfo.ticketPrice)}</p>
+                <button
+                  onClick={handleContinueForm}
+                  className="px-[16px] py-[16px] bg-[#E04141] text-white text-[1.25rem]"
+                >
+                  Continue
+                </button>
               </div>
             </div>
           </div>

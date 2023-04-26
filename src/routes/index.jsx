@@ -13,6 +13,8 @@ import Home from "../pages/Home";
 import Login from "../pages/Login";
 import Register from "../pages/Register";
 import Trips from "../pages/Trips";
+import Test from "../pages/Test";
+import ForgotPassword from "../pages/ForgotPassword";
 
 const Wrapper = ({ children }) => {
   const location = useLocation();
@@ -32,6 +34,7 @@ export default function App() {
           {/* Authentication routes */}
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/forgotpassword" element={<ForgotPassword />} />
 
           {/* Trips routes */}
           <Route
@@ -46,7 +49,14 @@ export default function App() {
           {/* Select tickets routes */}
 
           {/* Payment routes */}
-
+          <Route
+            path="/test"
+            element={
+              // <PrivateRoute>
+              <Test />
+              // </PrivateRoute>
+            }
+          />
           {/* Account information routes */}
 
           {/* Not found page */}
