@@ -7,6 +7,7 @@ import { Icon } from "@iconify/react";
 import { addDot, removeDot } from "../utils/currencyFormat";
 const Test = () => {
   const { order } = useSelector((state) => state.order);
+  
   return (
     <MainLayout>
       <section className="max-w-screen-xl mx-auto">
