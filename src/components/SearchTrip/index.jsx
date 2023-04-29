@@ -98,8 +98,8 @@ const SearchTrip = (props) => {
         <Icon
           icon="mdi:calendar-time"
           color="#414242"
-          width="24"
-          height="24"
+          width="20"
+          height="20"
           onClick={props.onClick}
         />
       </div>

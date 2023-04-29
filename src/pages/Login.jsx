@@ -150,7 +150,7 @@ const Login = () => {
                   </Link>
                 </div>
                 <button
-                  className="py-[16px] px-[56px] bg-[#E04141] mb-[8px] rounded-[10px] font-Ballo text-[1.625rem] text-white"
+                  className="py-[16px] px-[56px] bg-[#E04141] mb-[8px] rounded-[10px] font-Ballo text-[1.375rem] text-white"
                   type="submit"
                   form="loginForm"
                 >
@@ -162,11 +162,11 @@ const Login = () => {
                 to="/register"
                 className=" text-[#1D7ED8] underline flex justify-center items-center flex-col text-[0.875rem]"
               >
-                Don’t have an account ? Sign up for free HERE
+                Don’t have an account? Sign up for free here
               </Link>
               <div className="flex justify-center mt-[15px]">
                 <div className="border-[#6A6A6B] border-t "></div>
-                <span className="font-bold font-Ballo text-[1.25rem]">OR</span>
+                <span className=" font-Ballo text-[1.25rem]">OR</span>
                 {/* <hr className="border-[#6A6A6B] flex-1 flex-grow-0 flex-shrink-1 h-0"></hr> */}
               </div>
               <div

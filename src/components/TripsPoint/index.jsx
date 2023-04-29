@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { setPickUpPoints, setFinalPoints } from "../../redux/order.slice";
 import { checkBetweenTwoHours } from "../../utils/convertDatetime";
 const TripsPoint = ({
@@ -16,9 +16,38 @@ const TripsPoint = ({
       pickUpsPoint ? pickUpsPoint[0].location : null
     );
 
+    // const handlePickUpPlaceChange = (event) => {
+    //   setSelectedPickUpPoint(event.target.value);
+    //   dispatch(setPickUpPoints(event.target.value));
+    // };
+
     const handlePickUpPlaceChange = (event) => {
-      setSelectedPickUpPoint(event.target.value);
-      dispatch(setPickUpPoints(event.target.value));
+      const selectedValue = event.target.value;
+      if (selectedValue === "") {
+        setSelectedPickUpPoint(selectedValue);
+        const selectedPickUp = pickUpsPoint[0];
+        dispatch(
+          setPickUpPoints({
+            location: selectedPickUp.location,
+            time: selectedPickUp.time[0],
+            name: selectedPickUp.name,
+          })
+        );
+      } else {
+        setSelectedPickUpPoint(selectedValue);
+        const selectedPickUp = pickUpsPoint.find(
+          (point) => point.location === selectedValue
+        );
+        dispatch(
+          setPickUpPoints({
+            location: selectedPickUp.location,
+            time: selectedPickUp.time.find((item) =>
+              checkBetweenTwoHours(departureTime, 1, item)
+            ),
+            name: selectedPickUp.name,
+          })
+        );
+      }
     };
     // const returnTime = (time) => {
     //   checkBetweenTwoHours(departureTime,1,time);
@@ -69,12 +98,52 @@ const TripsPoint = ({
     const [selectedFinalPoint, setSelectedFinalPoint] = useState(
       finalsPoint ? finalsPoint[0].location : null
     );
-
+    // const handleFinalPlaceChange = (event) => {
+    //   setSelectedFinalPoint(event.target.value);
+    //   dispatch(setFinalPoints(event.target.value));
+    // };
+    // console.log(finalsPoint[0].time[0]);
+    useEffect(() => {
+      if (!selectedFinalPoint) {
+        const selectedFinal = finalsPoint[0];
+        dispatch(
+          setFinalPoints({
+            location: selectedFinal.location,
+            time: selectedFinal.time[0],
+            name: selectedFinal.name,
+          })
+        );
+        setSelectedPickUpPoint(selectedFinal);
+      }
+    }, [selectedFinalPoint]);
     const handleFinalPlaceChange = (event) => {
-      setSelectedFinalPoint(event.target.value);
-      dispatch(setFinalPoints(event.target.value));
+      const selectedValue = event.target.value;
+      if (selectedValue === "") {
+        setSelectedFinalPoint(selectedValue);
+        const selectedFinal = finalsPoint[0];
+        dispatch(
+          setFinalPoints({
+            location: selectedFinal.location,
+            time: selectedFinal.time[0],
+            name: selectedFinal.name,
+          })
+        );
+      } else {
+        setSelectedFinalPoint(selectedValue);
+        const selectedFinal = finalsPoint.find(
+          (point) => point.location === selectedValue
+        );
+        dispatch(
+          setFinalPoints({
+            location: selectedFinal.location,
+            time: selectedFinal.time.find((item) =>
+              checkBetweenTwoHours(arrivalTime, -1, item)
+            ),
+            name: selectedFinal.name,
+          })
+        );
+      }
     };
-
     return finalsPoint.map((point, index) => {
       return (
         <div

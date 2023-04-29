@@ -592,12 +592,12 @@ const Register = () => {
           // userName,
           idCard,
         };
+        setDisplay(true);
         signUp(signedUpUser);
         setInput({ ...input, avatar: url });
         // setInput((prev) => ({ ...prev, avatar: url }));
       }
     );
-    setDisplay(true);
     // }
     // signUp(input);
     // Check re password !== Password
@@ -611,8 +611,7 @@ const Register = () => {
       input.email,
       input.password
     );
-    console.log(input);
-    navigate("/login");
+    // navigate("/login");
   };
 
   return (
@@ -909,7 +908,7 @@ const Register = () => {
                 <button
                   type="submit"
                   onClick={() => handleRegister}
-                  className="mt-[10px] cursor-pointer text-white py-[10px] px-20 bg-[#E04141] text-[1.625rem] rounded text-center"
+                  className="mt-[10px] cursor-pointer text-white py-[10px] px-20 bg-[#E04141] text-[1.375rem] rounded text-center"
                 >
                   REGISTER
                 </button>
@@ -1067,7 +1066,7 @@ const Register = () => {
               BACK TO LOGIN
             </button>
           </div> */}
-          <ModalAuthentication type="resigter" />
+          <ModalAuthentication type="register" />
         </>
       )}
     </>

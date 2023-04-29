@@ -104,7 +104,6 @@ const Home = () => {
   // };
 
   const handleAvoidClick = (e) => {
-    console.log(e);
     if (popularResponsive.lenght) {
     }
   };

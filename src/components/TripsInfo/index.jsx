@@ -2,7 +2,13 @@ import React, { useState, useEffect, useCallback } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
-import { setTripInfo, setUserInfo, setPoints } from "../../redux/order.slice";
+import {
+  setTripInfo,
+  setUserInfo,
+  setPoints,
+  setPickUpPoints,
+  setFinalPoints,
+} from "../../redux/order.slice";
 import { Icon } from "@iconify/react";
 import { substractHHMMToHour } from "../../utils/convertDatetime";
 import { addDot, removeDot } from "../../utils/currencyFormat";
@@ -14,7 +20,7 @@ import {
   validatePhoneNumber,
   validateAddress,
 } from "../../utils/validation";
-
+import { v4 as uuidv4 } from "uuid";
 import TripSeat from "../TripSeat";
 import TripsPoint from "../TripsPoint";
 // import TripInput from "../TripInput";
@@ -122,63 +128,6 @@ const TripsInfo = ({ tripInfo, route }) => {
     [input]
   );
 
-  // const handleTransitFrom = useCallback(
-  //   (e) => {
-  //     if (e.currentTarget.value === "") {
-  //       setError({ ...error, transitFrom: "Transit from cannot be empty" });
-  //     } else {
-  //       setError({ ...error, transitFrom: "" });
-  //     }
-  //     setInput({ ...input, transitFrom: e.target.value });
-  //   },
-  //   [error, input]
-  // );
-
-  // const handleTransitTo = useCallback(
-  //   (e) => {
-  //     if (e.currentTarget.value === "") {
-  //       setError({ ...error, transitTo: "Transit to cannot be empty" });
-  //     } else {
-  //       setError({ ...error, transitTo: "" });
-  //     }
-  //     setInput({ ...input, transitTo: e.target.value });
-  //   },
-  //   [error, input]
-  // );
-  // const handleHomeAddress = useCallback(
-  //   (e) => {
-  //     switch (true) {
-  //       case e.currentTarget.value === "":
-  //         setError({ ...error, address: "Address cannot be empty" });
-  //         break;
-  //       case e.currentTarget.value.length < 5:
-  //         setError({
-  //           ...error,
-  //           address: "Address is too short! Please try again ",
-  //         });
-  //         break;
-  //       case e.currentTarget.value.length > 100:
-  //         setError({
-  //           ...error,
-  //           address: "Address is too long! Please try again ",
-  //         });
-  //         break;
-  //       case !validateAddress(e.currentTarget.value):
-  //         setError({
-  //           ...error,
-  //           address: "Address is invalid ",
-  //         });
-  //         break;
-  //       default:
-  //         setError({ ...error, address: "" });
-  //         break;
-  //     }
-  //     const home = e.target.value;
-  //     setInput({ ...input, address: home });
-  //   },
-  //   [error, input]
-  // );
-
   useEffect(() => {
     if (openMore) {
       const unsubscribe = getSeatsFromTripId(tripInfo.uid, (data) => {
@@ -222,21 +171,45 @@ const TripsInfo = ({ tripInfo, route }) => {
       return selectedSeatIds;
     });
   };
-
+  // const pickUp = useSelector((state) => state.order.pickUp);
+  // const final = useSelector((state) => state.order.final);
   const handleTabClick = (index) => {
     if (selectedSeats != 0) {
+      console.log(selectedSeats.length);
       const selectedTrip = {
+        booking_id: uuidv4(),
         trip_id: tripInfo.uid,
         seats: selectedSeats,
+        ticketAmount: selectedSeats.length,
         ticketPrice: tripInfo.ticketPrice,
+        totalSeats: tripInfo.totalSeats,
+        type: tripInfo.type,
+        date: tripInfo.date,
+        departureTime: tripInfo.departureTime,
+        arrivalTime: tripInfo.arrivalTime,
       };
       dispatch(setTripInfo(selectedTrip));
-      dispatch(
-        setPoints({
-          pickUp: route.pickUps[0],
-          final: route.finals[0],
-        })
-      );
+
+      // if (pickUp.location === "" && final.location === "") {
+      //   dispatch(
+      //     setPoints({
+      //       pickUp: { ...route.pickUps[0], time: route.pickUp[0].time[0] },
+      //       final: { ...route.finals[0], time: route.finals[0].time[0] },
+      //     })
+      //   );
+      // }
+      // if (pickUp.location === "")
+      //   dispatch(
+      //     setPoints({
+      //       pickUp: { ...route.pickUps[0], time: route.pickUp[0].time[0] },
+      //     })
+      //   );
+      // if (final.location === "")
+      //   dispatch(
+      //     setPoints({
+      //       final: { ...route.finals[0], time: route.final[0].time[0] },
+      //     })
+      //   );
       setActiveTabIndex(index);
     } else {
       toast.info("You must select at least one seat!");
@@ -281,22 +254,18 @@ const TripsInfo = ({ tripInfo, route }) => {
       document.getElementById("Email").focus();
       return;
     }
-    // else if (address == "") {
-    //   setError({ ...error, address: "Address cannot be empty" });
-    //   document.getElementById("Address").focus();
-    //   return;
-    // }
-    // if (isTransit) {
-    //   if (transitFrom == "") {
-    //     setError({ ...error, transitFrom: "transitFrom cannot be empty" });
-    //     document.getElementById("transitFrom").focus();
-    //     return;
-    //   } else if (transitTo == "") {
-    //     setError({ ...error, transitTo: "transitTo cannot be empty" });
-    //     document.getElementById("transitTo").focus();
-    //     return;
-    //   }
-    // }
+    // dispatch(
+    //   setPickUpPoints({
+    //     location: order.location,
+    //     time: order.time,
+    //   })
+    // );
+    // dispatch(
+    //   setFinalPoints({
+    //     location: order.location,
+    //     time: order.time,
+    //   })
+    // );
     dispatch(
       setUserInfo({
         user_id: user.uid,
@@ -306,7 +275,7 @@ const TripsInfo = ({ tripInfo, route }) => {
         note: input.note,
         // transitFrom: input.transitFrom,
         // transitTo: input.transitTo,
-        // phoneNumber: input.phoneNumber,
+        phoneNumber: input.phoneNumber,
       })
     );
     navigate("/test");
@@ -375,6 +344,8 @@ const TripsInfo = ({ tripInfo, route }) => {
                   <p className="text-[1.25rem] font-Ballo text-my-text-gray-second font-semibold">
                     {/* {seats?.filter((seat) => seat.status == "Available").length}{" "} */}
                     {tripInfo.availableSeats} seats left
+                    {/* {availableSeatsLeft} seats left */}
+                    {/* {tripInfo.availableSeats} seats left */}
                   </p>
                   <Link className="text-[0.75rem] w-full text-[#1D7ED8] underline underline-offset-2">
                     View more trip details
@@ -466,17 +437,27 @@ const TripsInfo = ({ tripInfo, route }) => {
               />
             </div>
             <div className="flex justify-between items-center py-[10px]">
-              <div>
+              <div className="w-[65%]">
                 <span>Seats: </span>
                 {selectedSeats.map((seat, index) => {
-                  return <span key={index}>{seat}, </span>;
+                  const isLastSeat = index === selectedSeats.length - 1;
+                  return (
+                    <span key={index}>
+                      {seat}
+                      {!isLastSeat && ","}{" "}
+                    </span>
+                  );
                 })}
               </div>
               <div className="flex gap-[10px] items-center  text-[1.6875rem] text-[#1F83DF]">
-                <p>Total: </p>
-                <p>{addDot(selectedSeats?.length * tripInfo.ticketPrice)}</p>
+                <div className="flex w-[35%] flex-1">
+                  <p className="text-[1.375rem] pr-[5px]">Total: </p>
+                  <p className="text-[1.375rem]">
+                    {addDot(selectedSeats?.length * tripInfo.ticketPrice)}
+                  </p>
+                </div>
                 <button
-                  className="px-[16px] py-[16px] bg-[#E04141] text-white  text-[1.25rem]"
+                  className="rounded-[10px] px-[12px] py-[16px] bg-[#E04141] text-white  text-[1rem]"
                   onClick={() => handleTabClick(1)}
                 >
                   Continue
@@ -520,18 +501,20 @@ const TripsInfo = ({ tripInfo, route }) => {
                 className="flex items-center justify-center px-[15px] text-center"
                 onClick={() => handleTabClick(0)}
               >
-                <span className="px-[36px] py-[16px] bg-[#C0BEBE] text-white text-[1.25rem]">
+                <span className="rounded-[10px] px-[16px] py-[12px] bg-[#C0BEBE] text-white text-[1rem]">
                   BACK
                 </span>
               </button>
               <div className="flex gap-[10px] items-center text-[1.6875rem] text-[#1F83DF]">
-                <p>Total: </p>
-                <p>{addDot(selectedSeats?.length * tripInfo.ticketPrice)}</p>
+                <p className="text-[1.375rem]">Total: </p>
+                <p className="text-[1.375rem]">
+                  {addDot(selectedSeats?.length * tripInfo.ticketPrice)}
+                </p>
                 <button
                   onClick={() => handleTabClick(2)}
-                  className="px-[36px] py-[16px] bg-[#E04141] text-white text-[1.25rem]"
+                  className="rounded-[10px] px-[16px] py-[16px] bg-[#E04141] text-white text-[1rem]"
                 >
-                  Next
+                  Continue
                 </button>
               </div>
             </div>
@@ -590,65 +573,24 @@ const TripsInfo = ({ tripInfo, route }) => {
                   onChange={handleChangeNote}
                 />
               </div>
-              {/* <TripInput
-                label="Address"
-                id="Address"
-                type="text"
-                placeholder="Your Address"
-                value={input.address}
-                error={error.address}
-                onChange={handleHomeAddress}
-                required
-              /> */}
-              {/* <div className="flex w-full mt-[12px]">
-                <input
-                  type="checkbox"
-                  className="cursor-pointer mr-[5px]"
-                  checked={isTransit}
-                  onChange={(e) => setIsTransit(e.target.checked)}
-                />
-                <span>Transit(optional)</span>
-              </div>
-              {isTransit && (
-                <>
-                  <TripInput
-                    label="Transit From"
-                    id="TransitFrom"
-                    type="text"
-                    placeholder="Transit from..."
-                    value={input.transitFrom}
-                    error={error.transitFrom}
-                    onChange={handleTransitFrom}
-                    required
-                  />
-                  <TripInput
-                    label="Transit To"
-                    id="transitTo"
-                    type="text"
-                    placeholder="Transit to..."
-                    value={input.transitTo}
-                    error={error.transitTo}
-                    onChange={handleTransitTo}
-                    required
-                  />
-                </>
-              )} */}
             </form>
             <div className="flex justify-between items-center pt-[16px] pb-[8px]">
               <button
                 className="flex items-center justify-center  text-center"
                 onClick={() => handleTabClick(1)}
               >
-                <span className="px-[36px] py-[16px] bg-[#C0BEBE] text-white">
-                  Back
+                <span className="rounded-[10px] px-[16px] py-[12px] bg-[#C0BEBE] text-white text-[1rem]">
+                  BACK
                 </span>
               </button>
               <div className="flex gap-[10px] items-center  text-[1.6875rem] text-[#1F83DF]">
-                <p>Total: </p>
-                <p>{addDot(selectedSeats?.length * tripInfo.ticketPrice)}</p>
+                <p className="text-[1.375rem]">Total: </p>
+                <p className="text-[1.375rem]">
+                  {addDot(selectedSeats?.length * tripInfo.ticketPrice)}
+                </p>
                 <button
                   onClick={handleContinueForm}
-                  className="px-[16px] py-[16px] bg-[#E04141] text-white text-[1.25rem]"
+                  className="rounded-[10px] px-[16px] py-[16px] bg-[#E04141] text-white text-[1rem]"
                 >
                   Continue
                 </button>

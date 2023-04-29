@@ -42,10 +42,10 @@ const TripSeat = ({ typeSeat, seats, handleQuanitySeats }) => {
       (seat) => seat.status === "Selected"
     ); // đi qua từng cái ghế xanh
 
-    if (newSelectedSeats.length > 8) {
-      toast.info("You can only select 8 tickets for an order!");
-      return;
-    }
+    // if (newSelectedSeats.length > 8) {
+    //   toast.info("You can only select 8 tickets for an order!");
+    //   return;
+    // }
     setCurrentSeats(updatedSeats);
 
     handleQuanitySeats(newSelectedSeats);
@@ -142,7 +142,6 @@ const TripSeat = ({ typeSeat, seats, handleQuanitySeats }) => {
                             <Icon
                               width="40"
                               height="40"
-                              className="mr-[5px]"
                               icon="material-symbols:bedroom-child"
                               color="rgba(0, 0, 0, 1)"
                             />
@@ -209,7 +208,6 @@ const TripSeat = ({ typeSeat, seats, handleQuanitySeats }) => {
                             <Icon
                               width="40"
                               height="40"
-                              className="mr-[5px]"
                               icon="material-symbols:bedroom-child"
                               color="rgba(0, 0, 0, 1)"
                             />
@@ -258,7 +256,6 @@ const TripSeat = ({ typeSeat, seats, handleQuanitySeats }) => {
                           <Icon
                             width="40"
                             height="40"
-                            className="mr-[5px]"
                             icon="material-symbols:bedroom-child"
                             color="rgba(0, 0, 0, 1)"
                           />
@@ -300,7 +297,6 @@ const TripSeat = ({ typeSeat, seats, handleQuanitySeats }) => {
                           <Icon
                             width="40"
                             height="40"
-                            className="mr-[5px]"
                             icon="material-symbols:bedroom-child"
                             color="rgba(0, 0, 0, 1)"
                           />

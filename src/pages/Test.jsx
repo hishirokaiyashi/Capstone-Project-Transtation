@@ -7,7 +7,6 @@ import { Icon } from "@iconify/react";
 import { addDot, removeDot } from "../utils/currencyFormat";
 const Test = () => {
   const { order } = useSelector((state) => state.order);
-  
   return (
     <MainLayout>
       <section className="max-w-screen-xl mx-auto">
@@ -97,12 +96,12 @@ const Test = () => {
                 <div>
                   <p>Pickup</p>
                   <p>22:00 - T4, 26/04/2023</p>
-                  <p>{order.pickUp.name}</p>
+                  <p>{order.pickUp?.location}</p>
                 </div>
                 <div>
                   <p>Final</p>
                   <p>22:00 - T4, 26/04/2023</p>
-                  <p>{order.final.name}</p>
+                  <p>{order.final?.location}</p>
                 </div>
               </div>
             </div>
