@@ -29,23 +29,24 @@ import {
 
 // import Input from "../components/Input";
 import Select from "../components/Select";
+import ModalAuthentication from "../components/ModalAuthentication/index.jsx";
 import moment from "moment";
 
 const Register = () => {
   const navigate = useNavigate();
 
-  const [avatar, setAvatar] = useState(null);
-  const [selectedFile, setSelectedFile] = useState(null);
+  // const [avatar, setAvatar] = useState(null);
+  // const [selectedFile, setSelectedFile] = useState(null);
 
   const [input, setInput] = useState({
-    userName: "",
+    // userName: "",
     email: "",
     password: "",
     confirmPassword: "",
     firstName: "",
     lastName: "",
-    phoneNumber: "",
-    address: "",
+    // phoneNumber: "",
+    // address: "",
     avatar: "",
     gender: "Male",
     dateOfBirth: "",
@@ -56,93 +57,93 @@ const Register = () => {
   const [iconPasswordType, setIconPasswordType] = useState("mdi:eye-off");
 
   const [error, setError] = useState({
-    userName: "",
+    // userName: "",
     email: "",
     password: "",
     confirmPassword: "",
     firstName: "",
     lastName: "",
-    phoneNumber: "",
-    address: "",
+    // phoneNumber: "",
+    // address: "",
     dateOfBirth: "",
     idCard: "",
   });
 
-  const [provinces, setProvinces] = useState([]);
-  const [province, setProvince] = useState("");
-  const [districts, setDistricts] = useState([]);
-  const [district, setDistrict] = useState("");
-  const [villages, setVillages] = useState([]);
-  const [village, setVillage] = useState("");
+  // const [provinces, setProvinces] = useState([]);
+  // const [province, setProvince] = useState("");
+  // const [districts, setDistricts] = useState([]);
+  // const [district, setDistrict] = useState("");
+  // const [villages, setVillages] = useState([]);
+  // const [village, setVillage] = useState("");
 
   const [display, setDisplay] = useState(false);
 
-  useEffect(() => {
-    const fetchPublicProvinces = async () => {
-      try {
-        const response = await apiGetPublicProvinces();
-        if (response.status === 200) {
-          setProvinces(response.data.results);
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    fetchPublicProvinces();
-  }, []);
+  // useEffect(() => {
+  //   const fetchPublicProvinces = async () => {
+  //     try {
+  //       const response = await apiGetPublicProvinces();
+  //       if (response.status === 200) {
+  //         setProvinces(response.data.results);
+  //       }
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   };
+  //   fetchPublicProvinces();
+  // }, []);
 
-  useEffect(() => {
-    setDistrict(null);
-    setVillages(null);
-    const fetchPublicDistrict = async () => {
-      if (!province) {
-        return; // province has not been set yet, return early
-      }
-      const response = await apiGetPublicDistrict(province.id);
-      if (response.status === 200) {
-        setDistricts(response.data?.results);
-      }
-    };
-    province && fetchPublicDistrict();
-  }, [province]);
+  // useEffect(() => {
+  //   setDistrict(null);
+  //   setVillages(null);
+  //   const fetchPublicDistrict = async () => {
+  //     if (!province) {
+  //       return; // province has not been set yet, return early
+  //     }
+  //     const response = await apiGetPublicDistrict(province.id);
+  //     if (response.status === 200) {
+  //       setDistricts(response.data?.results);
+  //     }
+  //   };
+  //   province && fetchPublicDistrict();
+  // }, [province]);
 
-  useEffect(() => {
-    setVillage("");
-    const fetchPublicVillage = async () => {
-      const response = await apiGetPublicVillage(district.id);
-      if (response.status === 200) {
-        setVillages(response.data?.results);
-      }
-    };
-    district && fetchPublicVillage();
-  }, [district]);
+  // useEffect(() => {
+  //   setVillage("");
+  //   const fetchPublicVillage = async () => {
+  //     const response = await apiGetPublicVillage(district.id);
+  //     if (response.status === 200) {
+  //       setVillages(response.data?.results);
+  //     }
+  //   };
+  //   district && fetchPublicVillage();
+  // }, [district]);
 
-  const handleChangeUserName = (e) => {
-    if (validateUsername(e.currentTarget.value)) {
-      setError({
-        ...error,
-        userName: "User name cannot contain special characters",
-      });
-    } else {
-      if (e.currentTarget.value === "") {
-        setError({
-          ...error,
-          userName: "User name cannot be empty",
-        });
-      } else if (e.currentTarget.value.length < 6) {
-        setError({
-          ...error,
-          userName: "User name must have at least 6 characters",
-        });
-      } else {
-        setError({
-          ...error,
-          userName: "",
-        });
-      }
-    }
-    setInput({ ...input, userName: e.target.value });
-  };
+  // const handleChangeUserName = (e) => {
+  //   if (validateUsername(e.currentTarget.value)) {
+  //     setError({
+  //       ...error,
+  //       userName: "User name cannot contain special characters",
+  //     });
+  //   } else {
+  //     if (e.currentTarget.value === "") {
+  //       setError({
+  //         ...error,
+  //         userName: "User name cannot be empty",
+  //       });
+  //     } else if (e.currentTarget.value.length < 6) {
+  //       setError({
+  //         ...error,
+  //         userName: "User name must have at least 6 characters",
+  //       });
+  //     } else {
+  //       setError({
+  //         ...error,
+  //         userName: "",
+  //       });
+  //     }
+  //   }
+  //   setInput({ ...input, userName: e.target.value });
+  // };
 
   const handleChangeEmail = (e) => {
     if (e.currentTarget.value === "") {
@@ -245,58 +246,58 @@ const Register = () => {
     setInput({ ...input, lastName: e.target.value });
   };
 
-  const handlePhoneNumber = (e) => {
-    if (e.currentTarget.value === "") {
-      setError({ ...error, phoneNumber: "Phone number cannot be empty" });
-    } else {
-      if (
-        e.currentTarget.value.length < 9 ||
-        e.currentTarget.value.length > 10
-      ) {
-        setError({
-          ...error,
-          phoneNumber: "Phone number is invalid",
-        });
-      } else if (!validatePhoneNumber(e.currentTarget.value)) {
-        setError({
-          ...error,
-          phoneNumber: "Phone number is invalid ",
-        });
-      } else setError({ ...error, phoneNumber: "" });
-    }
-    setInput({ ...input, phoneNumber: e.target.value });
-  };
+  // const handlePhoneNumber = (e) => {
+  //   if (e.currentTarget.value === "") {
+  //     setError({ ...error, phoneNumber: "Phone number cannot be empty" });
+  //   } else {
+  //     if (
+  //       e.currentTarget.value.length < 9 ||
+  //       e.currentTarget.value.length > 10
+  //     ) {
+  //       setError({
+  //         ...error,
+  //         phoneNumber: "Phone number is invalid",
+  //       });
+  //     } else if (!validatePhoneNumber(e.currentTarget.value)) {
+  //       setError({
+  //         ...error,
+  //         phoneNumber: "Phone number is invalid ",
+  //       });
+  //     } else setError({ ...error, phoneNumber: "" });
+  //   }
+  //   setInput({ ...input, phoneNumber: e.target.value });
+  // };
 
-  const handleHomeAddress = (e) => {
-    switch (true) {
-      case e.currentTarget.value === "":
-        setError({ ...error, address: "Address cannot be empty" });
-        break;
-      case e.currentTarget.value.length < 5:
-        setError({
-          ...error,
-          address: "Address is too short! Please try again ",
-        });
-        break;
-      case e.currentTarget.value.length > 100:
-        setError({
-          ...error,
-          address: "Address is too long! Please try again ",
-        });
-        break;
-      case !validateAddress(e.currentTarget.value):
-        setError({
-          ...error,
-          address: "Address is invalid ",
-        });
-        break;
-      default:
-        setError({ ...error, address: "" });
-        break;
-    }
-    const home = e.target.value;
-    setInput({ ...input, address: home });
-  };
+  // const handleHomeAddress = (e) => {
+  //   switch (true) {
+  //     case e.currentTarget.value === "":
+  //       setError({ ...error, address: "Address cannot be empty" });
+  //       break;
+  //     case e.currentTarget.value.length < 5:
+  //       setError({
+  //         ...error,
+  //         address: "Address is too short! Please try again ",
+  //       });
+  //       break;
+  //     case e.currentTarget.value.length > 100:
+  //       setError({
+  //         ...error,
+  //         address: "Address is too long! Please try again ",
+  //       });
+  //       break;
+  //     case !validateAddress(e.currentTarget.value):
+  //       setError({
+  //         ...error,
+  //         address: "Address is invalid ",
+  //       });
+  //       break;
+  //     default:
+  //       setError({ ...error, address: "" });
+  //       break;
+  //   }
+  //   const home = e.target.value;
+  //   setInput({ ...input, address: home });
+  // };
 
   const handleDateChange = (event) => {
     const currentDate = moment();
@@ -350,92 +351,97 @@ const Register = () => {
     setInput({ ...input, idCard: event.target.value });
   };
 
-  const handleChangeAvatar = (event) => {
-    const file = event.target.files[0];
-    setSelectedFile(file);
-    const reader = new FileReader();
+  // const handleChangeAvatar = (event) => {
+  //   const file = event.target.files[0];
+  //   setSelectedFile(file);
+  //   const reader = new FileReader();
 
-    reader.onload = (event) => {
-      const imgSrc = event.target.result;
-      setAvatar({
-        file: file,
-        imgSrc: imgSrc,
-      });
-    };
+  //   reader.onload = (event) => {
+  //     const imgSrc = event.target.result;
+  //     setAvatar({
+  //       file: file,
+  //       imgSrc: imgSrc,
+  //     });
+  //   };
 
-    reader.readAsDataURL(file);
-  };
+  //   reader.readAsDataURL(file);
+  // };
 
-  const handleContinue = debounce(async () => {
-    // Get username, pass, cnfpassword error messages querried by name's keys and its values != ""
-    const errors = Object.fromEntries(
-      Object.entries(error).filter(([key, value]) => {
-        return (
-          ["userName", "email", "password", "confirmPassword"].includes(key) &&
-          value !== ""
-        );
-      })
-    );
+  // const handleContinue = debounce(async () => {
+  // Get username, pass, cnfpassword error messages querried by name's keys and its values != ""
+  //   const errors = Object.fromEntries(
+  //     Object.entries(error).filter(([key, value]) => {
+  //       return (
+  //         [
+  //           "email",
+  //           "firstName",
+  //           "lastName",
+  //           "password",
+  //           "confirmPassword",
+  //         ].includes(key) && value !== ""
+  //       );
+  //     })
+  //   );
 
-    // If there appears any existing error messages, show toast
-    if (Object.keys(errors).length > 0) {
-      toast.error("Please enter information fields properly!");
-      // Focus first error input
-      document.getElementById(Object.keys(errors)[0]).focus();
-      return;
-    }
+  //   // If there appears any existing error messages, show toast
+  //   if (Object.keys(errors).length > 0) {
+  //     toast.error("Please enter information fields properly!");
+  //     // Focus first error input
+  //     document.getElementById(Object.keys(errors)[0]).focus();
+  //     return;
+  //   }
 
-    // Get username, email, pass input values as individual variables
-    const { userName, email, password, confirmPassword } = input;
+  //   // Get username, email, pass input values as individual variables
+  //   const { userName, email, password, confirmPassword } = input;
 
-    // Check either username or email has been used before in Firestore
-    const checkUserName = await checkUserExists({ userName });
-    const checkEmail = await checkUserExists({ email });
+  //   // Check either username or email has been used before in Firestore
+  //   // const checkUserName = await checkUserExists({ userName });
+  //   const checkEmail = await checkUserExists({ email });
 
-    // Check all circumstances can happen with these input values
-    if (userName == "") {
-      setError({
-        ...error,
-        userName: "User name cannot be empty",
-      });
-      document.getElementById("userName").focus();
-      return;
-    } else if (email == "") {
-      setError({ ...error, email: "Email cannot be empty" });
-      document.getElementById("email").focus();
-      return;
-    } else if (password == "") {
-      setError({ ...error, password: "Password cannot be empty" });
-      document.getElementById("password").focus();
-      return;
-    } else if (confirmPassword == "") {
-      setError({
-        ...error,
-        confirmPassword: "Confirm password cannot be empty",
-      });
-      document.getElementById("confirmPassword").focus();
-      return;
-    } else if (!checkUserName) {
-      toast.error("Please use another username");
-      setError({
-        ...error,
-        userName: "Your username is already in use",
-      });
-      document.getElementById("userName").focus();
-      return;
-    } else if (!checkEmail) {
-      toast.error("Please use another username");
-      setError({
-        ...error,
-        email: "Your email is already in use",
-      });
-      document.getElementById("email").focus();
-      return;
-    }
+  //   // Check all circumstances can happen with these input values
+  //   if (userName == "") {
+  //     setError({
+  //       ...error,
+  //       userName: "User name cannot be empty",
+  //     });
+  //     document.getElementById("userName").focus();
+  //     return;
+  //   } else if (email == "") {
+  //     setError({ ...error, email: "Email cannot be empty" });
+  //     document.getElementById("email").focus();
+  //     return;
+  //   } else if (password == "") {
+  //     setError({ ...error, password: "Password cannot be empty" });
+  //     document.getElementById("password").focus();
+  //     return;
+  //   } else if (confirmPassword == "") {
+  //     setError({
+  //       ...error,
+  //       confirmPassword: "Confirm password cannot be empty",
+  //     });
+  //     document.getElementById("confirmPassword").focus();
+  //     return;
+  //   } else if (!checkUserName) {
+  //     toast.error("Please use another username");
+  //     setError({
+  //       ...error,
+  //       userName: "Your username is already in use",
+  //     });
+  //     document.getElementById("userName").focus();
+  //     return;
+  //   } else if (!checkEmail) {
+  //     toast.error("Please use another username");
+  //     setError({
+  //       ...error,
+  //       email: "Your email is already in use",
+  //     });
+  //     document.getElementById("email").focus();
+  //     return;
+  //   }
 
-    // If passing all validation checks above, then we'll be going on
-    setDisplay(!display);
-  }, 3000);
+  //   // If passing all validation checks above, then we'll be going on
+  //   setDisplay(!display);
+  // }, 3000);
 
   const handleRegister = async (e) => {
     e.preventDefault();
@@ -445,12 +451,15 @@ const Register = () => {
       Object.entries(error).filter(([key, value]) => {
         return (
           [
+            "email",
             "firstName",
             "lastName",
-            "phoneNumber",
-            "address",
+            // "phoneNumber",
+            // "address",
             "dateOfBirth",
             "idCard",
+            "password",
+            "confirmPassword",
           ].includes(key) && value !== ""
         );
       })
@@ -465,18 +474,33 @@ const Register = () => {
     }
 
     const {
+      email,
       firstName,
       lastName,
       phoneNumber,
       dateOfBirth,
-      address,
-      avatar,
-      gender,
-      userName,
+      // address,
+      // avatar,
+      // gender,
+      // userName,
       idCard,
+      password,
+      confirmPassword,
     } = input;
-
-    if (firstName == "") {
+    const checkEmail = await checkUserExists({ email });
+    if (email == "") {
+      setError({ ...error, email: "Email cannot be empty" });
+      document.getElementById("email").focus();
+      return;
+    } else if (!checkEmail) {
+      toast.error("Please use another email");
+      setError({
+        ...error,
+        email: "Your email is already in use",
+      });
+      document.getElementById("email").focus();
+      return;
+    } else if (firstName == "") {
       setError({ ...error, firstName: "Firstname cannot be empty" });
       document.getElementById("firstName").focus();
       return;
@@ -484,11 +508,13 @@ const Register = () => {
       setError({ ...error, lastName: "Last name cannot be empty" });
       document.getElementById("lastName").focus();
       return;
-    } else if (phoneNumber == "") {
-      setError({ ...error, phoneNumber: "Phone number cannot be empty" });
-      document.getElementById("phoneNumber").focus();
-      return;
-    } else if (dateOfBirth == "") {
+    }
+    // else if (phoneNumber == "") {
+    //   setError({ ...error, phoneNumber: "Phone number cannot be empty" });
+    //   document.getElementById("phoneNumber").focus();
+    //   return;
+    // }
+    else if (dateOfBirth == "") {
       setError({
         ...error,
         dateOfBirth: "Please enter a valid date",
@@ -498,68 +524,81 @@ const Register = () => {
       setError({ ...error, idCard: "ID card number cannot be empty" });
       document.getElementById("idCard").focus();
       return;
-    } else if (Object.keys(address).length === 0) {
-      setError({ ...error, address: "Address cannot be empty" });
+    } else if (password == "") {
+      setError({ ...error, password: "Password cannot be empty" });
+      document.getElementById("password").focus();
+      return;
+    } else if (confirmPassword == "") {
+      setError({
+        ...error,
+        confirmPassword: "Confirm password cannot be empty",
+      });
+      document.getElementById("confirmPassword").focus();
       return;
     }
+    // else if (Object.keys(address).length === 0) {
+    //   setError({ ...error, address: "Address cannot be empty" });
+    //   return;
+    // }
 
-    if (selectedFile) {
-      // Upload avatar selected or generated from UI avatar API
-      await uploadFile(
-        selectedFile,
-        () => {},
-        (url) => {
-          const signedUpUser = {
-            firstName,
-            lastName,
-            phoneNumber,
-            dateOfBirth,
-            address: {
-              province,
-              district,
-              village,
-              home: input.address,
-            },
-            avatar: url,
-            gender,
-            userName,
-            idCard,
-          };
+    // if (selectedFile) {
+    //   // Upload avatar selected or generated from UI avatar API
+    //   await uploadFile(
+    //     selectedFile,
+    //     () => {},
+    //     (url) => {
+    //       const signedUpUser = {
+    //         firstName,
+    //         lastName,
+    //         phoneNumber,
+    //         dateOfBirth,
+    //         address: {
+    //           province,
+    //           district,
+    //           village,
+    //           home: input.address,
+    //         },
+    //         avatar: url,
+    //         gender,
+    //         userName,
+    //         idCard,
+    //       };
 
-          signUp(signedUpUser);
-          setInput({ ...input, avatar: url });
-          // setInput((prev) => ({ ...prev, avatar: url }));
-        }
-      );
-    } else {
-      const autoAvatar = await generateAvatar(input.firstName + input.lastName);
-      const blob = new Blob([autoAvatar], { type: "image/png" });
-      await uploadFile(
-        blob,
-        () => {},
-        (url) => {
-          const signedUpUser = {
-            firstName,
-            lastName,
-            phoneNumber,
-            dateOfBirth,
-            address: {
-              province,
-              district,
-              village,
-              home: input.address,
-            },
-            avatar: url,
-            gender,
-            userName,
-            idCard,
-          };
-          signUp(signedUpUser);
-          setInput({ ...input, avatar: url });
-          // setInput((prev) => ({ ...prev, avatar: url }));
-        }
-      );
-    }
+    //       signUp(signedUpUser);
+    //       setInput({ ...input, avatar: url });
+    //       // setInput((prev) => ({ ...prev, avatar: url }));
+    //     }
+    //   );
+    // } else {
+    const autoAvatar = await generateAvatar(input.firstName + input.lastName);
+    const blob = new Blob([autoAvatar], { type: "image/png" });
+    await uploadFile(
+      blob,
+      () => {},
+      (url) => {
+        const signedUpUser = {
+          firstName,
+          lastName,
+          phoneNumber,
+          dateOfBirth,
+          // address: {
+          //   province,
+          //   district,
+          //   village,
+          //   home: input.address,
+          // },
+          avatar: url,
+          // gender,
+          // userName,
+          idCard,
+        };
+        setDisplay(true);
+        signUp(signedUpUser);
+        setInput({ ...input, avatar: url });
+        // setInput((prev) => ({ ...prev, avatar: url }));
+      }
+    );
+    // }
     // signUp(input);
     // Check re password !== Password
     // registerWithEmailAndPassword("An Nguyen", email, password);
@@ -572,304 +611,464 @@ const Register = () => {
       input.email,
       input.password
     );
-    console.log(input);
-    navigate("/login");
+    // navigate("/login");
   };
 
   return (
     <>
-      <h2 className="text-3xl">Register section</h2>
-      <form onSubmit={handleRegister} className="flex flex-col mt-4">
-        {!display ? (
-          <div>
-            <div className="gap-2 flex flex-col">
-              <div className="relative w-fit">
-                <input
-                  type="file"
-                  accept="image/*"
-                  name="Avatar"
-                  id="avatar"
-                  onChange={handleChangeAvatar}
-                  className="hidden"
-                />
-                <img
-                  src={
-                    avatar
-                      ? avatar.imgSrc
-                      : "https://phongreviews.com/wp-content/uploads/2022/11/avatar-facebook-mac-dinh-19.jpg"
-                  }
-                  className="rounded-full w-32 h-32 object-cover"
-                  alt="Default avatar"
-                />
-                <label
-                  htmlFor="avatar"
-                  className="bg-green-300 p-1 rounded-full absolute bottom-0 right-0 cursor-pointer"
-                >
-                  <Icon icon="material-symbols:edit" width="24" height="24" />
-                </label>
-              </div>
-
-              <label htmlFor="userName">User name</label>
-              <input
-                className={
-                  error.userName == ""
-                    ? "outline-none border border-blue rounded py-1 px-2"
-                    : "outline-none border border-red-500 rounded py-1 px-2"
-                }
-                type="text"
-                id="userName"
-                placeholder="Username..."
-                value={input.userName}
-                onInput={(e) => handleChangeUserName(e)}
+      <div className="bg-banner-login h-full min-h-screen bg-fixed flex justify-center items-center">
+        <div className="w-[693px] bg-white py-[14px] rounded-[10px]">
+          {/* <h2 className="text-3xl">Register section</h2> */}
+          <div className="flex justify-between mb-[30px] px-[60px]">
+            <Link to="/">
+              <img
+                src="/src/assets/images/Login/Logo.png"
+                alt="Capstone Logo"
+                className="h-[34px]"
               />
-              <p className="text-red-500">{error.userName}</p>
-            </div>
-
-            <div className="gap-2 flex mt-4">
-              <label htmlFor="email">Email</label>
-              <input
-                className={
-                  error.email == ""
-                    ? "outline-none border border-blue rounded py-1 px-2"
-                    : "outline-none border border-red-500 rounded py-1 px-2"
-                }
-                type="text"
-                id="email"
-                placeholder="Email..."
-                value={input.email}
-                // required
-                onInput={(e) => handleChangeEmail(e)}
+            </Link>
+            <div className="flex items-center justify-center cursor-pointer text-[1.25rem]">
+              <span>EN</span>
+              <Icon
+                className="flex items-center"
+                icon="material-symbols:keyboard-arrow-down-rounded"
               />
-              <p className="text-red-500">{error.email}</p>
-            </div>
-
-            <div className="gap-10 flex mt-4">
-              <label htmlFor="password">Password</label>
-              <div className="relative">
-                <input
-                  className={
-                    error.password == ""
-                      ? "outline-none border border-blue rounded py-1 px-2"
-                      : "outline-none border border-red-500 rounded py-1 px-2"
-                  }
-                  type={passwordType}
-                  id="password"
-                  placeholder="Password..."
-                  value={input.password}
-                  onInput={(e) => handleChangePassword(e)}
-                />
-                <span
-                  className="absolute right-[10px] top-[7px] cursor-pointer"
-                  onClick={togglePasswordVisibility}
-                >
-                  <Icon icon={iconPasswordType} />
-                </span>
-              </div>
-              <p className="text-red-500">{error.password}</p>
-            </div>
-            <div className="gap-10 flex mt-4">
-              <label htmlFor="password">Confirmed password</label>
-              <div className="relative">
-                <input
-                  type={passwordType}
-                  placeholder="Confirm Password..."
-                  id="confirmPassword"
-                  value={input.confirmPassword}
-                  className={
-                    error.confirmPassword == ""
-                      ? "outline-none border border-blue rounded py-1 px-2"
-                      : "outline-none border border-red-500 rounded py-1 px-2"
-                  }
-                  onInput={(e) => handleConfirmPassword(e)}
-                />
-                <span className="absolute right-[10px] top-[7px] cursor-pointer">
-                  <Icon icon={iconPasswordType} />
-                </span>
-              </div>
-              <p className="text-red-500">{error.confirmPassword}</p>
-            </div>
-            <div
-              onClick={handleContinue}
-              className="mt-2 py-2 px-3 bg-slate-500 rounded"
-            >
-              Continue
             </div>
           </div>
-        ) : (
-          <div>
-            <div className="gap-10 flex mt-4">
-              <div>
-                <label htmlFor="firstName">First name</label>
+          <div className="px-[94px]">
+            <p className="text-[2rem] font-Ballo font-semibold pb-[12px]">
+              Sign Up
+            </p>
+            <p className="text-my-text-gray text-[1.125rem]">
+              Enter information to register an account
+            </p>
+          </div>
+          <form
+            onSubmit={handleRegister}
+            className="flex flex-col mt-[4px] px-[94px]"
+          >
+            <div>
+              {/* <div className="flex flex-col">
+                <div className="relative w-fit m-auto">
+                  <input
+                    type="file"
+                    accept="image/*"
+                    name="Avatar"
+                    id="avatar"
+                    onChange={handleChangeAvatar}
+                    className="hidden"
+                  />
+                  <img
+                    src={
+                      avatar
+                        ? avatar.imgSrc
+                        : "https://phongreviews.com/wp-content/uploads/2022/11/avatar-facebook-mac-dinh-19.jpg"
+                    }
+                    className="rounded-full w-28 h-28 object-cover"
+                    alt="Default avatar"
+                  />
+                  <label
+                    htmlFor="avatar"
+                    className="bg-green-300 p-1 rounded-full absolute bottom-0 right-0 cursor-pointer"
+                  >
+                    <Icon icon="material-symbols:edit" width="24" height="24" />
+                  </label>
+                </div>
+                <div className="relative pt-[10px]">
+                  <label
+                    htmlFor="userName"
+                    className="absolute top-[-8px] left-[12px] bg-white p-[4px]"
+                  >
+                    User Name
+                    <span className="text-red-500"> *</span>
+                  </label>
+                  <input
+                    className={
+                      error.userName == ""
+                        ? "h-[50px] w-full outline-none border border-blue rounded py-1 px-2 "
+                        : "h-[50px] w-full outline-none border border-red-500 rounded py-1 px-2 "
+                    }
+                    type="text"
+                    id="userName"
+                    placeholder="Username..."
+                    value={input.userName}
+                    onInput={(e) => handleChangeUserName(e)}
+                  />
+                  <p className="text-red-500 pt-[4px] text-[0.75rem]">
+                    {error.userName}
+                  </p>
+                </div>
+              </div> */}
+
+              <div className="relative mt-[16px]">
+                <label
+                  htmlFor="email"
+                  className="absolute top-[-16px] left-[12px] bg-white p-[4px]"
+                >
+                  Email
+                  <span className="text-red-500"> *</span>
+                </label>
+                <input
+                  className={
+                    error.email == ""
+                      ? "h-[50px] w-full outline-none border border-blue rounded py-1 px-2"
+                      : "h-[50px] w-full outline-none border border-red-500 rounded py-1 px-2"
+                  }
+                  type="text"
+                  id="email"
+                  placeholder="eg. example@example.com"
+                  value={input.email}
+                  // required
+                  onInput={(e) => handleChangeEmail(e)}
+                />
+                <p className="text-red-500 pt-[4px] text-[0.75rem]">
+                  {error.email}
+                </p>
+              </div>
+              <div className="relative mt-[14px]">
+                <label
+                  htmlFor="firstName"
+                  className="absolute top-[-16px] left-[12px] bg-white p-[4px] z-10"
+                >
+                  First name
+                  <span className="text-red-500"> *</span>
+                </label>
                 <input
                   type="text"
-                  placeholder="First Name..."
+                  placeholder="eg. Giao"
                   id="firstName"
                   value={input.firstName}
                   className={
                     error.firstName == ""
-                      ? "outline-none border border-blue rounded py-1 px-2"
-                      : "outline-none border border-red-500 rounded py-1 px-2"
+                      ? "h-[50px] w-full outline-none border border-blue rounded py-1 px-2"
+                      : "h-[50px] w-full outline-none border border-red-500 rounded py-1 px-2"
                   }
                   onInput={(e) => handleChangeFirstName(e)}
                 />
-                <p className="text-red-500">{error.firstName}</p>
+                <p className="text-red-500 text-[0.75rem]">{error.firstName}</p>
               </div>
-              <div>
-                <label htmlFor="lastName">Last name</label>
+              <div className="relative mt-[16px]">
+                <label
+                  htmlFor="lastName"
+                  className="absolute top-[-16px] left-[12px] bg-white p-[4px] z-10"
+                >
+                  Last name
+                  <span className="text-red-500"> *</span>
+                </label>
                 <input
                   type="text"
-                  placeholder="Last Name..."
+                  placeholder="eg. Tran"
                   id="lastName"
                   value={input.lastName}
                   className={
                     error.lastName == ""
-                      ? "outline-none border border-blue rounded py-1 px-2"
-                      : "outline-none border border-red-500 rounded py-1 px-2"
+                      ? "h-[50px] w-full outline-none border border-blue rounded py-1 px-2"
+                      : "h-[50px] w-full outline-none border border-red-500 rounded py-1 px-2"
                   }
                   onInput={(e) => handleChangeLastName(e)}
                 />
-                <p className="text-red-500">{error.lastName}</p>
+                <p className="text-red-500 text-[0.75rem]">{error.lastName}</p>
               </div>
-            </div>
-            <div className="gap-10 flex mt-4">
-              <div>
-                <label htmlFor="phone">Phone number</label>
+              <div className="flex flex-col mt-[16px] relative border ">
+                <label
+                  htmlFor="date"
+                  className="absolute top-[-16px] left-[12px] bg-white p-[4px] z-10"
+                >
+                  Date of birth:
+                  <span className="text-red-500"> *</span>
+                </label>
+                <input
+                  type="date"
+                  id="date"
+                  name="date"
+                  value={input.dateOfBirth}
+                  onChange={handleDateChange}
+                  className="h-[50px] w-full border rounded cursor-pointer grid pl-2 pr-3"
+                />
+                <p className="text-red-500 text-[0.75rem]">
+                  {error.dateOfBirth}
+                </p>
+              </div>
+              <div className=" flex flex-col mt-[16px] relative">
+                <label
+                  htmlFor="idCard"
+                  className="absolute top-[-16px] left-[12px] bg-white p-[4px] z-10"
+                >
+                  ID card:
+                  <span className="text-red-500"> *</span>
+                </label>
                 <input
                   type="text"
-                  placeholder="Phone start with 0..."
-                  id="phone"
-                  value={input.phoneNumber}
+                  id="idCard"
+                  placeholder="Id card number..."
+                  name="idCard"
+                  value={input.idCard}
                   className={
-                    error.phoneNumber == ""
-                      ? "outline-none border border-blue rounded py-1 px-2"
-                      : "outline-none border border-red-500 rounded py-1 px-2"
+                    error.idCard == ""
+                      ? "h-[50px] w-full outline-none border border-blue rounded py-1 px-2"
+                      : "h-[50px] w-full outline-none border border-red-500 rounded py-1 px-2"
                   }
-                  onInput={(e) => handlePhoneNumber(e)}
+                  onChange={handleIdCardChange}
                 />
-                <p className="text-red-500">{error.phoneNumber}</p>
+                <p className="text-red-500 text-[0.75rem]">{error.idCard}</p>
               </div>
-              <div>
-                <label htmlFor="gender">Gender</label>
-                <input
-                  type="radio"
-                  id="Male"
-                  name="gender"
-                  value="Male"
-                  checked={input.gender === "Male"}
-                  onChange={() => setInput({ ...input, gender: "Male" })}
-                />
-                <label htmlFor="Male">Male</label>
-                <input
-                  type="radio"
-                  id="Female"
-                  name="gender"
-                  value="Female"
-                  checked={input.gender === "Female"}
-                  onChange={() => setInput({ ...input, gender: "Female" })}
-                />
-                <label htmlFor="Female">Female</label>
-                <br></br>
-              </div>
-            </div>
-            <div className="gap-2 flex mt-4">
-              <label htmlFor="date">Date of birth:</label>
-              <input
-                type="date"
-                id="date"
-                name="date"
-                value={input.dateOfBirth}
-                onChange={handleDateChange}
-              />
-              <p className="text-red-500">{error.dateOfBirth}</p>
-            </div>
-            <div className="gap-2 flex mt-4">
-              <label htmlFor="idCard">ID Card:</label>
+              {/* <div className="relative">
+              <label
+                htmlFor="phone"
+                className="absolute top-[-16px] left-[12px] bg-white p-[4px] z-10"
+              >
+                Phone number
+                <span className="text-red-500"> *</span>
+              </label>
               <input
                 type="text"
-                id="idCard"
-                placeholder="ID Card Number..."
-                name="idCard"
-                value={input.idCard}
+                placeholder="Phone start with 0..."
+                id="phone"
+                value={input.phoneNumber}
                 className={
-                  error.idCard == ""
-                    ? "outline-none border border-blue rounded py-1 px-2"
-                    : "outline-none border border-red-500 rounded py-1 px-2"
+                  error.phoneNumber == ""
+                    ? "h-[50px] w-full outline-none border border-blue rounded py-1 px-2"
+                    : "h-[50px] w-full outline-none border border-red-500 rounded py-1 px-2"
                 }
-                onChange={handleIdCardChange}
+                onInput={(e) => handlePhoneNumber(e)}
               />
-              <p className="text-red-500">{error.idCard}</p>
-            </div>
-            <div className="gap-10 flex mt-4">
-              <label htmlFor="provinces">City/Province</label>
-              <Select
-                type="provinces"
-                setValue={(value) => {
-                  setProvince(value);
-                }}
-                options={provinces}
-              />
-            </div>
+              <p className="text-red-500 text-[0.75rem]">{error.phoneNumber}</p>
+            </div> */}
+              <div className="relative mt-[16px]">
+                <label
+                  htmlFor="password"
+                  className="absolute top-[-16px] left-[12px] bg-white p-[4px] z-10"
+                >
+                  Password
+                  <span className="text-red-500"> *</span>
+                </label>
+                <div className="relative">
+                  <input
+                    className={
+                      error.password == ""
+                        ? "h-[50px] w-full outline-none border border-blue rounded py-1 px-2"
+                        : "h-[50px] w-full outline-none border border-red-500 rounded py-1 px-2"
+                    }
+                    type={passwordType}
+                    id="password"
+                    placeholder="Password..."
+                    value={input.password}
+                    onInput={(e) => handleChangePassword(e)}
+                  />
+                  <span
+                    className="absolute right-[16px] top-[20px] cursor-pointer"
+                    onClick={togglePasswordVisibility}
+                  >
+                    <Icon icon={iconPasswordType} />
+                  </span>
+                </div>
+                <p className="text-red-500 pt-[4px] text-[0.75rem]">
+                  {error.password}
+                </p>
+              </div>
+              <div className="relative mt-[16px]">
+                <label
+                  htmlFor="password"
+                  className="absolute top-[-16px] left-[12px] bg-white p-[4px] z-10"
+                >
+                  Confirmed password
+                  <span className="text-red-500"> *</span>
+                </label>
+                <div className="relative">
+                  <input
+                    type={passwordType}
+                    placeholder="Confirm password..."
+                    id="confirmPassword"
+                    value={input.confirmPassword}
+                    className={
+                      error.confirmPassword == ""
+                        ? "h-[50px] w-full outline-none border border-blue rounded py-1 px-2"
+                        : "h-[50px] w-full outline-none border border-red-500 rounded py-1 px-2"
+                    }
+                    onInput={(e) => handleConfirmPassword(e)}
+                  />
+                  <span className="absolute right-[16px] top-[20px] cursor-pointer">
+                    <Icon icon={iconPasswordType} />
+                  </span>
+                </div>
+                <p className="text-red-500 pt-[4px] text-[0.75rem]">
+                  {error.confirmPassword}
+                </p>
+              </div>
+              <div className="flex justify-center">
+                {/* <button
+                  onClick={() => {
+                    setDisplay(!display);
+                  }}
+                  className="mt-[20px] cursor-pointer text-white py-[10px] px-3 bg-[#6A6A6B] text-[1rem] rounded text-center"
+                >
+                  Previous
+                </button> */}
 
-            <div className="gap-10 flex mt-4">
-              <label htmlFor="districts">Ward/District</label>
-              <Select
-                type="districts"
-                setValue={(value) => setDistrict(value)}
-                options={districts}
-              />
+                <button
+                  type="submit"
+                  onClick={() => handleRegister}
+                  className="mt-[10px] cursor-pointer text-white py-[10px] px-20 bg-[#E04141] text-[1.375rem] rounded text-center"
+                >
+                  REGISTER
+                </button>
+              </div>
+              {/* <div
+                onClick={handleContinue}
+                className="mt-[20px] cursor-pointer text-white py-[20px] px-3 bg-[#6A6A6B] text-[1.625rem] rounded text-center"
+              >
+                Continue
+              </div> */}
             </div>
+            {/* <div className="flex mt-4"></div>
+              <div className="flex mt-4">
+                <div className="w-[40%] flex items-center gap-2 justify-center">
+                  <label htmlFor="gender">Gender</label>
+                  <input
+                    type="radio"
+                    id="Male"
+                    name="gender"
+                    value="Male"
+                    checked={input.gender === "Male"}
+                    onChange={() => setInput({ ...input, gender: "Male" })}
+                    className="cursor-pointer"
+                  />
+                  <label htmlFor="Male">Male</label>
+                  <input
+                    type="radio"
+                    id="Female"
+                    name="gender"
+                    value="Female"
+                    checked={input.gender === "Female"}
+                    onChange={() => setInput({ ...input, gender: "Female" })}
+                    className="cursor-pointer"
+                  />
+                  <label htmlFor="Female">Female</label>
+                  <br></br>
+                </div>
+              </div>  */}
+            {/* <div className="flex"></div> */}
+            {/* <div className="flex flex-col mt-4 relative">
+                <label
+                  htmlFor="address"
+                  className="absolute top-[-16px] left-[12px] bg-white p-[4px] z-10"
+                >
+                  Home address
+                  <span className="text-red-500"> *</span>
+                </label>
+                <input
+                  type="text"
+                  placeholder="Address..."
+                  id="address"
+                  value={input.address}
+                  className={
+                    error.address == ""
+                      ? "h-[50px] w-full outline-none border border-blue rounded py-1 px-2"
+                      : "h-[50px] w-full outline-none border border-red-500 rounded py-1 px-2"
+                  }
+                  onInput={(e) => handleHomeAddress(e)}
+                />
+                <p className="text-red-500 text-[0.75rem]">{error.address}</p>
+              </div> */}
+            {/* <div className="flex mt-6 ">
+                <div className="relative w-[50%] pr-[10px]">
+                  <label
+                    htmlFor="provinces"
+                    className="absolute top-[-16px] left-[12px] bg-white p-[4px] z-10"
+                  >
+                    City/Province (optional)
+                  </label>
+                  <div className="w-full ">
+                    <Select
+                      type="provinces"
+                      setValue={(value) => {
+                        setProvince(value);
+                      }}
+                      options={provinces}
+                    />
+                  </div>
+                </div>
+                <div className="relative w-[50%]">
+                  <label
+                    htmlFor="districts"
+                    className="absolute top-[-16px] left-[12px] bg-white p-[4px] z-10"
+                  >
+                    Ward/District (optional)
+                  </label>
+                  <Select
+                    type="districts"
+                    setValue={(value) => setDistrict(value)}
+                    options={districts}
+                  />
+                </div>
+              </div> */}
 
-            <div className="gap-10 flex mt-4">
-              <label htmlFor="villages">Town/Village</label>
-              <Select
-                type="villages"
-                setValue={(value) => setVillage(value)}
-                options={villages}
-              />
-            </div>
+            {/* <div className="flex mt-4 relative">
+                <label
+                  htmlFor="districts"
+                  className="absolute top-[-16px] left-[12px] bg-white p-[4px] z-10"
+                >
+                  Ward/District
+                </label>
+                <Select
+                  type="districts"
+                  setValue={(value) => setDistrict(value)}
+                  options={districts}
+                />
+              </div> */}
 
-            <div className="gap-10 flex mt-4">
-              <label htmlFor="address">Home address</label>
-              <input
-                type="text"
-                placeholder="Address..."
-                id="address"
-                value={input.address}
-                className={
-                  error.address == ""
-                    ? "outline-none border border-blue rounded py-1 px-2"
-                    : "outline-none border border-red-500 rounded py-1 px-2"
-                }
-                onInput={(e) => handleHomeAddress(e)}
-              />
-              <p className="text-red-500">{error.address}</p>
-            </div>
-
-            <button
-              onClick={() => {
-                setDisplay(!display);
-              }}
-              className="mt-2 py-2 px-3 bg-slate-500 rounded"
-            >
-              Previous
-            </button>
-
-            <button
-              type="submit"
-              // onClick={() => handleRegister}
-              className="mt-2 py-2 px-3 bg-slate-500 rounded"
-            >
-              Register
-            </button>
-          </div>
-        )}
-      </form>
-      <div className="py-2">
-        Already have an account?
-        <Link to="/login" className="underline">
-          Login
-        </Link>
+            {/* <div className="flex mt-4 relative">
+                <label
+                  htmlFor="villages"
+                  className="absolute top-[-16px] left-[12px] bg-white p-[4px] z-10"
+                >
+                  Town/Village (optional)
+                </label>
+                <div className="w-full">
+                  <Select
+                    type="villages"
+                    setValue={(value) => setVillage(value)}
+                    options={villages}
+                  />
+                </div>
+              </div> */}
+          </form>
+          <Link
+            to="/login"
+            className="text-my-text-blue py-2 flex justify-center underline text-[0.875rem]"
+          >
+            Already have an account? Login
+          </Link>
+        </div>
       </div>
+      {display && (
+        <>
+          {/* <div className="overlay fixed z-10 top-0 left-0 w-full h-full bg-[rgba(0,0,0,0.6)] transition-all duration-300 ease"></div>
+
+          <div className="fixed z-20 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-1/3 h-1/3 bg-white rounded-xl flex flex-col justify-center items-center transition-all transform-origin-center animate-zoomIn">
+            <Icon
+              icon="ic:baseline-check-circle-outline"
+              color="#e04141"
+              width="65"
+              height="65"
+            />
+            <p className="text-[1.125rem] font-semibold my-2">SUCCESS</p>
+            <p className="text-[1rem] text-center text-my-text-gray-third">
+              Congratulations, your account has been successfully registered!
+            </p>
+            <p className="text-[1rem] text-center text-my-text-gray-third">
+              Please verify your account in your email before login
+            </p>
+            <button
+              onClick={() => navigate("/login")}
+              className="mt-4 px-[58px] py-[10px] text-white bg-[#E04141] rounded-[10px]"
+            >
+              BACK TO LOGIN
+            </button>
+          </div> */}
+          <ModalAuthentication type="register" />
+        </>
+      )}
     </>
   );
 };

@@ -74,7 +74,7 @@ const Trips = () => {
   );
 
   useEffect(() => {
-    const unsubscribe = memoizedGetDateTripsFromId(
+    const unsubscribe = getDateTripsFromId(
       departureId + destinationId + date,
       (data) => {
         setTrips(data);
@@ -103,9 +103,9 @@ const Trips = () => {
     // map = initialMap;
   }, [centerPoint]);
 
-  // useEffect(() => {
-  //   displayRouteOnMap(route);
-  // }, [route]);
+  useEffect(() => {
+    displayRouteOnMap(route);
+  }, [route]);
 
   // Get trip information
   const getTripRoute = async (routeId) => {
@@ -219,10 +219,10 @@ const Trips = () => {
     }
   };
 
-  const handleCreateSeats = () => {
-    const tripID = "SGAG01052309";
-    createSeats(tripID);
-  };
+  // const handleCreateSeats = () => {
+  //   const tripID = "SGAG01052309";
+  //   createSeats(tripID);
+  // };
 
   return (
     <MainLayout>
@@ -230,12 +230,12 @@ const Trips = () => {
         FREE TRANSIT SERVICE FOR EVERY DESTINATION
       </p>
       <div>
-        <button
+        {/* <button
           className="p-2 bg-black text-white"
           onClick={() => handleCreateSeats()}
         >
           Thêm dữ liệu
-        </button>
+        </button> */}
         <div className="bg-banner-trip bg-no-repeat bg-cover h-[157px]"></div>
         <div className="max-w-screen-xl mx-auto flex mt-[19px]">
           <div className="w-[25%] pr-[65px]">

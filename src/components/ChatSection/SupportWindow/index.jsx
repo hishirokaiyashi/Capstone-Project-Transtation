@@ -78,7 +78,7 @@ const SupportWindow = ({ visible, showPopUp }) => {
 
   const getGiao = async () => {
     const giaoAdmin = await getDoc(
-      doc(firestore, "users", "nP6o7LowBFNHXhNfNICV1Zu2j013")
+      doc(firestore, "users", "G6vdUe5SP5dpyC7Yifq2QXRayTH3")
     );
     const userData = giaoAdmin.data();
 

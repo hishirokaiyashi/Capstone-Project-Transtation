@@ -104,7 +104,6 @@ const Home = () => {
   // };
 
   const handleAvoidClick = (e) => {
-    console.log(e);
     if (popularResponsive.lenght) {
     }
   };
@@ -132,7 +131,7 @@ const Home = () => {
             responsive={popularResponsive}
             onSlideChanged={(e) => handleAvoidClick(e)}
             items={popularRoutes.map((item) => (
-              <div key={item.id} className="carousel-item flex flex-col">
+              <div key={item.id} className="carousel-item flex flex-col p-4">
                 <img src={item.imageURL} alt={item.code} className="w-full" />
                 <div className={`${item.color} p-3`}>
                   <h3 className="text-lg text-white font-medium">
@@ -143,7 +142,7 @@ const Home = () => {
               </div>
             ))}
             renderNextButton={({ isDisabled }) => (
-              <div className="bg-white shadow-lg p-2 w-12 h-12 left-0 flex cursor-pointer">
+              <div className="bg-white shadow-lg p-2 w-12 h-12 right-0 flex cursor-pointer">
                 <Icon
                   icon="ic:sharp-keyboard-arrow-right"
                   width="35"
@@ -176,10 +175,9 @@ const Home = () => {
           <AliceCarousel
             keyboardNavigation
             mouseTracking
-            // disableDotsControls
             responsive={exclusiveResponsive}
             items={[
-              <div className="relative carousel-item flex flex-col bg-free-banner h-[300px] bg-cover after:bg-gradient-to-r after:content-[''] after:absolute after:top-0 after:left-0 after:w-full after:h-full after:from-[rgba(24,50,74,0.6)] after:to-[rgba(139,196,248,0.31)] after:z-[-1] z-0">
+              <div className="relative carousel-item mx-4 flex flex-col bg-free-banner h-[300px] bg-cover after:bg-gradient-to-r after:content-[''] after:absolute after:top-0 after:left-0 after:w-full after:h-full after:from-[rgba(24,50,74,0.6)] after:to-[rgba(139,196,248,0.31)] after:z-[-1] z-0">
                 <div
                   className={`p-8 mt-4 h-full flex flex-col justify-between`}
                 >
@@ -196,7 +194,7 @@ const Home = () => {
                   </button>
                 </div>
               </div>,
-              <div className="relative carousel-item flex flex-col bg-transit-banner h-[300px] bg-cover after:bg-gradient-to-r after:content-[''] after:absolute after:top-0 after:left-0 after:w-full after:h-full after:from-[rgba(66,90,27,0.78)] after:to-[rgba(255,255,255,0.17)] after:z-[-1] z-0">
+              <div className="relative carousel-item mx-4 flex flex-col bg-transit-banner h-[300px] bg-cover after:bg-gradient-to-r after:content-[''] after:absolute after:top-0 after:left-0 after:w-full after:h-full after:from-[rgba(66,90,27,0.78)] after:to-[rgba(255,255,255,0.17)] after:z-[-1] z-0">
                 <div
                   className={`p-8 mt-4 h-full flex flex-col justify-between`}
                 >

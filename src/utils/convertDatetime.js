@@ -45,6 +45,28 @@ const isPastDate = (dateString) => {
   return date.isBefore(today);
 };
 
+const checkBetweenTwoHours = (timeFirst, timeQuanity, timeSecond) => {
+  // Giả sử thời gian hiện tại là 9:00 AM
+  const currentTime = moment(timeFirst, "HH:mm");
+  // Thêm 1 giờ vào thời gian hiện tại
+  const futureTime = currentTime.clone().add(timeQuanity, "hours");
+  // So sánh thời gian "9:45" với khoảng thời gian từ "9:00" đến "10:00"
+  const timeToCheck = moment(timeSecond, "HH:mm");
+  if (timeQuanity > 0) {
+    if (timeToCheck.isBetween(currentTime, futureTime)) {
+      return true;
+    } else {
+      return false;
+    }
+  } else {
+    if (timeToCheck.isBetween(futureTime, currentTime)) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+};
+
 export {
   convertFromTimestamp,
   getDDMMYY,
@@ -53,4 +75,5 @@ export {
   formatDateToWords,
   plusDay,
   isPastDate,
+  checkBetweenTwoHours,
 };

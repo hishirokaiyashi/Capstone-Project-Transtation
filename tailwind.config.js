@@ -10,6 +10,8 @@ export default {
         "my-text-gray": "rgba(65, 66, 66, 1)",
         "my-text-gray-second": "rgba(73, 69, 79, 1)",
         "my-text-gray-third": "rgba(106, 106, 107, 1)",
+        "my-blue": "rgba(133, 187, 237, 0.22)",
+        "my-text-blue": "rgba(29, 126, 216, 1)",
         btnRed: "#E04141",
       },
       fontFamily: {
@@ -34,6 +36,16 @@ export default {
         "my-bg-gray-background": "rgba(217, 217, 217, 0.45)",
         "my-bg-gray-trips": "rgba(243, 243, 243, 0.74)",
         "my-bg-seat": "rgb(242, 242, 242)",
+        "my-modal": "rgba(0, 0, 0, 0.5)",
+      },
+      animation: {
+        zoomIn: "zoom 0.3s linear",
+      },
+      keyframes: {
+        zoom: {
+          "0%": { transform: "scale(0.5) translate(-60%, -60%)" },
+          "100%": { transform: "scale(1) translate(-50%, -50%)" },
+        },
       },
     },
   },

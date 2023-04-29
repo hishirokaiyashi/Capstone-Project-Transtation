@@ -192,12 +192,12 @@ const registerWithEmailAndPassword = async (user, email, password) => {
       lastName: user.lastName,
       authProvider: "email",
       email,
-      phoneNumber: user.phoneNumber,
-      address: user.address,
-      gender: user.gender,
+      // phoneNumber: user.phoneNumber,
+      // address: user.address,
+      // gender: user.gender,
       dateOfBirth: user.dateOfBirth,
       createdAt: serverTimestamp(),
-      userName: user.userName,
+      // userName: user.userName,
       photoURL: user.avatar,
       admin: false,
       isVerified: false,
@@ -223,7 +223,7 @@ const sendPasswordReset = async (email) => {
 };
 
 const signout = async () => {
-  console.log("Signing out...");
+  // console.log("Signing out...");
   await signOut(auth);
   store.dispatch(logout());
   // toast.success("You have been logged out!");
