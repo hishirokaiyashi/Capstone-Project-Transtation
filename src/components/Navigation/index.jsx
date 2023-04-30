@@ -104,7 +104,7 @@ const Navbar = () => {
                   src={user.photoURL}
                   className="w-12 h-12 rounded-full cursor-pointer"
                 />
-                <p>{user.userName}</p>
+                <p>{user.displayName}</p>
                 <h3 onClick={handleLogout} className="cursor-pointer">
                   Sign out
                 </h3>

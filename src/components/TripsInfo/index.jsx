@@ -8,12 +8,16 @@ import {
   setPoints,
   setPickUpPoints,
   setFinalPoints,
+  resetOrderState,
 } from "../../redux/order.slice";
 import { Icon } from "@iconify/react";
 import { substractHHMMToHour } from "../../utils/convertDatetime";
 import { addDot, removeDot } from "../../utils/currencyFormat";
 import { toast } from "react-toastify";
-import { getSeatsFromTripId } from "../../firebase/firestore";
+import {
+  getSeatsFromTripId,
+  getUnavailableSeats,
+} from "../../firebase/firestore";
 import {
   validateEmail,
   validateFirstName,
@@ -23,13 +27,19 @@ import {
 import { v4 as uuidv4 } from "uuid";
 import TripSeat from "../TripSeat";
 import TripsPoint from "../TripsPoint";
-// import TripInput from "../TripInput";
 import TripInput from "../TripInput";
-const TripsInfo = ({ tripInfo, route }) => {
+
+const TripsInfo = ({ tripInfo, route, itemOffset }) => {
+  //pagination
+
   // selectedSeats
   const navigate = useNavigate();
+
   const dispatch = useDispatch();
+
   const { user } = useSelector((state) => state.user);
+  const { order } = useSelector((state) => state.order);
+
   const [seats, setSeats] = useState(null);
   const [selectedSeats, setSelectedSeats] = useState([]);
   const [openMore, setOpenMore] = useState(false);
@@ -39,16 +49,6 @@ const TripsInfo = ({ tripInfo, route }) => {
     phoneNumber: user.phoneNumber || "",
     email: user.email || "",
     note: "",
-    // transitFrom: "",
-    // transitTo: "",
-    // address:
-    //   (user.address && user.address.home ? user.address.home + ", " : "") +
-    //   (user.address && user.address.village && user.address.village.name + ", "
-    //     ? user.address.village.name
-    //     : "") +
-    //   (user.address && user.address.district && user.address.district.name
-    //     ? user.address.district.name
-    //     : ""),
   });
 
   const [error, setError] = useState({
@@ -56,7 +56,9 @@ const TripsInfo = ({ tripInfo, route }) => {
     phoneNumber: "",
     email: "",
   });
+
   // const [isTransit, setIsTransit] = useState(false);
+
   const handleChangeFirstName = useCallback(
     (e) => {
       if (e.currentTarget.value === "") {
@@ -138,32 +140,72 @@ const TripsInfo = ({ tripInfo, route }) => {
   }, [tripInfo, openMore]);
 
   useEffect(() => {
-    if (selectedSeats.length !== 0 && selectedSeats.length !== 0) {
-      const availableSeats = seats
+    if (selectedSeats.length !== 0) {
+      const unavailableSeats = seats
         ?.filter((seat) => seat.status !== "Available")
         .map((seat) => seat.id);
       // ["A03":unavailable, "A04", "A05", "A06", "A07": unavailable, "A08", "A09]
       // ["A03","A07"]
 
-      const filteredSeats = selectedSeats.filter(
-        (seat) => !availableSeats.includes(seat)
+      const availableSeats = selectedSeats.filter(
+        (seat) => !unavailableSeats.includes(seat)
       );
       // selectedSeats ["A03","A04","A05"]
       // filteredSeats ["A04","A05"]
 
-      if (filteredSeats.length !== 0) {
-        if (filteredSeats.length !== selectedSeats.length) {
+      if (availableSeats.length !== 0) {
+        if (availableSeats.length !== selectedSeats.length) {
           toast.info(
             `The following seats are already taken: ${selectedSeats
-              .filter((seat) => !filteredSeats.includes(seat))
+              .filter((seat) => !availableSeats.includes(seat))
               .join(", ")}`
           );
-          // console.log(filteredSeats);
-          setSelectedSeats(filteredSeats);
+          setSelectedSeats(availableSeats);
         }
+      } else {
+        setSelectedSeats([]);
+        setActiveTabIndex(0);
+        toast.info("You must select at least one seat!");
+        //trường hợp điền thông tin thì các ghế đã chọn bị closed
+        //Chuyển người dùng về lại tab-0(chọn lại ghế)
       }
     }
   }, [seats, selectedSeats]);
+
+  //handleOpenMore
+
+  const handleOpenMore = () => {
+    if (!order.trip_id) {
+      setOpenMore(true);
+      dispatch(resetOrderState(tripInfo.uid));
+    } else if (order.trip_id !== tripInfo.uid) {
+      if (confirm("Are you sure to close the previous booking trip?")) {
+        setOpenMore(true);
+        dispatch(resetOrderState(tripInfo.uid));
+      }
+    } else {
+      setOpenMore(true);
+    }
+  };
+
+  const handleCloseOpenMore = () => {
+    if (order.trip_id) {
+      if (confirm("Are you sure to close the pending booking trip?")) {
+        setOpenMore(false);
+        dispatch(resetOrderState(null));
+      }
+    }
+  };
+
+  useEffect(() => {
+    if (order.trip_id !== tripInfo.uid) {
+      setActiveTabIndex(0);
+      setOpenMore(false);
+    } else {
+      setOpenMore(true);
+    }
+  }, [order.trip_id]);
+  //
 
   const handleQuanitySeats = (selectedSeats) => {
     setSelectedSeats((prevSeats) => {
@@ -173,9 +215,9 @@ const TripsInfo = ({ tripInfo, route }) => {
   };
   // const pickUp = useSelector((state) => state.order.pickUp);
   // const final = useSelector((state) => state.order.final);
+
   const handleTabClick = (index) => {
     if (selectedSeats != 0) {
-      console.log(selectedSeats.length);
       const selectedTrip = {
         booking_id: uuidv4(),
         trip_id: tripInfo.uid,
@@ -187,48 +229,46 @@ const TripsInfo = ({ tripInfo, route }) => {
         date: tripInfo.date,
         departureTime: tripInfo.departureTime,
         arrivalTime: tripInfo.arrivalTime,
+        from: route.direction.split(" - ")[0],
+        to: route.direction.split(" - ")[1],
       };
+
       dispatch(setTripInfo(selectedTrip));
 
-      // if (pickUp.location === "" && final.location === "") {
-      //   dispatch(
-      //     setPoints({
-      //       pickUp: { ...route.pickUps[0], time: route.pickUp[0].time[0] },
-      //       final: { ...route.finals[0], time: route.finals[0].time[0] },
-      //     })
-      //   );
-      // }
-      // if (pickUp.location === "")
-      //   dispatch(
-      //     setPoints({
-      //       pickUp: { ...route.pickUps[0], time: route.pickUp[0].time[0] },
-      //     })
-      //   );
-      // if (final.location === "")
-      //   dispatch(
-      //     setPoints({
-      //       final: { ...route.finals[0], time: route.final[0].time[0] },
-      //     })
-      //   );
+      if (!route.pickUps.location && !route.finals.location) {
+        dispatch(
+          setPoints({
+            pickUp: { ...route.pickUps[0], time: route.pickUps[0].time[0] },
+            final: { ...route.finals[0], time: route.finals[0].time[0] },
+          })
+        );
+      } else if (!route.pickUps.location) {
+        dispatch(
+          setPoints({
+            pickUp: { ...route.pickUps[0], time: route.pickUps[0].time[0] },
+            final,
+          })
+        );
+      } else if (!route.finals.location) {
+        dispatch(
+          setPoints({
+            pickUp,
+            final: { ...route.finals[0], time: route.finals[0].time[0] },
+          })
+        );
+      }
       setActiveTabIndex(index);
     } else {
       toast.info("You must select at least one seat!");
     }
   };
 
-  const handleContinueForm = (e) => {
+  const handleContinueForm = async (e) => {
     e.preventDefault();
     const errors = Object.fromEntries(
       Object.entries(error).filter(([key, value]) => {
         return (
-          [
-            "fullName",
-            "phoneNumber",
-            "email",
-            // "transitFrom",
-            // "transitTo",
-            // "address",
-          ].includes(key) && value !== ""
+          ["fullName", "phoneNumber", "email", ,].includes(key) && value !== ""
         );
       })
     );
@@ -242,30 +282,18 @@ const TripsInfo = ({ tripInfo, route }) => {
     const { fullName, phoneNumber, email, transitFrom, transitTo, address } =
       input;
     if (fullName == "") {
-      setError({ ...error, fullName: "FullName cannot be empty" });
-      document.getElementById("FullName").focus();
+      setError({ ...error, fullName: "Full name cannot be empty" });
+      document.getElementById("fullName").focus();
       return;
     } else if (phoneNumber == "") {
       setError({ ...error, phoneNumber: "Phone number cannot be empty" });
-      document.getElementById("PhoneNumber").focus();
+      document.getElementById("phoneNumber").focus();
       return;
     } else if (email == "") {
       setError({ ...error, email: "Email cannot be empty" });
-      document.getElementById("Email").focus();
+      document.getElementById("email").focus();
       return;
     }
-    // dispatch(
-    //   setPickUpPoints({
-    //     location: order.location,
-    //     time: order.time,
-    //   })
-    // );
-    // dispatch(
-    //   setFinalPoints({
-    //     location: order.location,
-    //     time: order.time,
-    //   })
-    // );
     dispatch(
       setUserInfo({
         user_id: user.uid,
@@ -273,11 +301,33 @@ const TripsInfo = ({ tripInfo, route }) => {
         address: input.address,
         displayName: input.fullName,
         note: input.note,
-        // transitFrom: input.transitFrom,
-        // transitTo: input.transitTo,
+
         phoneNumber: input.phoneNumber,
       })
     );
+
+    try {
+      const res = await getUnavailableSeats(order.trip_id, order.tickets);
+      if (res.length == selectedSeats.length) {
+        toast.info(
+          `Your ticket ${res.toString()} has been paid by other person`
+        );
+        setSelectedSeats([]);
+        setActiveTabIndex(0);
+        toast.info("You must select at least one seat!");
+        return;
+      }
+      if (res.length !== 0) {
+        toast.info(
+          `These following tickets has been paid by other person: ${res.toString()}`
+        );
+        return;
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error("There was an error happing. Please try again!");
+      return;
+    }
     navigate("/test");
   };
 
@@ -355,7 +405,8 @@ const TripsInfo = ({ tripInfo, route }) => {
                   <button
                     className="px-[10px] py-[12px] bg-[#000] text-white text-[1rem] font-Ballo w-[40%]"
                     onClick={() => {
-                      setOpenMore(true);
+                      // setOpenMore(true);
+                      handleOpenMore();
                     }}
                   >
                     Buy
@@ -364,7 +415,10 @@ const TripsInfo = ({ tripInfo, route }) => {
                   <button
                     className="px-[10px] py-[12px] bg-[#000] text-white text-[1rem] font-Ballo w-[40%]"
                     onClick={() => {
-                      setOpenMore(false);
+                      // setOpenMore(false);
+                      // dispatch(resetOrderState(null));
+                      // handleOpenMore();
+                      handleCloseOpenMore();
                     }}
                   >
                     Close
@@ -413,6 +467,7 @@ const TripsInfo = ({ tripInfo, route }) => {
               className="text-[1rem] absolute right-[-10px] top-[-30px] cursor-pointer "
               onClick={() => {
                 setOpenMore(false);
+                // handleOpenMore();
               }}
             >
               <svg
@@ -532,7 +587,7 @@ const TripsInfo = ({ tripInfo, route }) => {
             >
               <TripInput
                 label="Full name"
-                id="FullName"
+                id="fullName"
                 type="text"
                 placeholder="Your full name"
                 value={input.fullName}
@@ -542,9 +597,9 @@ const TripsInfo = ({ tripInfo, route }) => {
               />
               <TripInput
                 label="Phone number"
-                id="PhoneNumber"
+                id="phoneNumber"
                 type="text"
-                placeholder="Your Phone number"
+                placeholder="Your phone number"
                 value={input.phoneNumber}
                 error={error.phoneNumber}
                 onChange={handlePhoneNumber}
@@ -552,9 +607,9 @@ const TripsInfo = ({ tripInfo, route }) => {
               />
               <TripInput
                 label="Email"
-                id="Email"
+                id="email"
                 type="text"
-                placeholder="Your Email"
+                placeholder="Your email"
                 value={input.email}
                 error={error.email}
                 onChange={handleChangeEmail}
@@ -564,14 +619,15 @@ const TripsInfo = ({ tripInfo, route }) => {
                 <label htmlFor="Note" className="text-[1rem] font-semibold">
                   Note
                 </label>
-                <input
-                  id="Note"
+                <textarea
+                  id="note"
                   type="text"
                   placeholder=""
-                  className="h-[38px] w-full outline-none border border-blue rounded py-1 px-3 mt-[3px]"
+                  rows="4"
+                  className="min-h-[38px] resize-none w-full outline-none border border-blue rounded py-1 px-3 mt-[3px]"
                   value={input.note}
                   onChange={handleChangeNote}
-                />
+                ></textarea>
               </div>
             </form>
             <div className="flex justify-between items-center pt-[16px] pb-[8px]">
