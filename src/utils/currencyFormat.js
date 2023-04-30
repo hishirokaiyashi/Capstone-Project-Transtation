@@ -11,4 +11,9 @@ const removeDot = (price) => {
   return parseInt(unFormattedPrice);
 };
 
-export { addDot, removeDot };
+const vndToUsd = (vnd) => {
+  const usd = vnd / 23465;
+  return usd.toFixed(2);
+};
+
+export { addDot, removeDot, vndToUsd };
