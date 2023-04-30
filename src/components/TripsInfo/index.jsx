@@ -130,17 +130,28 @@ const TripsInfo = ({ tripInfo, route, itemOffset }) => {
     [input]
   );
 
-  useEffect(() => {
-    if (openMore) {
-      const unsubscribe = getSeatsFromTripId(tripInfo.uid, (data) => {
-        setSeats(data);
-      });
-      return unsubscribe;
-    }
-  }, [tripInfo, openMore]);
+  // useEffect(() => {
+  //   if (openMore && tripInfo) {
+  //     const unsubscribe = getSeatsFromTripId(tripInfo.uid, (data) => {
+  //       setSeats(data);
+  //     });
+  //     return unsubscribe;
+  //   }
+  // }, [tripInfo, openMore]); // call data seat
+  const getSeats = useCallback((data) => {
+    setSeats(data);
+    console.log(tripInfo.uid, data);
+  }, []);
 
   useEffect(() => {
-    if (selectedSeats.length !== 0) {
+    if (openMore && tripInfo) {
+      const unsubscribe = getSeatsFromTripId(tripInfo.uid, getSeats);
+      return unsubscribe;
+    }
+  }, [getSeats, tripInfo, openMore]);
+
+  useEffect(() => {
+    if (seats && selectedSeats.length !== 0) {
       const unavailableSeats = seats
         ?.filter((seat) => seat.status !== "Available")
         .map((seat) => seat.id);
@@ -172,6 +183,15 @@ const TripsInfo = ({ tripInfo, route, itemOffset }) => {
     }
   }, [seats, selectedSeats]);
 
+  useEffect(() => {
+    if (order.trip_id !== tripInfo.uid) {
+      setActiveTabIndex(0);
+      setOpenMore(false);
+    } else {
+      setOpenMore(true);
+    }
+  }, [order.trip_id]);
+
   //handleOpenMore
 
   const handleOpenMore = () => {
@@ -197,14 +217,6 @@ const TripsInfo = ({ tripInfo, route, itemOffset }) => {
     }
   };
 
-  useEffect(() => {
-    if (order.trip_id !== tripInfo.uid) {
-      setActiveTabIndex(0);
-      setOpenMore(false);
-    } else {
-      setOpenMore(true);
-    }
-  }, [order.trip_id]);
   //
 
   const handleQuanitySeats = (selectedSeats) => {

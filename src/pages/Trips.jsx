@@ -229,10 +229,12 @@ const Trips = ({ itemsPerPage }) => {
     const unsubscribe = getDateTripsFromId(
       departureId + destinationId + date,
       (data) => {
-        setTrips(data);
-        setCurrentItems(data.slice(itemOffset, endOffset));
+        if (data) {
+          setTrips(data);
+          setCurrentItems(data.slice(itemOffset, endOffset));
 
-        getTripRoute(data[0].route_id);
+          getTripRoute(data[0].route_id);
+        }
       }
     );
 

@@ -29,7 +29,7 @@ import {
 
 // import Input from "../components/Input";
 import Select from "../components/Select";
-import ModalAuthentication from "../components/ModalAuthentication/index.jsx";
+import Modal from "../components/Modal/index.jsx";
 import moment from "moment";
 
 const Register = () => {
@@ -1066,7 +1066,7 @@ const Register = () => {
               BACK TO LOGIN
             </button>
           </div> */}
-          <ModalAuthentication type="register" />
+          <Modal type="register" />
         </>
       )}
     </>

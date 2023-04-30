@@ -116,12 +116,9 @@ const validateIdCard = (IdCard) => {
 
 const checkAge = (IdCard) => {
   if (IdCard.length === 12) {
-    // console.log(typeof(IdCard))
     const ageChars = IdCard.slice(4, 6);
     const currentYear = new Date().getFullYear().toString();
     const currentYearParse = parseInt(currentYear.substring(2));
-    // console.log("currentYearParse: ", currentYearParse);
-    // console.log("ageChars: ", ageChars);
     if (ageChars <= 6 || ageChars >= currentYearParse + 1) {
       return true;
     }
