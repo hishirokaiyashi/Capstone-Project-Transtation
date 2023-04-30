@@ -41,7 +41,7 @@ export default function App() {
             path="/trips"
             element={
               // <PrivateRoute>
-              <Trips />
+              <Trips itemsPerPage={2} />
               // </PrivateRoute>
             }
           />

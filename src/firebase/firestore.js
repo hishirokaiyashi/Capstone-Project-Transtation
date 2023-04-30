@@ -8,7 +8,6 @@ import {
   updateDoc,
   onSnapshot,
   collection,
-  collectionGroup,
   where,
   addDoc,
   setDoc,
@@ -37,10 +36,6 @@ const getRouteFromId = async (id) => {
   return routeData;
 };
 
-// const getSeatsFromTripId = async (id) => {
-//   const seatsRef = collection(firestore, "trips", id, "SEATS");
-// };
-
 const getSeatsFromTripId = (tripId, onUpdate) => {
   const docRef = doc(collection(firestore, "trips"), tripId);
   const seatsCollectionRef = collection(docRef, "SEATS");
@@ -55,6 +50,37 @@ const getSeatsFromTripId = (tripId, onUpdate) => {
   return unsubscribe;
 };
 
+// const getUnavailableSeats = async (tripId, seats) => {
+//   const tripRef = doc(collection(firestore, "trips"), tripId);
+//   const seatsQuerySnapshot = await collection(tripRef, "SEATS")
+//     .where("id", "in", seats)
+//     .get();
+//   const unavailableSeats = seatsQuerySnapshot.docs.filter(
+//     (doc) => doc.data().status === "Unavailable"
+//   );
+//   if (unavailableSeats.length > 0) {
+//     const unavailableSeatIds = unavailableSeats.map((seat) => seat.data().id);
+//     return unavailableSeatIds;
+//   } else {
+//     return [];
+//   }
+// };
+const getUnavailableSeats = async (tripId, seats) => {
+  const tripRef = collection(firestore, "trips");
+  const seatsQuerySnapshot = await getDocs(
+    query(
+      collection(tripRef, tripId, "SEATS"),
+      where("id", "in", seats),
+      where("status", "==", "Unavailable")
+    )
+  );
+  if (seatsQuerySnapshot.empty) {
+    return [];
+  } else {
+    const unavailableSeatIds = seatsQuerySnapshot.docs.map((seat) => seat.id);
+    return unavailableSeatIds;
+  }
+};
 const createSeats = async (tripId) => {
   const seatsRef = collection(firestore, "trips", tripId, "SEATS");
 
@@ -71,5 +97,11 @@ const createSeats = async (tripId) => {
   }
 };
 
-export { getDateTripsFromId, getRouteFromId, getSeatsFromTripId, createSeats };
+export {
+  getDateTripsFromId,
+  getRouteFromId,
+  getSeatsFromTripId,
+  createSeats,
+  getUnavailableSeats,
+};
 export default firestore;

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, useMemo } from "react";
 import { toast } from "react-toastify";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-
+import ReactPaginate from "react-paginate";
 import {
   getDateTripsFromId,
   getRouteFromId,
@@ -48,7 +48,7 @@ const HCMCenterGeoPoint = [106.660172, 10.762622];
 //   },
 // ];
 
-const Trips = () => {
+const Trips = ({ itemsPerPage }) => {
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -68,22 +68,13 @@ const Trips = () => {
   const [trips, setTrips] = useState(null);
   const [route, setRoute] = useState(null);
 
+  // const [openMore, setOpenMore] = useState(false);
+  // const [activeTabIndex, setActiveTabIndex] = useState(0);
+
   const memoizedGetDateTripsFromId = useMemo(
     () => getDateTripsFromId,
     [getDateTripsFromId]
   );
-
-  useEffect(() => {
-    const unsubscribe = getDateTripsFromId(
-      departureId + destinationId + date,
-      (data) => {
-        setTrips(data);
-        getTripRoute(data[0].route_id);
-      }
-    );
-
-    return unsubscribe;
-  }, [memoizedGetDateTripsFromId, departureId, destinationId, date]);
 
   useEffect(() => {
     const initialMap = new Map({
@@ -100,7 +91,6 @@ const Trips = () => {
     });
     setMap(initialMap);
     return () => initialMap.dispose();
-    // map = initialMap;
   }, [centerPoint]);
 
   useEffect(() => {
@@ -224,6 +214,50 @@ const Trips = () => {
   //   createSeats(tripID);
   // };
 
+  //pagination
+
+  // Here we use item offsets; we could also use page offsets
+  // following the API or data you're working with.
+  const [itemOffset, setItemOffset] = useState(0);
+
+  // Simulate fetching items from another resources.
+  // (This could be items from props; or items loaded in a local state
+  // from an API endpoint with useEffect and useState)
+  const endOffset = itemOffset + itemsPerPage;
+  const [currentItems, setCurrentItems] = useState([]);
+  useEffect(() => {
+    const unsubscribe = getDateTripsFromId(
+      departureId + destinationId + date,
+      (data) => {
+        setTrips(data);
+        setCurrentItems(data.slice(itemOffset, endOffset));
+
+        getTripRoute(data[0].route_id);
+      }
+    );
+
+    return unsubscribe;
+  }, [memoizedGetDateTripsFromId, departureId, destinationId, date]);
+  // console.log(`Loading items from ${itemOffset} to ${endOffset}`);
+  if (!trips) {
+    return <div>Loading...</div>;
+  }
+
+  // const currentItems = trips?.slice(itemOffset, endOffset);
+  // setCurrentItems(trips?.slice(itemOffset, endOffset));
+
+  const pageCount = Math.ceil(trips.length / itemsPerPage);
+
+  // Invoke when user click to request another page.
+  const handlePageClick = (event) => {
+    const newOffset = (event.selected * itemsPerPage) % trips.length;
+    // console.log(
+    //   `User requested page number ${event.selected}, which is offset ${newOffset}`
+    // );
+    setItemOffset(newOffset);
+    setCurrentItems(trips?.slice(newOffset, newOffset + itemsPerPage));
+  };
+
   return (
     <MainLayout>
       <p className="bg-black-background w-full text-white text-center py-[22px] font-Ballo text-[1rem] font-semibold tracking-wide">
@@ -269,9 +303,33 @@ const Trips = () => {
                 </p>
               </div>
               <div className="bg-my-bg-gray-trips pl-[43px] pr-[60px] pt-[45px] pb-[150px]">
-                {trips?.map((trip, index) => (
+                {/* {trips?.map((trip, index) => (
                   <TripsInfo key={index} tripInfo={trip} route={route} />
-                ))}
+                ))} */}
+                {currentItems &&
+                  currentItems?.map((trip) => (
+                    <TripsInfo
+                      key={trip.uid}
+                      tripInfo={trip}
+                      route={route}
+                      itemOffset={itemOffset}
+                    />
+                  ))}
+                <ReactPaginate
+                  breakLabel="..."
+                  nextLabel=" >"
+                  onPageChange={handlePageClick}
+                  pageRangeDisplayed={5}
+                  pageCount={pageCount}
+                  previousLabel="< "
+                  renderOnZeroPageCount={null}
+                  containerClassName="flex justify-center items-center gap-[20px]"
+                  pageLinkClassName="h-[25px] w-[25px] leading-[18px] p-[5px]"
+                  previousClassName="flex justify-center items-center h-[25px] w-[25px] leading-[18px] p-[5px]"
+                  nextLinkClassName="flex justify-center items-center h-[25px] w-[25px] leading-[18px] p-[5px]"
+                  // activeClassName="underline p-[5px]"
+                  activeLinkClassName="border-b-2 border-black "
+                />
               </div>
             </div>
           </div>

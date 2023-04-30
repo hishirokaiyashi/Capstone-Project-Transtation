@@ -20,41 +20,40 @@ const TripsPoint = ({
     //   setSelectedPickUpPoint(event.target.value);
     //   dispatch(setPickUpPoints(event.target.value));
     // };
-
     const handlePickUpPlaceChange = (event) => {
       const selectedValue = event.target.value;
-      if (selectedValue === "") {
-        setSelectedPickUpPoint(selectedValue);
-        const selectedPickUp = pickUpsPoint[0];
-        dispatch(
-          setPickUpPoints({
-            location: selectedPickUp.location,
-            time: selectedPickUp.time[0],
-            name: selectedPickUp.name,
-          })
-        );
-      } else {
-        setSelectedPickUpPoint(selectedValue);
-        const selectedPickUp = pickUpsPoint.find(
-          (point) => point.location === selectedValue
-        );
-        dispatch(
-          setPickUpPoints({
-            location: selectedPickUp.location,
-            time: selectedPickUp.time.find((item) =>
-              checkBetweenTwoHours(departureTime, 1, item)
-            ),
-            name: selectedPickUp.name,
-          })
-        );
-      }
+      setSelectedPickUpPoint(selectedValue);
+      const selectedPickUp = pickUpsPoint.find(
+        (point) => point.location === selectedValue
+      );
+      dispatch(
+        setPickUpPoints({
+          location: selectedPickUp.location,
+          time: selectedPickUp.time.find((item) =>
+            checkBetweenTwoHours(departureTime, 1, item)
+          ),
+          name: selectedPickUp.name,
+        })
+      );
     };
+    // Set default value for pickUp if selectedPickUpPoint has not been set
+    if (!selectedPickUpPoint && pickUpsPoint && pickUpsPoint.length > 0) {
+      const selectedPickUp = pickUpsPoint[0];
+      dispatch(
+        setPickUpPoints({
+          location: selectedPickUp.location,
+          time: selectedPickUp.time[0],
+          name: selectedPickUp.name,
+        })
+      );
+    }
     // const returnTime = (time) => {
     //   checkBetweenTwoHours(departureTime,1,time);
     // };
     return pickUpsPoint.map((point, index) => {
       return (
         <div
+          htmlFor={point.id}
           key={index}
           className={
             selectedPickUpPoint === point.location
@@ -77,7 +76,7 @@ const TripsPoint = ({
                 {point.time.find((item) =>
                   checkBetweenTwoHours(departureTime, 1, item)
                 )}
-                -{point.location}
+                - {point.location}
               </p>
               <p
                 className={
@@ -103,50 +102,39 @@ const TripsPoint = ({
     //   dispatch(setFinalPoints(event.target.value));
     // };
     // console.log(finalsPoint[0].time[0]);
-    useEffect(() => {
-      if (!selectedFinalPoint) {
-        const selectedFinal = finalsPoint[0];
-        dispatch(
-          setFinalPoints({
-            location: selectedFinal.location,
-            time: selectedFinal.time[0],
-            name: selectedFinal.name,
-          })
-        );
-        setSelectedPickUpPoint(selectedFinal);
-      }
-    }, [selectedFinalPoint]);
+    // useEffect(() => {
+    //   if (!selectedFinalPoint) {
+    //     const selectedFinal = finalsPoint[0];
+    //     dispatch(
+    //       setFinalPoints({
+    //         location: selectedFinal.location,
+    //         time: selectedFinal.time[0],
+    //         name: selectedFinal.name,
+    //       })
+    //     );
+    //     setSelectedPickUpPoint(selectedFinal);
+    //   }
+    // }, [selectedFinalPoint]);
     const handleFinalPlaceChange = (event) => {
       const selectedValue = event.target.value;
-      if (selectedValue === "") {
-        setSelectedFinalPoint(selectedValue);
-        const selectedFinal = finalsPoint[0];
-        dispatch(
-          setFinalPoints({
-            location: selectedFinal.location,
-            time: selectedFinal.time[0],
-            name: selectedFinal.name,
-          })
-        );
-      } else {
-        setSelectedFinalPoint(selectedValue);
-        const selectedFinal = finalsPoint.find(
-          (point) => point.location === selectedValue
-        );
-        dispatch(
-          setFinalPoints({
-            location: selectedFinal.location,
-            time: selectedFinal.time.find((item) =>
-              checkBetweenTwoHours(arrivalTime, -1, item)
-            ),
-            name: selectedFinal.name,
-          })
-        );
-      }
+      setSelectedFinalPoint(selectedValue);
+      const selectedFinal = finalsPoint.find(
+        (point) => point.location === selectedValue
+      );
+      dispatch(
+        setFinalPoints({
+          location: selectedFinal.location,
+          time: selectedFinal.time.find((item) =>
+            checkBetweenTwoHours(arrivalTime, -1, item)
+          ),
+          name: selectedFinal.name,
+        })
+      );
     };
     return finalsPoint.map((point, index) => {
       return (
         <div
+          htmlFor={point.id}
           key={index}
           className={
             selectedFinalPoint === point.location

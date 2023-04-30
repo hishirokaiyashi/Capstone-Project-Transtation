@@ -87,7 +87,7 @@ const userSlice = createSlice({
       state.token = null;
       localStorage.removeItem("token");
       // state = initialState;
-      localStorage.removeItem("token");
+      localStorage.removeItem("user");
     },
     setToken(state, action) {
       state.token = action.payload;
