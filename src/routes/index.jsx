@@ -17,7 +17,7 @@ import Test from "../pages/Test";
 import ForgotPassword from "../pages/ForgotPassword";
 import CheckoutSuccess from "../pages/CheckoutSuccess";
 import Notfound from "../pages/Notfound";
-import Payment from "../pages/Payment";
+// import Payment from "../pages/Payment";
 
 const Wrapper = ({ children }) => {
   const location = useLocation();
