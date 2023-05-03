@@ -13,9 +13,9 @@ const PrivateRoute = ({ children }) => {
     );
   } else {
     if (isAuthenticated) {
-      <>{children}</>;
+      return <>{children}</>;
     } else {
-      <h1 className="text-black">Đang load chờ chút </h1>;
+      return <h1 className="text-black">Đang load chờ chút </h1>;
     }
   }
 };

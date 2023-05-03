@@ -19,6 +19,7 @@ const initialState = {
     to: null,
     type: null,
     date: null,
+    image: null,
     pickUp: {
       location: "",
       time: "",
@@ -62,6 +63,7 @@ const orderSlice = createSlice({
       state.order.arrivalTime = action.payload.arrivalTime;
       state.order.from = action.payload.from;
       state.order.to = action.payload.to;
+      state.order.image = action.payload.image;
     },
     setPoints(state, action) {
       state.order.pickUp = action.payload.pickUp;

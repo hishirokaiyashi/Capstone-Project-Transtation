@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef, useMemo } from "react";
-import { toast } from "react-toastify";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import ReactPaginate from "react-paginate";
 import {
@@ -35,19 +34,6 @@ import { Style, Icon, Stroke } from "ol/style";
 
 const HCMCenterGeoPoint = [106.660172, 10.762622];
 
-// const locationList = [
-//   {
-//     id: "SG",
-//     name: "Bến xe miền Tây",
-//     geoPoint: "106.6190185,10.7406102",
-//   },
-//   {
-//     id: "CD",
-//     name: "Bến xe Châu Đốc",
-//     geoPoint: "105.1371585,10.6953553",
-//   },
-// ];
-
 const Trips = ({ itemsPerPage }) => {
   const location = useLocation();
   const navigate = useNavigate();
@@ -58,7 +44,7 @@ const Trips = ({ itemsPerPage }) => {
   const date = params.get("date");
 
   const mapRef = useRef(null);
-
+  const firstItemRef = useRef(null);
   // Define states
   const [map, setMap] = useState(null);
   const [centerPoint, setCenterPoint] = useState(HCMCenterGeoPoint);
@@ -210,7 +196,7 @@ const Trips = ({ itemsPerPage }) => {
   };
 
   // const handleCreateSeats = () => {
-  //   const tripID = "SGAG01052309";
+  //   const tripID = "SGAG10052317";
   //   createSeats(tripID);
   // };
 
@@ -240,7 +226,7 @@ const Trips = ({ itemsPerPage }) => {
 
     return unsubscribe;
   }, [memoizedGetDateTripsFromId, departureId, destinationId, date]);
-  // console.log(`Loading items from ${itemOffset} to ${endOffset}`);
+
   if (!trips) {
     return <div>Loading...</div>;
   }
@@ -249,7 +235,11 @@ const Trips = ({ itemsPerPage }) => {
   // setCurrentItems(trips?.slice(itemOffset, endOffset));
 
   const pageCount = Math.ceil(trips.length / itemsPerPage);
-
+  // useEffect(() => {
+  //   if (firstItemRef.current) {
+  //     firstItemRef.current.scrollIntoView({ behavior: "smooth" });
+  //   }
+  // }, [itemOffset]);
   // Invoke when user click to request another page.
   const handlePageClick = (event) => {
     const newOffset = (event.selected * itemsPerPage) % trips.length;
@@ -258,6 +248,7 @@ const Trips = ({ itemsPerPage }) => {
     // );
     setItemOffset(newOffset);
     setCurrentItems(trips?.slice(newOffset, newOffset + itemsPerPage));
+    firstItemRef.current.scrollIntoView({ behavior: "smooth" });
   };
 
   return (
@@ -284,7 +275,7 @@ const Trips = ({ itemsPerPage }) => {
             <InputFilter name="PICK UP POINT" />
             {/* <InputFilter name="PRICE" /> */}
           </div>
-          <div className="w-[75%]">
+          <div className="w-[75%] " ref={firstItemRef}>
             <SearchTrip from={departureId} to={destinationId} date={date} />
             <div>
               <div className="grid grid-cols-3">
@@ -309,7 +300,7 @@ const Trips = ({ itemsPerPage }) => {
                   <TripsInfo key={index} tripInfo={trip} route={route} />
                 ))} */}
                 {currentItems &&
-                  currentItems?.map((trip) => (
+                  currentItems?.map((trip, index) => (
                     <TripsInfo
                       key={trip.uid}
                       tripInfo={trip}

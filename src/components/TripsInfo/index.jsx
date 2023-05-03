@@ -243,6 +243,10 @@ const TripsInfo = ({ tripInfo, route, itemOffset }) => {
         arrivalTime: tripInfo.arrivalTime,
         from: route.direction.split(" - ")[0],
         to: route.direction.split(" - ")[1],
+        image:
+          tripInfo.type === "Seat"
+            ? "https://i.imgur.com/gfKZVbw.png"
+            : "https://i.imgur.com/UfvMYcn.png",
       };
 
       dispatch(setTripInfo(selectedTrip));
@@ -340,7 +344,7 @@ const TripsInfo = ({ tripInfo, route, itemOffset }) => {
       toast.error("There was an error happing. Please try again!");
       return;
     }
-    navigate("/test");
+    navigate("/payment");
   };
 
   return (

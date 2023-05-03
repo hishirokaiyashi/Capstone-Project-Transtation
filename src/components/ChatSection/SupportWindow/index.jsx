@@ -132,14 +132,20 @@ const SupportWindow = ({ visible, showPopUp }) => {
       {
         <div
           className={`
-        transition-all duration-700 ease-in-out fixed bg-white overflow-hidden bottom-[116px] right-[24px] w-[420px] h-[530px]
-        max-w-[100%-48px] max-h-[100%-48px] border-2 border-[#7a39e0] rounded-md flex flex-col justify-between
-        ${visible ? "hidden z-[1]" : "block"}`}
+        transition-all duration-700 ease-in-out fixed bg-white overflow-hidden bottom-[80px] right-[40px] w-[420px] h-[500px]
+        max-w-[100%-48px] max-h-[100%-48px] border-2 border-[#606770] rounded-md flex flex-col justify-between
+        ${visible ? "hidden z-[1]" : "block z-[10]"}`}
         >
           <div className="flex justify-between  border-b-2 items-center border-gray-400 p-[4px] bg-slate-500">
             <div className="flex items-center w-[70%]">
-              <img src={user.photoURL} alt="" className="w-[40px] h-[40px] " />
-              <p className="text-lg flex-1 text-white">{user.userName}</p>
+              <img
+                src={user.photoURL}
+                alt=""
+                className="w-[40px] h-[40px] rounded-full object-cover "
+              />
+              <p className="text-lg flex-1 text-white ml-[10px]">
+                {user.userName}
+              </p>
             </div>
             <div
               onClick={handleChangeOnClick}
@@ -176,22 +182,22 @@ const SupportWindow = ({ visible, showPopUp }) => {
                 );
               })}
           </div>
-          <div className="flex items-center p-1 bg-slate-500">
+          <div className="flex items-center p-2 bg-slate-500">
             <input
               onChange={(e) => setSendingMessage(e.target.value)}
               onKeyDown={(e) => {
                 if (e.key === "Enter") handleSendMessage();
               }}
               type="text"
-              className=" h-[30px] p-1 flex-1 bg-slate-200"
+              className=" h-[30px] p-2 flex-1 bg-slate-200 rounded"
               value={sendingMessage}
               placeholder="..."
             />
             <div
               onClick={handleSendMessage}
-              className="cursor-pointer p-2 text-white"
+              className="ml-[5px] cursor-pointer p-2 text-white hover:rounded-full hover:bg-slate-300 hover:text-slate-500"
             >
-              <Icon icon="ph:paper-plane-tilt-bold" />
+              <Icon icon="ph:paper-plane-tilt-bold" className="" />
             </div>
           </div>
         </div>

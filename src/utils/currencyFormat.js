@@ -13,7 +13,12 @@ const removeDot = (price) => {
 
 const vndToUsd = (vnd) => {
   const usd = vnd / 23465;
-  return usd.toFixed(2);
+  return parseFloat(usd.toFixed(2));
+};
+const UsdToVnd = (usd) => {
+  // const vnd = usd * 23465;
+  const vnd = Math.floor((usd * 23465) / 1000) * 1000;
+  return vnd;
 };
 
-export { addDot, removeDot, vndToUsd };
+export { addDot, removeDot, vndToUsd, UsdToVnd };

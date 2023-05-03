@@ -8,7 +8,13 @@ import MainLayout from "../layouts/MainLayout";
 import Modal from "../components/Modal/index.jsx";
 import { Icon } from "@iconify/react";
 import { addDot, removeDot, vndToUsd } from "../utils/currencyFormat";
-import { getUnavailableSeats } from "../../src/firebase/firestore.js";
+import {
+  getUnavailableSeats,
+  createOrder,
+  setSeatsByTripId,
+} from "../../src/firebase/firestore.js";
+import { checkout } from "../services/stripeApis.js";
+
 const Test = () => {
   const { order } = useSelector((state) => state.order);
 
@@ -27,17 +33,63 @@ const Test = () => {
       /** Ở front end: Tạo ra một order trong Firebase với paid status == "Unpaid"
        *  Chỉnh lại status của số ghế khách hàng đặt với trip tương ứng thành "Unavailable", chỉnh lại orderId, userId luôn
        */
+      updateDataByOrder(); // done - Update data in table Order
+
       /** Call api post tới local 5000 tạo thanh toán stripe
-       * 1. Post nên cần payload --> Tạo payload phù hợp ở request call post
+       * 1. Post nên cần payload --> Tạo payload phù hợp ở request call post */
+      const checkoutOrder = [
+        {
+          name: `Luxury ${order.type} Bus`,
+          image: order.image,
+          description: order.tickets,
+          booking_id: order.booking_id,
+          trip_id: order.trip_id,
+          user_id: order.user_id,
+          quanity: order.ticketAmount,
+          ticketPrice: vndToUsd(order.ticketPrice),
+          totalPrice: vndToUsd(order.totalPrice),
+          email: order.email,
+          displayName: order.displayName,
+        },
+      ];
+      checkout(checkoutOrder)
+        .then((res) => {
+          if (res.data.url) {
+            window.location.href = res.data.url;
+          }
+        })
+        .catch((err) => console.log(err.message));
+      // console.log({
+      //   ...order,
+      //   ticketPrice: vndToUsd(order.ticketPrice),
+      //   totalPrice: vndToUsd(order.totalPrice),
+      // });
+      /**
        * 2. Chỉnh sửa lại backend
        *   2.1 Pay load ở front end chỉnh sao thì payload backend chỉnh lại vậy.
        *   2.2 Cài firebase vô, config như frontend rồi chỉnh lại create order là set lại order Unpaid bên trên thành Paid rồi điền thông tin thẻ thanh toán của người dùng
        *   2.3 Nếu thanh toán thành công thì mới create order, nếu không thành công thì mình xoá order mới tạo, chỉnh lại số ghế thành Available, chỉnh là orderId và userId của ghế thành null
        *   2.4 Ở Front end thêm 2 màn hình thành công và thất bại
        */
-      console.log("Test Continue");
+      // console.log("Test Continue");
     }
   }, [stepContinue]);
+
+  const updateDataByOrder = async () => {
+    try {
+      await createOrder(order);
+      await setSeatsByTripId(
+        order.trip_id,
+        order.tickets,
+        order.user_id,
+        order.booking_id
+      );
+
+      toast.success("Order created successfully");
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
 
   const handlePayOrder = async () => {
     try {
