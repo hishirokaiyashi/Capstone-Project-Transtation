@@ -64,6 +64,7 @@ export const initUser = () => async (dispatch) => {
       console.error(error);
     }
   }
+  dispatch(setLoading(false));
 };
 
 const userSlice = createSlice({

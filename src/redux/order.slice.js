@@ -19,6 +19,7 @@ const initialState = {
     to: null,
     type: null,
     date: null,
+    image: null,
     pickUp: {
       location: "",
       time: "",
@@ -62,22 +63,20 @@ const orderSlice = createSlice({
       state.order.arrivalTime = action.payload.arrivalTime;
       state.order.from = action.payload.from;
       state.order.to = action.payload.to;
+      state.order.image = action.payload.image;
     },
     setPoints(state, action) {
       state.order.pickUp = action.payload.pickUp;
       state.order.final = action.payload.final;
     },
     setPickUpPoints(state, action) {
-      // state.order.pickUp = action.payload;
       state.order.pickUp = {
         location: action.payload.location,
         time: action.payload.time,
         name: action.payload.name,
       };
-      // state.order.pickUp = action.payload;
     },
     setFinalPoints(state, action) {
-      // state.order.final = action.payload;
       state.order.final = {
         location: action.payload.location,
         time: action.payload.time,
@@ -92,20 +91,22 @@ const orderSlice = createSlice({
       state.order.note = action.payload.note;
     },
     setMethod(state, action) {
-      state.paymentMethod = action;
+      state.order.paymentMethod = action.payload.paymentMethod;
     },
     setPayment(state, action) {
-      state.paymentStatus = action.paymentStatus;
-      state.paidTime = action.paidTime;
-      state.status = action.status;
+      state.order.paymentStatus = action.payload.paymentStatus;
+      state.order.paidTime = action.payload.paidTime;
+      state.order.status = action.payload.status;
     },
     setError(state, action) {
       state.error = action.payload;
     },
+    setTickets(state, action) {
+      state.order.tickets = action.payload;
+      state.order.ticketAmount = action.payload.length;
+      state.order.totalPrice = action.payload.length * state.order.ticketPrice;
+    },
     resetOrderState: (state, action) => {
-      // Lấy trip_id mới từ action payload
-      // const newTripId = action.payload;
-
       // Đặt giá trị của order về giá trị mặc định với trip_id mới
       state.order = {
         booking_id: null,
@@ -156,6 +157,7 @@ export const {
   setPayment,
   setError,
   resetOrderState,
+  setTickets,
 } = orderSlice.actions;
 
 export default orderSlice.reducer;

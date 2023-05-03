@@ -23,7 +23,7 @@ const TextMessages = ({ type, message, userInfo }) => {
           <img
             src={userInfo?.photoURL}
             alt="Message-logo-icon"
-            className="w-[35px] h-[35px] rounded-full mr-1 object-cover"
+            className="w-[35px] h-[35px] rounded-full mr-1 object-cover "
           />
           <div className="bg-slate-400 p-2 px-3  rounded-2xl max-w-[300px]">
             <p className="text-sm whitespace-pre-line break-words ">

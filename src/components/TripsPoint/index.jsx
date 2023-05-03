@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 import { setPickUpPoints, setFinalPoints } from "../../redux/order.slice";
 import { checkBetweenTwoHours } from "../../utils/convertDatetime";
 const TripsPoint = ({
@@ -50,7 +50,7 @@ const TripsPoint = ({
     // const returnTime = (time) => {
     //   checkBetweenTwoHours(departureTime,1,time);
     // };
-    return pickUpsPoint.map((point, index) => {
+    return pickUpsPoint?.map((point, index) => {
       return (
         <div
           htmlFor={point.id}
@@ -97,24 +97,6 @@ const TripsPoint = ({
     const [selectedFinalPoint, setSelectedFinalPoint] = useState(
       finalsPoint ? finalsPoint[0].location : null
     );
-    // const handleFinalPlaceChange = (event) => {
-    //   setSelectedFinalPoint(event.target.value);
-    //   dispatch(setFinalPoints(event.target.value));
-    // };
-    // console.log(finalsPoint[0].time[0]);
-    // useEffect(() => {
-    //   if (!selectedFinalPoint) {
-    //     const selectedFinal = finalsPoint[0];
-    //     dispatch(
-    //       setFinalPoints({
-    //         location: selectedFinal.location,
-    //         time: selectedFinal.time[0],
-    //         name: selectedFinal.name,
-    //       })
-    //     );
-    //     setSelectedPickUpPoint(selectedFinal);
-    //   }
-    // }, [selectedFinalPoint]);
     const handleFinalPlaceChange = (event) => {
       const selectedValue = event.target.value;
       setSelectedFinalPoint(selectedValue);
@@ -131,7 +113,7 @@ const TripsPoint = ({
         })
       );
     };
-    return finalsPoint.map((point, index) => {
+    return finalsPoint?.map((point, index) => {
       return (
         <div
           htmlFor={point.id}

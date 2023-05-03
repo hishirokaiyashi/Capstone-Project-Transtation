@@ -15,6 +15,9 @@ import Register from "../pages/Register";
 import Trips from "../pages/Trips";
 import Test from "../pages/Test";
 import ForgotPassword from "../pages/ForgotPassword";
+import CheckoutSuccess from "../pages/CheckoutSuccess";
+import Notfound from "../pages/Notfound";
+import Payment from "../pages/Payment";
 
 const Wrapper = ({ children }) => {
   const location = useLocation();
@@ -29,37 +32,53 @@ export default function App() {
     <Router>
       <Wrapper>
         <Routes>
-          <Route exact path="/" element={<Home />} />
-
           {/* Authentication routes */}
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/forgotpassword" element={<ForgotPassword />} />
 
+          <Route
+            path="/"
+            element={
+              <PrivateRoute>
+                <Home />
+              </PrivateRoute>
+            }
+          />
+
           {/* Trips routes */}
           <Route
             path="/trips"
             element={
-              // <PrivateRoute>
-              <Trips itemsPerPage={2} />
-              // </PrivateRoute>
+              <PrivateRoute>
+                <Trips itemsPerPage={2} />
+              </PrivateRoute>
             }
           />
-
-          {/* Select tickets routes */}
 
           {/* Payment routes */}
           <Route
             path="/test"
             element={
-              // <PrivateRoute>
-              <Test />
-              // </PrivateRoute>
+              <PrivateRoute>
+                <Test />
+              </PrivateRoute>
             }
           />
+
+          <Route
+            path="/checkout-success"
+            element={
+              <PrivateRoute>
+                <CheckoutSuccess />/
+              </PrivateRoute>
+            }
+          />
+
           {/* Account information routes */}
 
           {/* Not found page */}
+          <Route path="*" element={<Notfound />} />
         </Routes>
       </Wrapper>
     </Router>

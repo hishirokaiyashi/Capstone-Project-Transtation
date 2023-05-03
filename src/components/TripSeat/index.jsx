@@ -6,9 +6,9 @@ const TripSeat = ({ typeSeat, seats, handleQuanitySeats }) => {
   const [currentSeats, setCurrentSeats] = useState(null);
 
   useEffect(() => {
-    if (!currentSeats) {
+    if (!currentSeats && seats && seats.length != 0) {
       setCurrentSeats(seats);
-    } else {
+    } else if (currentSeats && seats && seats.length != 0) {
       const selectedSeats = currentSeats
         .filter((seat) => seat.status === "Selected")
         .map((seat) => seat.id); // ["A03", "A04"] // quá khứ được chọn

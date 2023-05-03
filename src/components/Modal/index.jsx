@@ -2,9 +2,8 @@ import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Icon } from "@iconify/react";
 
-const ModalAuthentication = ({ type }) => {
+const Modal = ({ type, setLostModal, stepContinue }) => {
   const navigate = useNavigate();
-
   return (
     <>
       {type === "register" && (
@@ -61,8 +60,58 @@ const ModalAuthentication = ({ type }) => {
           </div>
         </>
       )}
+      {type === "FailCheckout" && (
+        <>
+          <div className="overlay fixed z-10 top-0 left-0 w-full h-full bg-[rgba(0,0,0,0.6)] transition-all duration-300 ease"></div>
+
+          <div className="fixed z-20 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-1/3 h-1/3 bg-white rounded-xl flex flex-col justify-center items-center transition-all transform-origin-center animate-zoomIn">
+            <img
+              className="w-[50px] h-[50px]"
+              src="/src/assets/images/Payment/FailedCheckout.png"
+              alt="FailedCheckout"
+            />
+            <p className="text-[1.125rem] font-semibold my-2">Failed</p>
+            <p className="text-[1rem] text-center text-my-text-gray-third">
+              We are really sorry about this issue. Your order is out of stock!
+            </p>
+          </div>
+        </>
+      )}
+      {type === "FailLostCheckout" && (
+        <>
+          <div className="overlay fixed z-10 top-0 left-0 w-full h-full bg-[rgba(0,0,0,0.6)] transition-all duration-300 ease"></div>
+
+          <div className="fixed z-20 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-1/3 h-1/3 bg-white rounded-xl flex flex-col justify-center items-center transition-all transform-origin-center animate-zoomIn">
+            <img
+              className="w-[50px] h-[50px]"
+              src="/src/assets/images/Payment/FailedCheckout.png"
+              alt="FailedCheckout"
+            />
+            <p className="text-[1.125rem] font-semibold my-2">Failed</p>
+            <p className="text-[1rem] text-center text-my-text-gray-third">
+              We are really sorry about this issue. One of your order is out of
+              stock!
+            </p>
+            <button
+              onClick={() => navigate(-1)}
+              className="mt-4 px-[58px] py-[10px] text-white bg-[#E04141] rounded-[10px]"
+            >
+              BACK
+            </button>
+            <button
+              onClick={() => {
+                setLostModal(false);
+                stepContinue(true);
+              }}
+              className="mt-4 px-[58px] py-[10px] text-white bg-[#E04141] rounded-[10px]"
+            >
+              CONTINUE
+            </button>
+          </div>
+        </>
+      )}
     </>
   );
 };
 
-export default ModalAuthentication;
+export default Modal;

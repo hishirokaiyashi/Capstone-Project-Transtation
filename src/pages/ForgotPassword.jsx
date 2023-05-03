@@ -8,9 +8,9 @@ import {
   signInWithGoogle,
   sendPasswordReset,
 } from "../firebase/auth.js";
-import ModalAuthentication from "../components/ModalAuthentication";
 import { validateEmail } from "../utils/validation";
 import { useSelector } from "react-redux";
+import Modal from "../components/Modal";
 const ForgotPassword = () => {
   const [forgotEmail, setForgotEmail] = useState("");
   const navigate = useNavigate();
@@ -132,7 +132,7 @@ const ForgotPassword = () => {
           </h1>
         </div>
       </div>
-      {display && <ModalAuthentication type="forgotpassword" />}
+      {display && <Modal type="forgotpassword" />}
     </div>
   ) : (
     <Navigate to="/" replace />
