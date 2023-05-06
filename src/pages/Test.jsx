@@ -2,11 +2,12 @@ import React, { useState, useEffect, useRef, useMemo } from "react";
 import { toast } from "react-toastify";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
+import { Icon } from "@iconify/react";
+
 import { setTickets, resetOrderState } from "../redux/order.slice.js";
 
 import MainLayout from "../layouts/MainLayout";
 import Modal from "../components/Modal/index.jsx";
-import { Icon } from "@iconify/react";
 import { addDot, removeDot, vndToUsd } from "../utils/currencyFormat";
 import {
   getUnavailableSeats,
@@ -77,7 +78,7 @@ const Test = () => {
 
   const updateDataByOrder = async () => {
     try {
-      await createOrder(order);
+      await createOrder(order); // tạo thành order
       await setSeatsByTripId(
         order.trip_id,
         order.tickets,
@@ -95,9 +96,6 @@ const Test = () => {
     try {
       const res = await getUnavailableSeats(order.trip_id, order.tickets);
       if (res.length == order.tickets.length) {
-        // toast.info(
-        //   `Your order ${res.toString()} has been paid by other person`
-        // );
         setFailedModal(true); // confirmation for use about the changing information of order
         setTimeout(() => {
           // dispatch reset
@@ -152,7 +150,7 @@ const Test = () => {
     />
   ) : (
     <MainLayout>
-      <p className="bg-black-background w-full text-white text-center py-[22px] font-Ballo text-[1rem] font-semibold tracking-wide">
+      <p className="bg-black-background w-full text-white text-center py-[22px]  text-[1rem] font-semibold tracking-wide">
         FREE TRANSIT SERVICE FOR EVERY DESTINATION
       </p>
       <div className="bg-banner-trip bg-no-repeat bg-cover h-[157px]"></div>

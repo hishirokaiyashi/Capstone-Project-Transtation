@@ -1,29 +1,61 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  sortTrips,
+  changeCategory,
+  changeDeparture,
+  changeArrival,
+  setFilter,
+} from "../../redux/trips.slice";
 
 const InputFilter = ({ name }) => {
+  const dispatch = useDispatch();
+  const { sort, category, departures, arrivals } = useSelector(
+    (state) => state.trips
+  );
+
+  useEffect(() => {
+    dispatch(setFilter());
+  }, [sort, category, departures, arrivals]);
+
   const sortType = [
     "Earliest Arrival",
     "Latest Arrival",
     "Cheapest Price",
-    "No Stop Midway",
+    "Highest Price",
   ];
-  const categoriesType = ["Sleeper Bus", "45 Seater Bus"];
+
+  const categoriesType = [
+    {
+      id: 1,
+      type: "Bed",
+      name: "Sleeper Bus",
+    },
+    {
+      id: 2,
+      type: "Seat",
+      name: "45 Seater Bus",
+    },
+  ];
+
   const departureTimeType = [
     "1:00 - 5:00",
     "5:00 -  11:00",
     "13:00 - 16:00",
     "16:00 - 23:00",
   ];
-  const pickUpType = [
-    "Mega Market Vung Tau",
-    "Thuy Duong Beach Station",
-    "Lotte Mart Vung Tau",
-    "Xom Luoi Market Station",
+
+  const arrivalTimeType = [
+    "1:00 - 5:00",
+    "5:00 -  11:00",
+    "13:00 - 16:00",
+    "16:00 - 23:00",
   ];
+
   return (
     <>
       {name === "SORT" && (
-        <div>
+        <>
           <div className="flex justify-between border-b-2 p-[20px] pl-0">
             <span className="text-[#6A6A6B] font-semibold font-Ballo text-[1rem] tracking-wide">
               SORT BY
@@ -45,22 +77,25 @@ const InputFilter = ({ name }) => {
           {sortType?.map((item, index) => {
             return (
               <div
-                key={index}
+                key={index + item}
                 className="pl-[18px] pr-[63px] py-[10px] text-my-text-gray-third font-Ballo"
               >
                 <input
-                  type="checkbox"
-                  name={item}
+                  type="radio"
+                  name="sortType"
                   id={item}
                   className="w-[13px] h-[13px] mr-[12px]"
+                  value={item}
+                  checked={sort ? sort === item : false}
+                  onChange={(e) => dispatch(sortTrips(e.target.value))}
                 />
-                <label htmlFor={item} className="text-[1rem]">
+                <label htmlFor={item} className="text-[1rem] cursor-pointer">
                   {item}
                 </label>
               </div>
             );
           })}
-        </div>
+        </>
       )}
       {name === "CATEGORIES" && (
         <div className="mt-[25px]">
@@ -82,20 +117,26 @@ const InputFilter = ({ name }) => {
               </svg>
             </span>
           </div>
-          {categoriesType?.map((item, index) => {
+          {categoriesType?.map((item) => {
             return (
               <div
-                key={index}
+                key={item.type}
                 className="pl-[18px] pr-[63px] py-[10px] text-my-text-gray-third font-Ballo"
               >
                 <input
-                  type="checkbox"
-                  name={item}
-                  id={item}
+                  type="radio"
+                  name="categoriesType"
+                  id={item.name}
+                  checked={category ? category === item.type : false}
+                  value={item.type}
                   className="w-[13px] h-[13px] mr-[12px]"
+                  onChange={(e) => dispatch(changeCategory(e.target.value))}
                 />
-                <label htmlFor={item} className="text-[1rem]">
-                  {item}
+                <label
+                  htmlFor={item.name}
+                  className="text-[1rem] cursor-pointer"
+                >
+                  {item.name}
                 </label>
               </div>
             );
@@ -125,16 +166,22 @@ const InputFilter = ({ name }) => {
           {departureTimeType?.map((item, index) => {
             return (
               <div
-                key={index}
+                key={item + index}
                 className="pl-[18px] pr-[63px] py-[10px] text-my-text-gray-third font-Ballo"
               >
                 <input
                   type="checkbox"
-                  name={item}
-                  id={item}
+                  name="departureTimeType"
+                  id={item + "departure"}
                   className="w-[13px] h-[13px] mr-[12px]"
+                  value={item}
+                  checked={departures.includes(item) ? true : false}
+                  onChange={(e) => dispatch(changeDeparture(e.target.value))}
                 />
-                <label htmlFor={item} className="text-[1rem]">
+                <label
+                  htmlFor={item + "departure"}
+                  className="text-[1rem] cursor-pointer"
+                >
                   {item}
                 </label>
               </div>
@@ -142,11 +189,11 @@ const InputFilter = ({ name }) => {
           })}
         </div>
       )}
-      {name === "PICK UP POINT" && (
+      {name === "ARRIVAL TIME" && (
         <div className="mt-[25px]">
           <div className="flex justify-between border-b-2 p-[20px] pl-0">
             <span className="text-[#6A6A6B] font-semibold font-Ballo text-[1rem] tracking-wide">
-              PICK UP POINT
+              ARRIVAL TIME
             </span>
             <span className="text-[#6A6A6B] text-[1rem]">
               <svg
@@ -162,19 +209,25 @@ const InputFilter = ({ name }) => {
               </svg>
             </span>
           </div>
-          {pickUpType?.map((item, index) => {
+          {arrivalTimeType?.map((item, index) => {
             return (
               <div
-                key={index}
+                key={index + item}
                 className="pl-[18px] pr-[63px] py-[10px] text-my-text-gray-third font-Ballo"
               >
                 <input
                   type="checkbox"
-                  name={item}
-                  id={item}
+                  name="arrivalTimeType"
+                  id={item + "arrival"}
                   className="w-[13px] h-[13px] mr-[12px]"
+                  value={item}
+                  checked={arrivals.includes(item) ? true : false}
+                  onChange={(e) => dispatch(changeArrival(e.target.value))}
                 />
-                <label htmlFor={item} className="text-[1rem]">
+                <label
+                  htmlFor={item + "arrival"}
+                  className="text-[1rem] cursor-pointer"
+                >
                   {item}
                 </label>
               </div>

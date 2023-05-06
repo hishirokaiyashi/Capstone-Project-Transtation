@@ -1,12 +1,15 @@
 import app from "./index.js";
 import {
   GoogleAuthProvider,
+  EmailAuthProvider,
   getAuth,
   signInWithPopup,
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
   sendEmailVerification,
   sendPasswordResetEmail,
+  updatePassword,
+  reauthenticateWithCredential,
   signOut,
 } from "firebase/auth";
 import {
@@ -192,18 +195,16 @@ const registerWithEmailAndPassword = async (user, email, password) => {
       lastName: user.lastName,
       authProvider: "email",
       email,
-      // phoneNumber: user.phoneNumber,
-      // address: user.address,
-      // gender: user.gender,
       dateOfBirth: user.dateOfBirth,
       createdAt: serverTimestamp(),
-      // userName: user.userName,
       photoURL: user.avatar,
       admin: false,
       isVerified: false,
       idCard: user.idCard,
     });
-    toast.success("You signed up successfully to Capstone!");
+    toast.success(
+      "Please verify your account for logging in Vietnam Road Trip!"
+    );
     logout();
   } catch (err) {
     console.error(err);
@@ -215,18 +216,33 @@ const registerWithEmailAndPassword = async (user, email, password) => {
 const sendPasswordReset = async (email) => {
   try {
     await sendPasswordResetEmail(auth, email);
-    // toast.info("Password reset link sent!");
   } catch (err) {
     console.error(err);
-    // toast.error(err.message);
   }
 };
 
 const signout = async () => {
-  // console.log("Signing out...");
   await signOut(auth);
   store.dispatch(logout());
-  // toast.success("You have been logged out!");
+};
+
+//Update password
+const updateProfilePassword = async (currentPassword, newPassword) => {
+  const user = auth.currentUser;
+  console.log("current", user.email, currentPassword, newPassword);
+  const credential = EmailAuthProvider.credential(user.email, currentPassword);
+
+  try {
+    // Re-authenticate the user
+    const response = await reauthenticateWithCredential(user, credential);
+    toast.success("Your password is updated successfully 😋!");
+
+    // Update the password
+    await updatePassword(user, newPassword);
+  } catch (error) {
+    console.error(error);
+    toast.error(error.message);
+  }
 };
 
 export {
@@ -239,4 +255,5 @@ export {
   registerWithEmailAndPassword,
   sendPasswordReset,
   signout,
+  updateProfilePassword,
 };

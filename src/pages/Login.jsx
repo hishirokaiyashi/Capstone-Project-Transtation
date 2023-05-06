@@ -1,15 +1,14 @@
 import React, { useState } from "react";
 import { Link, useNavigate, Navigate } from "react-router-dom";
-import debounce from "../utils/debounce";
 import { Icon } from "@iconify/react";
 import { toast } from "react-toastify";
+import { useSelector } from "react-redux";
 import {
   logInWithEmailAndPassword,
   signInWithGoogle,
   sendPasswordReset,
 } from "../firebase/auth.js";
 import { validateEmail } from "../utils/validation";
-import { useSelector } from "react-redux";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -19,9 +18,8 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const [forgotEmail, setForgotEmail] = useState("");
-  const [displayForgotPassword, setDisplayForgotPassword] = useState(false);
-  const [error, setError] = useState("");
+  const [passwordType, setPasswordType] = useState("password");
+  const [iconPasswordType, setIconPasswordType] = useState("mdi:eye-off");
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -62,6 +60,12 @@ const Login = () => {
     setForgotEmail(e.target.value);
   };
 
+  const togglePasswordVisibility = () => {
+    setPasswordType(passwordType === "password" ? "text" : "password");
+    setIconPasswordType(
+      passwordType === "password" ? "ic:baseline-remove-red-eye" : "mdi:eye-off"
+    );
+  };
   return !isAuthenticated ? (
     <div>
       <div className="flex h-screen bg-my-gray">
@@ -119,13 +123,6 @@ const Login = () => {
                 </div>
 
                 <div className="relative">
-                  <input
-                    className="h-[56px] w-full outline-none border border-blue rounded py-1 px-3"
-                    type="password"
-                    id="password"
-                    value={password}
-                    onInput={(e) => setPassword(e.target.value)}
-                  />
                   <label
                     className="absolute z-1 left-[16px] top-[-15px] bg-white p-[4px]"
                     htmlFor="password"
@@ -133,11 +130,25 @@ const Login = () => {
                     Password
                     <span className="text-red-500"> *</span>
                   </label>
+                  <input
+                    className="h-[56px] w-full outline-none border border-blue rounded py-1 px-3"
+                    type={passwordType}
+                    id="password"
+                    value={password}
+                    onInput={(e) => setPassword(e.target.value)}
+                  />
+                  <span
+                    className="absolute right-[16px] top-[20px] cursor-pointer"
+                    onClick={togglePasswordVisibility}
+                  >
+                    <Icon icon={iconPasswordType} />
+                  </span>
                 </div>
                 <div className="flex justify-between mt-[15px] mb-[37px] ">
                   <div className="flex items-center">
                     <input
                       type="checkbox"
+                      defaultChecked
                       className="h-[13px] w-[13px] mr-[7px]"
                     />
                     <span className=" tracking-wide">Remember me</span>
@@ -154,7 +165,7 @@ const Login = () => {
                   type="submit"
                   form="loginForm"
                 >
-                  SIGN IN
+                  SIGNIN
                 </button>
               </form>
 
@@ -167,7 +178,6 @@ const Login = () => {
               <div className="flex justify-center mt-[15px]">
                 <div className="border-[#6A6A6B] border-t "></div>
                 <span className=" font-Ballo text-[1.25rem]">OR</span>
-                {/* <hr className="border-[#6A6A6B] flex-1 flex-grow-0 flex-shrink-1 h-0"></hr> */}
               </div>
               <div
                 className=" flex items-center justify-center cursor-pointer"
