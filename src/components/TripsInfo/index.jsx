@@ -30,16 +30,12 @@ import TripsPoint from "../TripsPoint";
 import TripInput from "../TripInput";
 
 const TripsInfo = ({ tripInfo, route, itemOffset }) => {
-  //pagination
-
-  // selectedSeats
   const navigate = useNavigate();
 
   const dispatch = useDispatch();
 
   const { user } = useSelector((state) => state.user);
   const { order } = useSelector((state) => state.order);
-
   const [seats, setSeats] = useState(null);
   const [selectedSeats, setSelectedSeats] = useState([]);
   const [openMore, setOpenMore] = useState(false);
@@ -138,6 +134,7 @@ const TripsInfo = ({ tripInfo, route, itemOffset }) => {
   //     return unsubscribe;
   //   }
   // }, [tripInfo, openMore]); // call data seat
+
   const getSeats = useCallback((data) => {
     setSeats(data);
     console.log(tripInfo.uid, data);
@@ -344,7 +341,7 @@ const TripsInfo = ({ tripInfo, route, itemOffset }) => {
       toast.error("There was an error happing. Please try again!");
       return;
     }
-    navigate("/payment");
+    navigate("/test");
   };
 
   return (
@@ -356,7 +353,7 @@ const TripsInfo = ({ tripInfo, route, itemOffset }) => {
               ? "/src/assets/images/Trips/Bed-Bus.png"
               : "/src/assets/images/Trips/Seat-Bus.png"
           }
-          alt=""
+          alt={tripInfo.type}
           className="w-[30%] h-[230px] object-cover"
         />
         <div className="pl-[35px] pt-[12px] w-[70%] pr-[18px]">
@@ -407,19 +404,19 @@ const TripsInfo = ({ tripInfo, route, itemOffset }) => {
               </p>
               <div className="flex justify-between pl-[38px]">
                 <div className="w-[50%]">
-                  <p className="text-[1.25rem] font-Ballo text-my-text-gray-second font-semibold">
+                  <p className="text-[1rem] font-Ballo text-my-text-gray-second font-semibold">
                     {/* {seats?.filter((seat) => seat.status == "Available").length}{" "} */}
                     {tripInfo.availableSeats} seats left
                     {/* {availableSeatsLeft} seats left */}
                     {/* {tripInfo.availableSeats} seats left */}
                   </p>
-                  <Link className="text-[0.75rem] w-full text-[#1D7ED8] underline underline-offset-2">
+                  <Link className="text-[0.65rem] w-full text-[#1D7ED8] underline underline-offset-2">
                     View more trip details
                   </Link>
                 </div>
                 {openMore === false ? (
                   <button
-                    className="px-[10px] py-[12px] bg-[#000] text-white text-[1rem] font-Ballo w-[40%]"
+                    className="px-[4px] py-[12px] bg-[#000] text-white text-[1rem] font-Ballo w-[40%]"
                     onClick={() => {
                       // setOpenMore(true);
                       handleOpenMore();
@@ -429,7 +426,7 @@ const TripsInfo = ({ tripInfo, route, itemOffset }) => {
                   </button>
                 ) : (
                   <button
-                    className="px-[10px] py-[12px] bg-[#000] text-white text-[1rem] font-Ballo w-[40%]"
+                    className="px-[4px] py-[12px] bg-[#000] text-white text-[1rem] font-Ballo w-[40%]"
                     onClick={() => {
                       // setOpenMore(false);
                       // dispatch(resetOrderState(null));

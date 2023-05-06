@@ -17,7 +17,6 @@ const CheckoutSuccess = () => {
 
   const params = new URLSearchParams(location.search);
   const orderId = params.get("orderId");
-
   useEffect(() => {
     if (orderId) {
       getOrder(orderId);
@@ -30,7 +29,6 @@ const CheckoutSuccess = () => {
   const getOrder = async (orderId) => {
     try {
       const res = await getOrderById(orderId);
-      console.log(res);
       if (res) {
         setLoading(false);
         setOrderInfo(res);

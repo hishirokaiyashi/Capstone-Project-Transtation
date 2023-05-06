@@ -13,7 +13,7 @@ const SearchBar = () => {
     fetchData(value);
   };
   return (
-    <div className=" flex gap-1 justify-center items-center hover:opacity-50 hover:cursor-pointer border-2 border-gray-500 rounded-md">
+    <div className=" flex  gap-1 justify-center items-center hover:opacity-50 hover:cursor-pointer border-2 border-gray-500 rounded-md">
       <input
         className="ml-2 w-20 font-Amata font-normal text-base focus:w-32 focus:outline-none"
         type="text"

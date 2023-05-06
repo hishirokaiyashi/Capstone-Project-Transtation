@@ -2,6 +2,8 @@ import React, { useEffect } from "react";
 import { Navigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 
+import Loader from "../components/Loader";
+
 const PrivateRoute = ({ children }) => {
   const { isAuthenticated, isLoading } = useSelector((state) => state.user);
 
@@ -15,7 +17,7 @@ const PrivateRoute = ({ children }) => {
     if (isAuthenticated) {
       return <>{children}</>;
     } else {
-      return <h1 className="text-black">Đang load chờ chút </h1>;
+      return <Loader />;
     }
   }
 };

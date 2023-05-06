@@ -28,6 +28,7 @@ export default {
         "banner-trip": "url('./src/assets/images/Trips/Banner.png')",
         "free-banner": "url('./src/assets/images/Home/HCM-Banner.png')",
         "transit-banner": "url('./src/assets/images/Home/Village-Banner.png')",
+        ticket: "url('./src/assets/images/Payment/TicketBg.png')",
       },
       backgroundColor: {
         "black-background": "#1B1A1A",

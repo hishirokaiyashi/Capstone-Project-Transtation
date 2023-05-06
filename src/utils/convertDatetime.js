@@ -45,14 +45,31 @@ const isPastDate = (dateString) => {
   return date.isBefore(today);
 };
 
-const checkBetweenTwoHours = (timeFirst, timeQuanity, timeSecond) => {
-  // Giả sử thời gian hiện tại là 9:00 AM
+const isLaterHour = (hour1, hour2) => {
+  const time1 = moment(hour1, "HH:mm");
+  const time2 = moment(hour2, "HH:mm");
+  return time2.isAfter(time1);
+};
+
+const checkBetweenTwoHours = (timeFirst, timeQuantity, timeSecond, endTime) => {
   const currentTime = moment(timeFirst, "HH:mm");
-  // Thêm 1 giờ vào thời gian hiện tại
-  const futureTime = currentTime.clone().add(timeQuanity, "hours");
-  // So sánh thời gian "9:45" với khoảng thời gian từ "9:00" đến "10:00"
+  let futureTime = null;
+  if (endTime) {
+    futureTime = moment(endTime, "HH:mm");
+  } else {
+    futureTime = currentTime.clone().add(timeQuantity, "hours");
+  }
   const timeToCheck = moment(timeSecond, "HH:mm");
-  if (timeQuanity > 0) {
+
+  if (endTime) {
+    if (timeToCheck.isBetween(currentTime, futureTime)) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  if (timeQuantity > 0) {
     if (timeToCheck.isBetween(currentTime, futureTime)) {
       return true;
     } else {
@@ -67,6 +84,62 @@ const checkBetweenTwoHours = (timeFirst, timeQuanity, timeSecond) => {
   }
 };
 
+/** Trips: [{
+ *  id: 1,
+ *  date: "dd/MM/yyyy",
+ *  arrivalTime: "hh:mm",
+ *  ...
+ * }] */
+const sortTripsAscending = (trips) => {
+  const sortedTrips = [...trips];
+  return sortedTrips.sort((a, b) => {
+    const dateA = moment(a.date, "DD/MM/YYYY");
+    const dateB = moment(b.date, "DD/MM/YYYY");
+    if (dateA.isBefore(dateB)) {
+      return -1;
+    }
+    if (dateA.isAfter(dateB)) {
+      return 1;
+    }
+
+    const timeA = moment(a.arrivalTime, "HH:mm");
+    const timeB = moment(b.arrivalTime, "HH:mm");
+    if (timeA.isBefore(timeB)) {
+      return -1;
+    }
+    if (timeA.isAfter(timeB)) {
+      return 1;
+    }
+
+    return 0;
+  });
+};
+
+const sortTripsDescending = (trips) => {
+  const sortedTrips = [...trips];
+  return sortedTrips.sort((a, b) => {
+    const dateA = moment(a.date, "DD/MM/YYYY");
+    const dateB = moment(b.date, "DD/MM/YYYY");
+    if (dateB.isBefore(dateA)) {
+      return -1;
+    }
+    if (dateB.isAfter(dateA)) {
+      return 1;
+    }
+
+    const timeA = moment(a.arrivalTime, "HH:mm");
+    const timeB = moment(b.arrivalTime, "HH:mm");
+    if (timeB.isBefore(timeA)) {
+      return -1;
+    }
+    if (timeB.isAfter(timeA)) {
+      return 1;
+    }
+
+    return 0;
+  });
+};
+
 export {
   convertFromTimestamp,
   getDDMMYY,
@@ -75,5 +148,8 @@ export {
   formatDateToWords,
   plusDay,
   isPastDate,
+  isLaterHour,
   checkBetweenTwoHours,
+  sortTripsAscending,
+  sortTripsDescending,
 };

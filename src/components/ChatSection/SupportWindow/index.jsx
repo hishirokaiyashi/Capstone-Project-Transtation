@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Icon } from "@iconify/react";
-
+import avatar from "../../../assets/images/Message/avatar-default.jpg";
 import firestore from "../../../firebase/firestore";
 import {
   collection,
@@ -139,12 +139,12 @@ const SupportWindow = ({ visible, showPopUp }) => {
           <div className="flex justify-between  border-b-2 items-center border-gray-400 p-[4px] bg-slate-500">
             <div className="flex items-center w-[70%]">
               <img
-                src={user.photoURL}
+                src={avatar}
                 alt=""
                 className="w-[40px] h-[40px] rounded-full object-cover "
               />
-              <p className="text-lg flex-1 text-white ml-[10px]">
-                {user.userName}
+              <p className="text-[1rem] flex-1 text-white ml-[10px]">
+                Supporter of Vietnam Road Trip
               </p>
             </div>
             <div

@@ -1,16 +1,15 @@
 import React, { useState } from "react";
 import { Link, useNavigate, Navigate } from "react-router-dom";
-import debounce from "../utils/debounce";
+import { useSelector } from "react-redux";
 import { Icon } from "@iconify/react";
 import { toast } from "react-toastify";
-import {
-  logInWithEmailAndPassword,
-  signInWithGoogle,
-  sendPasswordReset,
-} from "../firebase/auth.js";
+
+import { sendPasswordReset } from "../firebase/auth.js";
+
 import { validateEmail } from "../utils/validation";
-import { useSelector } from "react-redux";
+
 import Modal from "../components/Modal";
+
 const ForgotPassword = () => {
   const [forgotEmail, setForgotEmail] = useState("");
   const navigate = useNavigate();
