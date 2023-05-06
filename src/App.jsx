@@ -2,8 +2,9 @@ import React, { useEffect } from "react";
 import Router from "./routes";
 import { useDispatch } from "react-redux";
 import { initUser } from "./redux/user.slice";
-
 import { ToastContainer } from "react-toastify";
+import ScrollBtn from "./components/Scroll";
+
 import "react-toastify/dist/ReactToastify.css";
 
 function App() {
@@ -26,6 +27,7 @@ function App() {
         pauseOnHover
         theme="light"
       />
+      <ScrollBtn />
     </div>
   );
 }

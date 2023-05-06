@@ -1,16 +1,23 @@
 import React, { useState, useEffect, useRef, useMemo } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import ReactPaginate from "react-paginate";
+import { useSelector, useDispatch } from "react-redux";
 import {
   getDateTripsFromId,
   getRouteFromId,
   createSeats,
 } from "../firebase/firestore";
+import { motion } from "framer-motion";
 
+import { setTrips, setPrice, resetFilter } from "../redux/trips.slice";
+import TripSkeleton from "../components/TripsInfo/Skeleton";
 import MainLayout from "../layouts/MainLayout";
 import SearchTrip from "../components/SearchTrip";
 import InputFilter from "../components/InputFilter";
 import TripsInfo from "../components/TripsInfo";
+import MultiRangeSlider from "../components/Slider";
+import Loader from "../components/Loader";
+import OutOfStock from "../assets/images/Trips/OutOfStock.gif";
 
 import getRoute from "../utils/getRoute";
 
@@ -31,10 +38,15 @@ import { Tile as TileLayer, Vector as VectorLayer } from "ol/layer";
 import Overlay from "ol/Overlay";
 import { OSM, Vector as VectorSource } from "ol/source";
 import { Style, Icon, Stroke } from "ol/style";
-
 const HCMCenterGeoPoint = [106.660172, 10.762622];
 
 const Trips = ({ itemsPerPage }) => {
+  const dispatch = useDispatch();
+
+  const { isLoading, trips, filteredTrips, price } = useSelector(
+    (state) => state.trips
+  );
+
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -50,12 +62,10 @@ const Trips = ({ itemsPerPage }) => {
   const [centerPoint, setCenterPoint] = useState(HCMCenterGeoPoint);
   const [startPoint, setStartPoint] = useState(null);
   const [endPoint, setEndPoint] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-  const [trips, setTrips] = useState(null);
+  // const [trips, setTrips] = useState(null);
   const [route, setRoute] = useState(null);
-
-  // const [openMore, setOpenMore] = useState(false);
-  // const [activeTabIndex, setActiveTabIndex] = useState(0);
 
   const memoizedGetDateTripsFromId = useMemo(
     () => getDateTripsFromId,
@@ -63,31 +73,35 @@ const Trips = ({ itemsPerPage }) => {
   );
 
   useEffect(() => {
-    const initialMap = new Map({
-      target: mapRef.current,
-      layers: [
-        new TileLayer({
-          source: new OSM(),
-        }),
-      ],
-      view: new View({
-        center: fromLonLat(centerPoint),
-        zoom: 9,
-      }),
-    });
-    setMap(initialMap);
-    return () => initialMap.dispose();
+    if (!map) {
+      const timeoutId = setTimeout(() => {
+        const initialMap = new Map({
+          target: mapRef.current,
+          layers: [
+            new TileLayer({
+              source: new OSM(),
+            }),
+          ],
+          view: new View({
+            center: fromLonLat(centerPoint),
+            zoom: 9,
+          }),
+        });
+        setMap(initialMap);
+        return () => initialMap.dispose();
+      }, 1000); // adjust the delay as needed
+      return () => clearTimeout(timeoutId);
+    }
   }, [centerPoint]);
 
   useEffect(() => {
-    displayRouteOnMap(route);
-  }, [route]);
+    if (map && route) displayRouteOnMap(route);
+  }, [map, route]);
 
   // Get trip information
   const getTripRoute = async (routeId) => {
     const res = await getRouteFromId(routeId);
     setRoute(res);
-    // displayRouteOnMap(res);
   };
 
   // Define icon points
@@ -103,10 +117,6 @@ const Trips = ({ itemsPerPage }) => {
 
   // Display trip route on map
   const displayRouteOnMap = async (routeInfo) => {
-    if (!routeInfo) {
-      return;
-    }
-
     const latitude1 = routeInfo.startGeo.latitude;
     const longitude1 = routeInfo.startGeo.longitude;
 
@@ -120,6 +130,9 @@ const Trips = ({ itemsPerPage }) => {
     );
 
     const routeData = res.features[0].geometry.coordinates;
+    const middlePoint = routeData[Math.round(routeData.length / 2)];
+    setCenterPoint(middlePoint);
+    map.getView().setCenter(fromLonLat(middlePoint));
 
     // Define vector layer for SG-CD route
     const routeFeature = new VectorLayer({
@@ -200,26 +213,22 @@ const Trips = ({ itemsPerPage }) => {
   //   createSeats(tripID);
   // };
 
-  //pagination
-
-  // Here we use item offsets; we could also use page offsets
-  // following the API or data you're working with.
+  /* Pagination */
   const [itemOffset, setItemOffset] = useState(0);
-
-  // Simulate fetching items from another resources.
-  // (This could be items from props; or items loaded in a local state
-  // from an API endpoint with useEffect and useState)
-  const endOffset = itemOffset + itemsPerPage;
   const [currentItems, setCurrentItems] = useState([]);
+  const [currentPage, setCurrentPage] = useState(0);
+
+  const endOffset = itemOffset + itemsPerPage;
+
   useEffect(() => {
     const unsubscribe = getDateTripsFromId(
       departureId + destinationId + date,
       (data) => {
         if (data) {
-          setTrips(data);
+          dispatch(setTrips(data));
           setCurrentItems(data.slice(itemOffset, endOffset));
-
           getTripRoute(data[0].route_id);
+          setLoading(false);
         }
       }
     );
@@ -227,28 +236,54 @@ const Trips = ({ itemsPerPage }) => {
     return unsubscribe;
   }, [memoizedGetDateTripsFromId, departureId, destinationId, date]);
 
+  useEffect(() => {
+    if (filteredTrips) {
+      handlePageClick(0);
+    }
+  }, [filteredTrips, price]);
+
   if (!trips) {
-    return <div>Loading...</div>;
+    return <Loader />;
   }
 
-  // const currentItems = trips?.slice(itemOffset, endOffset);
-  // setCurrentItems(trips?.slice(itemOffset, endOffset));
+  const pageCount = Math.ceil(filteredTrips.length / itemsPerPage);
 
-  const pageCount = Math.ceil(trips.length / itemsPerPage);
-  // useEffect(() => {
-  //   if (firstItemRef.current) {
-  //     firstItemRef.current.scrollIntoView({ behavior: "smooth" });
-  //   }
-  // }, [itemOffset]);
   // Invoke when user click to request another page.
-  const handlePageClick = (event) => {
-    const newOffset = (event.selected * itemsPerPage) % trips.length;
-    // console.log(
-    //   `User requested page number ${event.selected}, which is offset ${newOffset}`
-    // );
+  const handlePageClick = (pageNumber) => {
+    // Current page number = pageNumber = event.selected
+    setCurrentPage(pageNumber);
+    const newOffset = (pageNumber * itemsPerPage) % filteredTrips.length;
     setItemOffset(newOffset);
-    setCurrentItems(trips?.slice(newOffset, newOffset + itemsPerPage));
+    setCurrentItems(
+      filteredTrips
+        ?.filter((item) => {
+          return item.ticketPrice >= price[0] && item.ticketPrice <= price[1];
+        })
+        .slice(newOffset, newOffset + itemsPerPage)
+    );
     firstItemRef.current.scrollIntoView({ behavior: "smooth" });
+  };
+
+  //Animation framer motion
+
+  const container = {
+    hidden: { opacity: 1, scale: 0 },
+    visible: {
+      opacity: 1,
+      scale: 1,
+      transition: {
+        delayChildren: 0.3,
+        staggerChildren: 0.2,
+      },
+    },
+  };
+
+  const item = {
+    hidden: { y: 20, opacity: 0 },
+    visible: {
+      y: 0,
+      opacity: 1,
+    },
   };
 
   return (
@@ -266,14 +301,32 @@ const Trips = ({ itemsPerPage }) => {
         <div className="bg-banner-trip bg-no-repeat bg-cover h-[157px]"></div>
         <div className="max-w-screen-xl mx-auto flex mt-[19px]">
           <div className="w-[25%] pr-[65px]">
-            <p className="text-[0.75rem] text-my-text-gray-third tracking-wide font-Amata mb-[105px]">
+            <p className="text-[0.75rem] text-my-text-gray-third tracking-wide mb-[105px]">
               <Link to="/">Homepage</Link> / Trips
             </p>
             <InputFilter name="SORT" />
             <InputFilter name="CATEGORIES" />
             <InputFilter name="DEPARTURE TIME" />
-            <InputFilter name="PICK UP POINT" />
-            {/* <InputFilter name="PRICE" /> */}
+            <InputFilter name="ARRIVAL TIME" />
+            <p className="text-[#6A6A6B] mb-[20px] font-semibold  text-[1rem] tracking-wide">
+              Price
+            </p>
+            <MultiRangeSlider
+              min={150000}
+              max={1000000}
+              onChange={({ min, max }) => {
+                const priceRange = [min, max];
+                dispatch(setPrice(priceRange));
+              }}
+            />
+            <button
+              onClick={() => {
+                dispatch(resetFilter());
+              }}
+              className="rounded-[5px] mt-[50px] text-[0.875rem] w-full px-[30px] py-[4px] bg-[#E04141] text-white cursor-pointer"
+            >
+              Reset
+            </button>
           </div>
           <div className="w-[75%] " ref={firstItemRef}>
             <SearchTrip from={departureId} to={destinationId} date={date} />
@@ -296,23 +349,43 @@ const Trips = ({ itemsPerPage }) => {
                 </p>
               </div>
               <div className="bg-my-bg-gray-trips pl-[43px] pr-[60px] pt-[45px] pb-[150px]">
-                {/* {trips?.map((trip, index) => (
-                  <TripsInfo key={index} tripInfo={trip} route={route} />
-                ))} */}
-                {currentItems &&
-                  currentItems?.map((trip, index) => (
-                    <TripsInfo
-                      key={trip.uid}
-                      tripInfo={trip}
-                      route={route}
-                      itemOffset={itemOffset}
+                {loading ? (
+                  <TripSkeleton trips={2} />
+                ) : currentItems && currentItems?.length > 0 ? (
+                  <motion.div
+                    variants={container}
+                    initial="hidden"
+                    animate="visible"
+                  >
+                    {currentItems?.map((trip, index) => (
+                      <motion.div key={trip.uid + index} variants={item}>
+                        <TripsInfo
+                          key={trip.uid}
+                          tripInfo={trip}
+                          route={route}
+                          itemOffset={itemOffset}
+                        />
+                      </motion.div>
+                    ))}
+                  </motion.div>
+                ) : (
+                  <div className="flex flex-col justify-center items-center gap-[20px]">
+                    <h1 className="font-semibold text-[1.375rem]">
+                      There is no trip available at the moment! ☹️{" "}
+                    </h1>
+                    <img
+                      src={OutOfStock}
+                      alt={OutOfStock}
+                      className="h-[350px] w-[350px]"
                     />
-                  ))}
+                  </div>
+                )}
                 <ReactPaginate
                   breakLabel="..."
                   nextLabel=" >"
-                  onPageChange={handlePageClick}
+                  onPageChange={(e) => handlePageClick(e.selected)}
                   pageRangeDisplayed={5}
+                  forcePage={currentPage}
                   pageCount={pageCount}
                   previousLabel="< "
                   renderOnZeroPageCount={null}
@@ -327,7 +400,7 @@ const Trips = ({ itemsPerPage }) => {
             </div>
           </div>
         </div>
-        <div ref={mapRef} className="h-[500px] w-full z-1" />
+        <div ref={mapRef} className="h-[500px] w-full z-1 mt-8" />
       </div>
     </MainLayout>
   );

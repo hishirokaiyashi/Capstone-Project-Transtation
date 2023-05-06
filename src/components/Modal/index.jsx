@@ -12,15 +12,15 @@ const Modal = ({ type, setLostModal, stepContinue }) => {
 
           <div className="fixed z-20 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-1/3 h-1/3 bg-white rounded-xl flex flex-col justify-center items-center transition-all transform-origin-center animate-zoomIn">
             <Icon
-              icon="ic:baseline-check-circle-outline"
+              icon="carbon:pending"
               color="#e04141"
               width="65"
               height="65"
             />
-            <p className="text-[1.125rem] font-semibold my-2">SUCCESS</p>
-            <p className="text-[1rem] text-center text-my-text-gray-third">
+            <p className="text-[1.125rem] font-semibold my-2">PENDING</p>
+            {/* <p className="text-[1rem] text-center text-my-text-gray-third">
               Congratulations, your account has been successfully registered!
-            </p>
+            </p> */}
             <p className="text-[1rem] text-center text-my-text-gray-third">
               Please verify your account in your email before login
             </p>
@@ -39,15 +39,15 @@ const Modal = ({ type, setLostModal, stepContinue }) => {
 
           <div className="fixed z-20 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-1/3 h-1/3 bg-white rounded-xl flex flex-col justify-center items-center transition-all transform-origin-center animate-zoomIn">
             <Icon
-              icon="ic:baseline-check-circle-outline"
+              icon="carbon:pending"
               color="#e04141"
               width="65"
               height="65"
             />
-            <p className="text-[1.125rem] font-semibold my-2">SUCCESS</p>
-            <p className="text-[1rem] text-center text-my-text-gray-third">
+            <p className="text-[1.125rem] font-semibold my-2">PENDING</p>
+            {/* <p className="text-[1rem] text-center text-my-text-gray-third">
               Congratulations, your password has been successfully reset
-            </p>
+            </p> */}
             <p className="text-[1rem] text-center text-my-text-gray-third">
               Please check your email for changing your password!
             </p>

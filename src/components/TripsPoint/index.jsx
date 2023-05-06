@@ -30,7 +30,7 @@ const TripsPoint = ({
         setPickUpPoints({
           location: selectedPickUp.location,
           time: selectedPickUp.time.find((item) =>
-            checkBetweenTwoHours(departureTime, 1, item)
+            checkBetweenTwoHours(departureTime, 1, item, null)
           ),
           name: selectedPickUp.name,
         })
@@ -74,7 +74,7 @@ const TripsPoint = ({
             <div className="pl-[12px]">
               <p className="text-[1rem] text-[#344054]">
                 {point.time.find((item) =>
-                  checkBetweenTwoHours(departureTime, 1, item)
+                  checkBetweenTwoHours(departureTime, 1, item, null)
                 )}
                 - {point.location}
               </p>
@@ -107,7 +107,7 @@ const TripsPoint = ({
         setFinalPoints({
           location: selectedFinal.location,
           time: selectedFinal.time.find((item) =>
-            checkBetweenTwoHours(arrivalTime, -1, item)
+            checkBetweenTwoHours(arrivalTime, -1, item, null)
           ),
           name: selectedFinal.name,
         })
@@ -137,7 +137,7 @@ const TripsPoint = ({
             <div className="pl-[12px]">
               <p className="text-[1rem] text-[#344054]">
                 {point.time.find((item) =>
-                  checkBetweenTwoHours(arrivalTime, -1, item)
+                  checkBetweenTwoHours(arrivalTime, -1, item, null)
                 )}
                 -{point.location}
               </p>

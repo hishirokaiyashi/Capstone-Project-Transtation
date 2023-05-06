@@ -18,8 +18,9 @@ import ForgotPassword from "../pages/ForgotPassword";
 import CheckoutSuccess from "../pages/CheckoutSuccess";
 import Notfound from "../pages/Notfound";
 import Payment from "../pages/Payment";
-// import Payment from "../pages/Payment";
 
+import Profile from "../pages/Profile";
+import CheckoutGiao from "../pages/Checkout-Giao";
 const Wrapper = ({ children }) => {
   const location = useLocation();
   useLayoutEffect(() => {
@@ -63,6 +64,22 @@ export default function App() {
             element={
               <PrivateRoute>
                 <Payment />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/test-2"
+            element={
+              <PrivateRoute>
+                <CheckoutGiao />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/my-account"
+            element={
+              <PrivateRoute>
+                <Profile />
               </PrivateRoute>
             }
           />

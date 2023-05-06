@@ -127,8 +127,8 @@ const createOrder = async (order) => {
       arrivalTime: order.arrivalTime,
       createdAt: serverTimestamp(),
       status: order.status,
-      paymentMethod: order.paymentMethod,
-      paymentStatus: order.paymentStatus,
+      paymentMethod: order.paymentMethod, //card
+      paymentStatus: order.paymentStatus, //Paid
       paidTime: order.paidTime,
     });
   } catch (err) {
@@ -187,7 +187,6 @@ const setSeatsByTripId = async (tripId, seatIds, userId, orderId) => {
       await updateDoc(tripRef, {
         availableSeats: availableSeats - numSeats,
       });
-
       console.log("Available seats updated successfully!");
     } else {
       console.error("Not enough available seats to reserve.");
@@ -197,7 +196,6 @@ const setSeatsByTripId = async (tripId, seatIds, userId, orderId) => {
     console.error("Trip not found.");
     return;
   }
-
   const seatsRef = collection(firestore, "trips", tripId, "SEATS");
 
   seatIds.forEach(async (seatId) => {
@@ -222,6 +220,30 @@ const getOrderById = async (orderId) => {
     return orderQuerySnapshot.docs[0].data();
   }
 };
+const getOrdersByUserId = async (userId) => {
+  const ordersRef = collection(firestore, "orders");
+  const orderQuerySnapshot = await getDocs(
+    query(ordersRef, where("user_id", "==", userId))
+  );
+
+  if (orderQuerySnapshot.empty) {
+    return null;
+  } else {
+    return orderQuerySnapshot.docs.map((doc) => doc.data());
+  }
+};
+
+const updateUserInfoByUserId = async (userId, userInfo) => {
+  const usersRef = doc(firestore, "users", userId);
+  const userSnapshot = await getDoc(usersRef);
+  if (userSnapshot.exists()) {
+    // const userDocRef = doc(usersRef, userId);
+    await updateDoc(usersRef, userInfo);
+  } else {
+    console.error("User not found.");
+    return;
+  }
+};
 
 export {
   getDateTripsFromId,
@@ -233,5 +255,7 @@ export {
   createOrder2,
   setSeatsByTripId,
   getOrderById,
+  getOrdersByUserId,
+  updateUserInfoByUserId,
 };
 export default firestore;

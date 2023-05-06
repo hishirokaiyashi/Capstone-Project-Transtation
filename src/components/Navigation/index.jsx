@@ -2,15 +2,16 @@ import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { signout } from "../../firebase/auth";
 import { Icon } from "@iconify/react";
-
+import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
 
 const navList = [
   { name: "Home", href: "/" },
-  { name: "Promotion", href: "" },
-  { name: "My Booking", href: "#" },
-  { name: "About us", href: "#" },
+  { name: "Promotion", href: "/promotion" },
+  { name: "My Booking", href: "/profile/order-history" },
+  { name: "About us", href: "/about-us" },
+
 ];
 
 const Navbar = () => {
@@ -71,7 +72,7 @@ const Navbar = () => {
             hover:text-red-400 hover:border-b-2 hover:border-b-red-400 "
               >
                 <Link to={item.href}>{item.name}</Link>
-                {/* <Link to={item.href}>{item.name}</Link> */}
+
               </div>
             ))}
 
@@ -106,30 +107,42 @@ const Navbar = () => {
             </div>
           </div>
           {/* Account */}
-          <div>
-            {isAuthenticated ? (
-              <div className="flex items-center gap-4 pr-2">
-                <img
-                  src={user.photoURL}
-                  className="w-12 h-12 rounded-full cursor-pointer"
-                />
-                <p>{user.displayName}</p>
-                <h3 onClick={handleLogout} className="cursor-pointer">
+          {isAuthenticated ? (
+            <div className="relative flex items-center gap-4 pr-2">
+              <img
+                src={user.photoURL}
+                className="peer w-12 h-12 rounded-full cursor-pointer"
+              />
+              <div className="hidden top-[100%] -left-[150px] absolute peer-hover:flex hover:flex w-[200px] flex-col bg-white drop-shadow-lg">
+                <div className="px-4 py-3 text-sm text-gray-900">
+                  <div>{user.displayName}</div>
+                  <div className="font-medium truncate">{user.email}</div>
+                </div>
+                <Link
+                  className="px-4 py-3 text-[1rem] hover:bg-gray-200 font-normal"
+                  to="/my-account"
+                >
+                  My account
+                </Link>
+                <button
+                  onClick={handleLogout}
+                  className="px-4 py-3 text-start text-[1rem] hover:bg-gray-200 font-normal"
+                >
                   Sign out
-                </h3>
+                </button>
               </div>
-            ) : (
-              <div className="flex gap-1 items-center group">
-                <Icon
-                  icon="ic:baseline-account-circle"
-                  className=" text-5xl text-gray-500 group-hover:opacity-50 group-hover:cursor-pointer"
-                />
-                <p className="font-Amata font-normal text-base group-hover:opacity-50 group-hover:cursor-pointer">
-                  Log out
-                </p>
-              </div>
-            )}
-          </div>
+            </div>
+          ) : (
+            <Link to="/login" className="flex gap-1 items-center group">
+              <Icon
+                icon="ic:baseline-account-circle"
+                className=" text-5xl text-gray-500 group-hover:opacity-50 group-hover:cursor-pointer"
+              />
+              <p className="font-Amata font-normal text-base group-hover:opacity-50 group-hover:cursor-pointer">
+                Login
+              </p>
+            </Link>
+          )}
         </div>
       </div>
     </nav>
