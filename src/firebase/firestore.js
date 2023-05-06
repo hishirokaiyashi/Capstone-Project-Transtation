@@ -100,6 +100,7 @@ const createSeats = async (tripId) => {
   }
 };
 
+//
 const createOrder = async (order) => {
   try {
     await setDoc(doc(firestore, "orders", order.booking_id), {
@@ -128,6 +129,42 @@ const createOrder = async (order) => {
       status: order.status,
       paymentMethod: order.paymentMethod,
       paymentStatus: order.paymentStatus,
+      paidTime: order.paidTime,
+    });
+  } catch (err) {
+    console.log(err);
+    toast.error(err.message);
+  }
+};
+
+const createOrder2 = async (order) => {
+  try {
+    await setDoc(doc(firestore, "orders", order.booking_id), {
+      uid: order.booking_id,
+      user_id: order.user_id,
+      trip_id: order.trip_id,
+      displayName: order.displayName,
+      email: order.email,
+      phoneNumber: order.phoneNumber,
+      from: order.from,
+      to: order.to,
+      note: order.note,
+      pickUp: order.pickUp,
+      final: order.final,
+      ticketAmount: order.ticketAmount,
+      ticketPrice: order.ticketPrice,
+      totalPrice: order.ticketAmount * order.ticketPrice,
+      tickets: order.tickets,
+      type: order.type,
+      date: order.date,
+      totalSeats: order.totalSeats,
+      note: order.note,
+      departureTime: order.departureTime,
+      arrivalTime: order.arrivalTime,
+      createdAt: serverTimestamp(),
+      status: order.status,
+      paymentMethod: "card",
+      paymentStatus: "Paid",
       paidTime: order.paidTime,
     });
   } catch (err) {
@@ -193,6 +230,7 @@ export {
   createSeats,
   getUnavailableSeats,
   createOrder,
+  createOrder2,
   setSeatsByTripId,
   getOrderById,
 };

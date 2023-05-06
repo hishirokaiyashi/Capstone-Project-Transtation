@@ -4,11 +4,11 @@ import { signout } from "../../firebase/auth";
 import { Icon } from "@iconify/react";
 
 import { toast } from "react-toastify";
-import SearchBar from "./SearchBar";
+import { Link } from "react-router-dom";
 
 const navList = [
-  { name: "Home", href: "#" },
-  { name: "Promotion", href: "#" },
+  { name: "Home", href: "/" },
+  { name: "Promotion", href: "" },
   { name: "My Booking", href: "#" },
   { name: "About us", href: "#" },
 ];
@@ -70,7 +70,8 @@ const Navbar = () => {
                 className="text-base px-2 py-2 font-Amata font-normal 
             hover:text-red-400 hover:border-b-2 hover:border-b-red-400 "
               >
-                <a href={item.href}>{item.name}</a>
+                <Link to={item.href}>{item.name}</Link>
+                {/* <Link to={item.href}>{item.name}</Link> */}
               </div>
             ))}
 
@@ -94,7 +95,15 @@ const Navbar = () => {
               </select>
             </div>
             {/* Search info */}
-            <SearchBar />
+            <div className=" flex gap-2 justify-center items-center group hover:opacity-50 hover:cursor-pointer ">
+              <p className="group-hover:opacity-50 group-hover:cursor-pointer ml-2 font-Amata font-normal text-base ">
+                Search
+              </p>
+              <Icon
+                icon="material-symbols:search"
+                className="group-hover:opacity-50 group-hover:cursor-pointer"
+              />
+            </div>
           </div>
           {/* Account */}
           <div>
