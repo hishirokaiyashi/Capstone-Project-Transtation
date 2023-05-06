@@ -400,7 +400,7 @@ const TripsInfo = ({ tripInfo, route, itemOffset }) => {
             </div>
             <div className="flex flex-col justify-between w-3/6">
               <p className="text-right text-[2.375rem] text-[#F07272] font-semibold">
-                {addDot(tripInfo?.ticketPrice)}
+                {addDot(tripInfo?.ticketPrice) || tripInfo?.ticketPrice}
               </p>
               <div className="flex justify-between pl-[38px]">
                 <div className="w-[50%]">

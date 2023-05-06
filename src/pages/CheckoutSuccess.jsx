@@ -81,10 +81,7 @@ const CheckoutSuccess = () => {
                 <p className="font-semibold">
                   EMAIL: <span className="font-normal">{orderInfo.email}</span>
                 </p>
-                <p className="font-semibold">
-                  PASSENGER NAME:{" "}
-                  <span className="font-normal">{orderInfo.displayName}</span>
-                </p>
+
                 <p className="font-semibold">
                   PHONE:{" "}
                   <span className="font-normal">{orderInfo.phoneNumber}</span>

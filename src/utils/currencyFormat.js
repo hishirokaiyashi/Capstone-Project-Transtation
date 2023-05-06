@@ -1,8 +1,11 @@
 // Add dot to the price number => string
 const addDot = (price) => {
-  const formattedPrice =
-    price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + " đ";
-  return formattedPrice;
+  if (price && price.length > 0) {
+    const formattedPrice =
+      price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + " đ";
+    return formattedPrice;
+  }
+  return "";
 };
 
 // Remove dot to the price string => number
