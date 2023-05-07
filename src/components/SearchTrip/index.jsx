@@ -89,10 +89,10 @@ const SearchTrip = (props) => {
   const CustomInput = React.forwardRef((props, ref) => {
     return (
       <div
-        className="flex justify-between border-b p-2.5 py-3 my-4"
+        className="flex justify-between border-b p-2.5  py-3 my-4"
         onClick={props.onClick}
       >
-        <label onClick={props.onClick} ref={ref}>
+        <label onClick={props.onClick} ref={ref} className="pr-1">
           {props.value || props.placeholder}
         </label>
         <Icon

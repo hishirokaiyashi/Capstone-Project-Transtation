@@ -190,7 +190,7 @@ const ProfileUserInfo = () => {
           [
             "firstName",
             "lastName",
-            "phoneNumber",
+            // "phoneNumber",
             "address",
             "dateOfBirth",
             // "idCard",
@@ -225,11 +225,13 @@ const ProfileUserInfo = () => {
       setError({ ...error, lastName: "Last name cannot be empty" });
       document.getElementById("lastName").focus();
       return;
-    } else if (phoneNumber == "") {
-      setError({ ...error, phoneNumber: "Phone number cannot be empty" });
-      document.getElementById("phoneNumber").focus();
-      return;
-    } else if (dateOfBirth == "") {
+    } 
+    // else if (phoneNumber == "") {
+    //   setError({ ...error, phoneNumber: "Phone number cannot be empty" });
+    //   document.getElementById("phoneNumber").focus();
+    //   return;
+    // } 
+    else if (dateOfBirth == "") {
       setError({
         ...error,
         dateOfBirth: "Please enter a valid date",

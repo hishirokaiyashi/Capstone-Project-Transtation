@@ -104,7 +104,7 @@ const Home = () => {
     <MainLayout>
       <section className="search-trip relative  flex flex-col items-center justify-center bg-banner-home bg-no-repeat bg-cover h-[427px] after:content-[''] after:w-full after:h-full after:absolute after:top-0 after:left-0 after:bg-banner-opacity after:z-[-1] z-0">
         <div className="flex justify-center flex-col items-center max-w-screen-xl w-full mx-auto">
-          <h1 className="text-white text-4xl mb-10">
+          <h1 className="text-white text-4xl mb-10 font-semibold">
             START YOUR TRIP WITH US HERE
           </h1>
           <SearchTrip />
