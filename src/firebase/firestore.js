@@ -1,5 +1,4 @@
 import app from "./index.js";
-import { useCallback } from "react";
 import {
   getFirestore,
   query,
@@ -9,7 +8,6 @@ import {
   onSnapshot,
   collection,
   where,
-  addDoc,
   setDoc,
   doc,
   serverTimestamp,
@@ -50,22 +48,6 @@ const getSeatsFromTripId = (tripId, onUpdate) => {
 
   return unsubscribe;
 };
-
-// const getUnavailableSeats = async (tripId, seats) => {
-//   const tripRef = doc(collection(firestore, "trips"), tripId);
-//   const seatsQuerySnapshot = await collection(tripRef, "SEATS")
-//     .where("id", "in", seats)
-//     .get();
-//   const unavailableSeats = seatsQuerySnapshot.docs.filter(
-//     (doc) => doc.data().status === "Unavailable"
-//   );
-//   if (unavailableSeats.length > 0) {
-//     const unavailableSeatIds = unavailableSeats.map((seat) => seat.data().id);
-//     return unavailableSeatIds;
-//   } else {
-//     return [];
-//   }
-// };
 
 const getUnavailableSeats = async (tripId, seats) => {
   const tripRef = collection(firestore, "trips");
@@ -187,7 +169,6 @@ const setSeatsByTripId = async (tripId, seatIds, userId, orderId) => {
       await updateDoc(tripRef, {
         availableSeats: availableSeats - numSeats,
       });
-      console.log("Available seats updated successfully!");
     } else {
       console.error("Not enough available seats to reserve.");
       return;

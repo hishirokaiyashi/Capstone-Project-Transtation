@@ -5,7 +5,6 @@ import {
   Routes,
   Route,
 } from "react-router-dom";
-import { useSelector } from "react-redux";
 
 import PrivateRoute from "./PrivateRoute";
 
@@ -21,6 +20,7 @@ import Payment from "../pages/Payment";
 
 import Profile from "../pages/Profile";
 import CheckoutGiao from "../pages/Checkout-Giao";
+
 const Wrapper = ({ children }) => {
   const location = useLocation();
   useLayoutEffect(() => {

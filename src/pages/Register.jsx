@@ -9,27 +9,17 @@ import { toast } from "react-toastify";
 import { Icon } from "@iconify/react";
 import logo from "../assets/images/Login/Logo.png";
 
-import debounce from "../utils/debounce";
 import generateAvatar from "../utils/generateAvatar";
-import {
-  apiGetPublicProvinces,
-  apiGetPublicDistrict,
-  apiGetPublicVillage,
-} from "../utils/getLocationApi";
+
 import {
   validateEmail,
   validatePassword,
-  validateUsername,
   validateFirstName,
   validateLastName,
-  validatePhoneNumber,
-  validateAddress,
   validateIdCard,
   checkAge,
 } from "../utils/validation";
 
-// import Input from "../components/Input";
-import Select from "../components/Select";
 import Modal from "../components/Modal/index.jsx";
 import moment from "moment";
 

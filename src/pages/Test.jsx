@@ -60,11 +60,6 @@ const Test = () => {
           }
         })
         .catch((err) => console.log(err.message));
-      // console.log({
-      //   ...order,
-      //   ticketPrice: vndToUsd(order.ticketPrice),
-      //   totalPrice: vndToUsd(order.totalPrice),
-      // });
       /**
        * 2. Chỉnh sửa lại backend
        *   2.1 Pay load ở front end chỉnh sao thì payload backend chỉnh lại vậy.
@@ -110,7 +105,6 @@ const Test = () => {
         // );
 
         /** Dispatch chỉnh lại số ghế */
-        console.log(res);
         const newAvailableTickets = order.tickets.filter(
           (ticket) => !res.includes(ticket)
         ); // lọc lại từ store redux lấy ra những ghế hợp lệ

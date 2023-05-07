@@ -40,22 +40,6 @@ export const initUser = () => async (dispatch) => {
       //   }
       // }
 
-      // let userData = {
-      //   uid: "11131",
-      //   userName: "ancute",
-      //   admin: false,
-      //   fullName: "An Cute",
-      //   avatar:
-      //     "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRLqdxcGBTj3BkfW5gUu98uF7riVVIfB5Ir3SBzhph9uBoGoQcmunBLrZ0fGbVooPTE1no&usqp=CAU",
-      //   address: "Ở đâu ai biết",
-      //   age: 3,
-      //   createdAt: "",
-      //   email: "ancute@gmail.com",
-      //   gender: "Male",
-      //   phoneNumber: "0783767650",
-      //   authProvider: "email",
-      // };
-
       const userData = JSON.parse(user);
       dispatch(setUser({ ...userData }));
       dispatch(setLoading(false));
@@ -88,7 +72,6 @@ const userSlice = createSlice({
       state.isAuthenticated = false;
       state.token = null;
       localStorage.removeItem("token");
-      // state = initialState;
       localStorage.removeItem("user");
     },
     setToken(state, action) {

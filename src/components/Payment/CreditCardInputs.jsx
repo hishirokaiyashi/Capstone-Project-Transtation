@@ -1,6 +1,6 @@
 import { Icon } from "@iconify/react";
 import { useSelector } from "react-redux";
-import { usePaymentInputs } from "react-payment-inputs";
+import { usePaymentInputs } from "../react-payment-inputs";
 import { useState, useEffect } from "react";
 
 const previewCardImgs = {

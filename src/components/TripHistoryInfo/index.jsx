@@ -4,6 +4,7 @@ import { isPastDate, getDDMMYY } from "../../utils/convertDatetime.js";
 import { Icon } from "@iconify/react";
 import BedBus from "../../assets/images/Trips/Bed-Bus.png";
 import SeatBus from "../../assets/images/Trips/Seat-Bus.png";
+
 const TripHistoryInfo = ({ orderInfo }) => {
   const [viewMoreDetails, setViewMoreDetails] = useState(false);
 

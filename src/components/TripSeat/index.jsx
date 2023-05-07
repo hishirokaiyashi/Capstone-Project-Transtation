@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { Icon } from "@iconify/react";
-import { toast } from "react-toastify";
 
 const TripSeat = ({ typeSeat, seats, handleQuanitySeats }) => {
   const [currentSeats, setCurrentSeats] = useState(null);
@@ -152,30 +151,6 @@ const TripSeat = ({ typeSeat, seats, handleQuanitySeats }) => {
                   </div>
 
                   <div className="grid grid-cols-5 mt-[15px]">
-                    {/* {new Array(5)
-                      .fill(
-                        <Icon
-                          width="40"
-                          height="40"
-                          className="overflow-hidden"
-                          icon="material-symbols:bedroom-child"
-                          color="rgba(204, 204, 204, 0.8)"
-                        />
-                      )
-                      .map((element, index) => {
-                        return (
-                          <span
-                            key={index}
-                            className={
-                              index === 4
-                                ? "flex justify-self-end"
-                                : "flex justify-center"
-                            }
-                          >
-                            {element}
-                          </span>
-                        );
-                      })} */}
                     {currentSeats?.slice(15, 20)?.map((element, index) => {
                       return (
                         <span

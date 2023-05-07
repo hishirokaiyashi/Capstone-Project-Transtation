@@ -110,7 +110,6 @@ const CheckoutGiao = () => {
         // );
 
         /** Dispatch chỉnh lại số ghế */
-        console.log(res);
         const newAvailableTickets = order.tickets.filter(
           (ticket) => !res.includes(ticket)
         ); // lọc lại từ store redux lấy ra những ghế hợp lệ

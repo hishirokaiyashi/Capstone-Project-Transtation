@@ -181,12 +181,11 @@ const registerWithEmailAndPassword = async (user, email, password) => {
     const res = await createUserWithEmailAndPassword(auth, email, password);
     // Get created user
     const currentUser = res.user;
-    // console.log(currentUser);
     const verify = await sendEmailVerification(currentUser, {
-      url: "http://localhost:5173/login",
+      // url: "http://localhost:5173/login",
+      url: "https://capstone-project-transtation.vercel.app/login",
       handleCodeInApp: true,
     });
-    // console.log(verify);
     // Set a new user to users collection
     await setDoc(doc(db, "users", currentUser.uid), {
       uid: currentUser.uid,
@@ -229,7 +228,6 @@ const signout = async () => {
 //Update password
 const updateProfilePassword = async (currentPassword, newPassword) => {
   const user = auth.currentUser;
-  console.log("current", user.email, currentPassword, newPassword);
   const credential = EmailAuthProvider.credential(user.email, currentPassword);
 
   try {

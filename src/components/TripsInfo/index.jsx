@@ -128,18 +128,8 @@ const TripsInfo = ({ tripInfo, route }) => {
     [input]
   );
 
-  // useEffect(() => {
-  //   if (openMore && tripInfo) {
-  //     const unsubscribe = getSeatsFromTripId(tripInfo.uid, (data) => {
-  //       setSeats(data);
-  //     });
-  //     return unsubscribe;
-  //   }
-  // }, [tripInfo, openMore]); // call data seat
-
   const getSeats = useCallback((data) => {
     setSeats(data);
-    console.log(tripInfo.uid, data);
   }, []);
 
   useEffect(() => {

@@ -38,12 +38,10 @@ const Profile = () => {
         setLoading(false);
         setOrderInfo(res);
       } else {
-        // toast.error("Order not found!");
         setLoading(false);
         setError2(true);
       }
     } catch (error) {
-      console.error(error.message);
       toast.error("There was an error while getting the order.");
       setError2(true);
     }

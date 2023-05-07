@@ -8,7 +8,6 @@ import GoogleLogo from "../assets/images/Login/icon-google.png";
 import {
   logInWithEmailAndPassword,
   signInWithGoogle,
-  sendPasswordReset,
 } from "../firebase/auth.js";
 import { validateEmail } from "../utils/validation";
 
@@ -92,7 +91,7 @@ const Login = () => {
                   Sign In
                 </p>
                 <p className="text-[1.125rem] text-my-text-gray tracking-wide">
-                  Please enter valid email and password to Sign In
+                  Please enter valid email and password to sign in
                 </p>
               </div>
               <form

@@ -1,25 +1,15 @@
 import React, { useState } from "react";
 import messagerIcon from "../../../assets/images/Message/Message-logo-icon.png";
+
 const BoxChatIcon = ({ showPopUp, visible }) => {
+  
   const [hovered, setHovered] = useState(false);
-  //   const [display,setDisplay]=   useState(showPopUp);
   const handleChangeOnClick = () => {
     showPopUp(!visible);
     setHovered(false);
   };
   return (
     <div className="fixed bottom-[10px] right-[10px]">
-      {/* <div
-        onMouseEnter={() => setHovered(true)}
-        onMouseLeave={() => setHovered(false)}
-        onClick={handleChangeOnClick}
-        className={`transition-all duration-3000 ease-in-out 
-          ${
-            hovered
-              ? " bg-chat-icon bg-no-repeat  relative bg-center bg-[length:84px] w-[84px] h-[84px] bg-white rounded-full cursor-pointer border-2 "
-              : "bg-chat-icon bg-no-repeat  relative bg-center bg-[length:84px] w-[84px] h-[84px] bg-white rounded-full cursor-pointer border"
-          }`}
-      > */}
       <img
         src={messagerIcon}
         alt="messagerIcon"

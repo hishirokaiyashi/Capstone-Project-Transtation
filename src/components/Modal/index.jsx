@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Icon } from "@iconify/react";
 
 const Modal = ({ type, setLostModal, stepContinue }) => {
@@ -18,9 +18,6 @@ const Modal = ({ type, setLostModal, stepContinue }) => {
               height="65"
             />
             <p className="text-[1.125rem] font-semibold my-2">PENDING</p>
-            {/* <p className="text-[1rem] text-center text-my-text-gray-third">
-              Congratulations, your account has been successfully registered!
-            </p> */}
             <p className="text-[1rem] text-center text-my-text-gray-third">
               Please verify your account in your email before login
             </p>
@@ -45,9 +42,6 @@ const Modal = ({ type, setLostModal, stepContinue }) => {
               height="65"
             />
             <p className="text-[1.125rem] font-semibold my-2">PENDING</p>
-            {/* <p className="text-[1rem] text-center text-my-text-gray-third">
-              Congratulations, your password has been successfully reset
-            </p> */}
             <p className="text-[1rem] text-center text-my-text-gray-third">
               Please check your email for changing your password!
             </p>

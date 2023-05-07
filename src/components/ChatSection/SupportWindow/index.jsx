@@ -149,12 +149,10 @@ const SupportWindow = ({ visible, showPopUp }) => {
             </div>
             <div
               onClick={handleChangeOnClick}
-              className="transition-all duration-300 ease-in-out flex items-center  justify-center cursor-pointer hover:rounded-full text-slate-300 hover:bg-slate-300 hover:text-slate-500"
+              className="transition-all duration-300 ease-in-out flex items-center justify-center cursor-pointer hover:rounded-full text-slate-300 hover:bg-slate-300 hover:text-slate-500"
             >
               <Icon
                 icon="material-symbols:close"
-                // width="20"
-                // height="20"
                 className="text-lg w-[30px] h-[30px]"
               />
             </div>

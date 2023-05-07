@@ -1,5 +1,6 @@
 import React from "react";
 import QRCODE from "../../assets/images/Trips/QRCODE.png";
+
 const TripTicket = () => {
   return (
     <div className="px-[200px]">

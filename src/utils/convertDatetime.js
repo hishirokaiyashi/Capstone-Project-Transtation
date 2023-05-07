@@ -90,6 +90,7 @@ const checkBetweenTwoHours = (timeFirst, timeQuantity, timeSecond, endTime) => {
  *  arrivalTime: "hh:mm",
  *  ...
  * }] */
+
 const sortTripsAscending = (trips) => {
   const sortedTrips = [...trips];
   return sortedTrips.sort((a, b) => {

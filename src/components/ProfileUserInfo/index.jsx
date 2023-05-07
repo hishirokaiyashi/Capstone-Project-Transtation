@@ -13,6 +13,7 @@ import {
 } from "../../utils/validation";
 import generateAvatar from "../../utils/generateAvatar";
 import Button from "../Button";
+
 const defaultAvatar =
   "https://phongreviews.com/wp-content/uploads/2022/11/avatar-facebook-mac-dinh-19.jpg";
 

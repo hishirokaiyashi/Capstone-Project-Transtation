@@ -2,10 +2,13 @@ import React, { useState, useEffect } from "react";
 import { Link, Navigate, useNavigate, useLocation } from "react-router-dom";
 import { Icon } from "@iconify/react";
 import { toast } from "react-toastify";
-import { UsdToVnd, addDot } from "../utils/currencyFormat";
+
+import { addDot } from "../utils/currencyFormat";
 import { getOrderById } from "../firebase/firestore";
 import failPayment from "../assets/images/Payment/failedPayment.jpg";
 import MainLayout from "../layouts/MainLayout";
+
+import Loader from "../components/Loader";
 
 const CheckoutSuccess = () => {
   const location = useLocation();
@@ -43,7 +46,7 @@ const CheckoutSuccess = () => {
       setError(true);
     }
   };
-  if (loading) return <div>Loading</div>;
+  if (loading) return <Loader />;
   return error || !orderId ? (
     <Navigate to="/notfound" replace />
   ) : orderInfo.paymentStatus === "Paid" ? (

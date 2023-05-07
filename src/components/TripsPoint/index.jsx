@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { setPickUpPoints, setFinalPoints } from "../../redux/order.slice";
 import { checkBetweenTwoHours } from "../../utils/convertDatetime";
+
 const TripsPoint = ({
   type,
   pickUpsPoint,
@@ -16,10 +17,6 @@ const TripsPoint = ({
       pickUpsPoint ? pickUpsPoint[0].location : null
     );
 
-    // const handlePickUpPlaceChange = (event) => {
-    //   setSelectedPickUpPoint(event.target.value);
-    //   dispatch(setPickUpPoints(event.target.value));
-    // };
     const handlePickUpPlaceChange = (event) => {
       const selectedValue = event.target.value;
       setSelectedPickUpPoint(selectedValue);
@@ -47,9 +44,6 @@ const TripsPoint = ({
         })
       );
     }
-    // const returnTime = (time) => {
-    //   checkBetweenTwoHours(departureTime,1,time);
-    // };
     return pickUpsPoint?.map((point, index) => {
       return (
         <div
