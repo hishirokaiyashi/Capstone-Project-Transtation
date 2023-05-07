@@ -2,7 +2,8 @@ import React, { useState } from "react";
 
 import { isPastDate, getDDMMYY } from "../../utils/convertDatetime.js";
 import { Icon } from "@iconify/react";
-
+import BedBus from "../../assets/images/Trips/Bed-Bus.png";
+import SeatBus from "../../assets/images/Trips/Seat-Bus.png";
 const TripHistoryInfo = ({ orderInfo }) => {
   const [viewMoreDetails, setViewMoreDetails] = useState(false);
 
@@ -14,11 +15,7 @@ const TripHistoryInfo = ({ orderInfo }) => {
         }  border-b-2`}
       >
         <img
-          src={
-            orderInfo?.type === "Bed"
-              ? "/src/assets/images/Trips/Bed-Bus.png"
-              : "/src/assets/images/Trips/Seat-Bus.png"
-          }
+          src={orderInfo?.type === "Bed" ? BedBus : SeatBus}
           alt=""
           className="w-[30%] h-full object-cover"
         />

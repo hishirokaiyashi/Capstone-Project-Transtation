@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import BedBus from "../../assets/images/Trips/Bed-Bus.png";
+import SeatBus from "../../assets/images/Trips/Seat-Bus.png";
 
 import {
   setTripInfo,
@@ -29,7 +31,7 @@ import TripSeat from "../TripSeat";
 import TripsPoint from "../TripsPoint";
 import TripInput from "../TripInput";
 
-const TripsInfo = ({ tripInfo, route, itemOffset }) => {
+const TripsInfo = ({ tripInfo, route }) => {
   const navigate = useNavigate();
 
   const dispatch = useDispatch();
@@ -348,11 +350,7 @@ const TripsInfo = ({ tripInfo, route, itemOffset }) => {
     <div className="mb-[40px] ">
       <div className="flex pb-[10px] border-b-2 border-dashed bg-white">
         <img
-          src={
-            tripInfo.type === "Bed"
-              ? "/src/assets/images/Trips/Bed-Bus.png"
-              : "/src/assets/images/Trips/Seat-Bus.png"
-          }
+          src={tripInfo.type === "Bed" ? BedBus : SeatBus}
           alt={tripInfo.type}
           className="w-[30%] h-[230px] object-cover"
         />
