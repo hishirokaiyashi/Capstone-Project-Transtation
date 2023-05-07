@@ -1,10 +1,10 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import Router from "./routes";
 import { useDispatch } from "react-redux";
 import { initUser } from "./redux/user.slice";
 import { ToastContainer } from "react-toastify";
 import ScrollBtn from "./components/Scroll";
-
+import Loader from "./components/Loader";
 import "react-toastify/dist/ReactToastify.css";
 
 function App() {
@@ -12,9 +12,18 @@ function App() {
 
   useEffect(() => {
     dispatch(initUser());
+    window.addEventListener("load", handleLoading);
+    return () => window.removeEventListener("load", handleLoading);
   }, []);
 
-  return (
+  const [isLoading, setIsLoading] = useState(true);
+  const handleLoading = () => {
+    setTimeout(() => setIsLoading(false), 800);
+  };
+
+  return isLoading ? (
+    <Loader />
+  ) : (
     <div className="App">
       <Router />
       <ToastContainer
@@ -22,7 +31,6 @@ function App() {
         autoClose={3000}
         closeOnClick
         rtl={false}
-        // pauseOnFocusLoss
         draggable
         pauseOnHover
         theme="light"
