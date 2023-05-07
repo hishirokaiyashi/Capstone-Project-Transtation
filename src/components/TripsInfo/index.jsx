@@ -341,7 +341,7 @@ const TripsInfo = ({ tripInfo, route, itemOffset }) => {
       toast.error("There was an error happing. Please try again!");
       return;
     }
-    navigate("/test");
+    navigate("/payment");
   };
 
   return (

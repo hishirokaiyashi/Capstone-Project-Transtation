@@ -3,6 +3,7 @@ import { Link, useNavigate, Navigate } from "react-router-dom";
 import { Icon } from "@iconify/react";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
+
 import {
   logInWithEmailAndPassword,
   signInWithGoogle,
@@ -90,10 +91,10 @@ const Login = () => {
 
             <div>
               <div className="mb-[35px]">
-                <p className="text-[1.75rem] font-semibold font-Besley mb-[15px]">
+                <p className="text-[1.75rem] font-semibold  mb-[15px]">
                   Sign In
                 </p>
-                <p className="text-[1.125rem] text-my-text-gray font-Amata tracking-wide">
+                <p className="text-[1.125rem] text-my-text-gray tracking-wide">
                   Please enter valid email and password to Sign In
                 </p>
               </div>
@@ -117,7 +118,7 @@ const Login = () => {
                     Email
                     <span className="text-red-500"> *</span>
                   </label>
-                  <span className="mt-[4px] px-[16px] text-[0.75rem] text-my-text-gray-second font-Roboto">
+                  <span className="mt-[4px] px-[16px] text-[0.75rem] text-my-text-gray-second ">
                     Ex. user123@abc.com
                   </span>
                 </div>
@@ -161,7 +162,7 @@ const Login = () => {
                   </Link>
                 </div>
                 <button
-                  className="py-[16px] px-[56px] bg-[#E04141] mb-[8px] rounded-[10px] font-Ballo text-[1.375rem] text-white"
+                  className="py-[16px] px-[56px] bg-[#E04141] mb-[8px] rounded-[10px]  text-[1.375rem] text-white"
                   type="submit"
                   form="loginForm"
                 >
@@ -177,7 +178,7 @@ const Login = () => {
               </Link>
               <div className="flex justify-center mt-[15px]">
                 <div className="border-[#6A6A6B] border-t "></div>
-                <span className=" font-Ballo text-[1.25rem]">OR</span>
+                <span className="  text-[1.25rem]">OR</span>
               </div>
               <div
                 className=" flex items-center justify-center cursor-pointer"
@@ -199,7 +200,7 @@ const Login = () => {
 
         <div className="relative h-screen flex flex-col justify-end w-6/12 bg-banner-login bg-cover bg-center bg-no-repeat">
           <div className="absolute bg-black bg-opacity-30 z-2 top-0 left-0 right-0 bottom-0"></div>
-          <h1 className="absolute p-[4px] w-fit text-5xl font-extrabold bottom-20 left-10 text-white font-Achivo z-3 bg-gradient-to-r from-gray-900 to-transparent">
+          <h1 className="absolute p-[4px] w-fit text-5xl font-extrabold bottom-20 left-10 text-white  z-3 bg-gradient-to-r from-gray-900 to-transparent">
             EXPLORE NEW
             <br />
             DESINATION

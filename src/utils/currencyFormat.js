@@ -1,6 +1,6 @@
 // Add dot to the price number => string
 const addDot = (price) => {
-  if (price && price.length > 0) {
+  if (price && price.toString().length > 0) {
     const formattedPrice =
       price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + " đ";
     return formattedPrice;

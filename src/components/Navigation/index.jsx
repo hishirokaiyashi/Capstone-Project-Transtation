@@ -4,14 +4,12 @@ import { signout } from "../../firebase/auth";
 import { Icon } from "@iconify/react";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
-import { Link } from "react-router-dom";
 
 const navList = [
   { name: "Home", href: "/" },
   { name: "Promotion", href: "/promotion" },
   { name: "My Booking", href: "/profile/order-history" },
   { name: "About us", href: "/about-us" },
-
 ];
 
 const Navbar = () => {
@@ -72,7 +70,6 @@ const Navbar = () => {
             hover:text-red-400 hover:border-b-2 hover:border-b-red-400 "
               >
                 <Link to={item.href}>{item.name}</Link>
-
               </div>
             ))}
 

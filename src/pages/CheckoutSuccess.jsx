@@ -164,7 +164,7 @@ const CheckoutSuccess = () => {
                 <p className="font-semibold">
                   TOTAL PRICE:{" "}
                   <span className="font-normal">
-                    {addDot(UsdToVnd(orderInfo.totalPrice))}
+                    {addDot(orderInfo.totalPrice)}
                   </span>
                 </p>
               </div>
