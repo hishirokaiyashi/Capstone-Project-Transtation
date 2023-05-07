@@ -20,6 +20,7 @@ import Payment from "../pages/Payment";
 
 import Profile from "../pages/Profile";
 import CheckoutGiao from "../pages/Checkout-Giao";
+import MyBooking from "../pages/MyBooking";
 
 const Wrapper = ({ children }) => {
   const location = useLocation();
@@ -83,7 +84,14 @@ export default function App() {
               </PrivateRoute>
             }
           />
-
+          <Route
+            path="/order-history"
+            element={
+              <PrivateRoute>
+                <MyBooking />
+              </PrivateRoute>
+            }
+          />
           <Route
             path="/checkout-success"
             element={

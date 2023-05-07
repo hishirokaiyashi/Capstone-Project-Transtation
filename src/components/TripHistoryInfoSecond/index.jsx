@@ -5,7 +5,7 @@ import { Icon } from "@iconify/react";
 import BedBus from "../../assets/images/Trips/Bed-Bus.png";
 import SeatBus from "../../assets/images/Trips/Seat-Bus.png";
 import QRCODE from "../../assets/images/Trips/QRCODE.png";
-const TripHistoryInfo = ({ orderInfo }) => {
+const TripHistoryInfoSecond = ({ orderInfo }) => {
   const [viewMoreDetails, setViewMoreDetails] = useState(false);
 
   return (
@@ -18,7 +18,7 @@ const TripHistoryInfo = ({ orderInfo }) => {
         <img
           src={orderInfo?.type === "Bed" ? BedBus : SeatBus}
           alt=""
-          className="w-[30%] h-full object-cover"
+          className="w-[30%] h-[300px] object-cover"
         />
         <div className="pl-[28px] pt-[12px] w-[70%] pr-[18px] ">
           <div className="flex justify-between items-center">
@@ -586,4 +586,4 @@ const TripHistoryInfo = ({ orderInfo }) => {
     </div>
   );
 };
-export default TripHistoryInfo;
+export default TripHistoryInfoSecond;
