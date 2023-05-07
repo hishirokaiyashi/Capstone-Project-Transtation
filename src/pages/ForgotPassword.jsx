@@ -3,6 +3,7 @@ import { Link, useNavigate, Navigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { Icon } from "@iconify/react";
 import { toast } from "react-toastify";
+import logo from "../assets/images/Login/Logo.png";
 
 import { sendPasswordReset } from "../firebase/auth.js";
 
@@ -51,11 +52,7 @@ const ForgotPassword = () => {
           <div className="w-full py-[30px] rounded-[10px] bg-white ">
             <div className="flex justify-between mb-[45px]">
               <Link to="/">
-                <img
-                  src="/src/assets/images/Login/Logo.png"
-                  alt="Capstone Logo"
-                  className="h-[34px]"
-                />
+                <img src={logo} alt="Capstone Logo" className="h-[34px]" />
               </Link>
               <div className="flex items-center justify-center cursor-pointer text-[1.25rem]">
                 <span>EN</span>
@@ -125,7 +122,7 @@ const ForgotPassword = () => {
           <h1 className="absolute p-[4px] w-fit text-5xl font-extrabold bottom-20 left-10 text-white font-Achivo z-3 bg-gradient-to-r from-gray-900 to-transparent">
             EXPLORE NEW
             <br />
-            DESINATION
+            DESTINATION
             <br />
             WITH US
           </h1>

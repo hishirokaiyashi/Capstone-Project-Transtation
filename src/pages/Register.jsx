@@ -7,6 +7,7 @@ import {
 import { uploadFile } from "../firebase/storage";
 import { toast } from "react-toastify";
 import { Icon } from "@iconify/react";
+import logo from "../assets/images/Login/Logo.png";
 
 import debounce from "../utils/debounce";
 import generateAvatar from "../utils/generateAvatar";
@@ -332,11 +333,7 @@ const Register = () => {
         <div className="w-[693px] bg-white py-[14px] rounded-[10px]">
           <div className="flex justify-between mb-[30px] px-[60px]">
             <Link to="/">
-              <img
-                src="/src/assets/images/Login/Logo.png"
-                alt="Capstone Logo"
-                className="h-[34px]"
-              />
+              <img src={logo} alt="Capstone Logo" className="h-[34px]" />
             </Link>
             <div className="flex items-center justify-center cursor-pointer text-[1.25rem]">
               <span>EN</span>

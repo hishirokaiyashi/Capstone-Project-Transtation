@@ -24,11 +24,11 @@ export default {
       backgroundImage: {
         "chat-icon": "url('/src/assets/images/Message/Message-logo-icon.png')",
         "banner-login": "url('/src/assets/images/Login/login-banner.png')",
-        "banner-home": "url('./src/assets/images/Home/Banner1.png')",
-        "banner-trip": "url('./src/assets/images/Trips/Banner.png')",
-        "free-banner": "url('./src/assets/images/Home/HCM-Banner.png')",
-        "transit-banner": "url('./src/assets/images/Home/Village-Banner.png')",
-        ticket: "url('./src/assets/images/Payment/TicketBg.png')",
+        "banner-home": "url('/src/assets/images/Home/Banner1.png')",
+        "banner-trip": "url('/src/assets/images/Trips/Banner.png')",
+        "free-banner": "url('/src/assets/images/Home/HCM-Banner.png')",
+        "transit-banner": "url('/src/assets/images/Home/Village-Banner.png')",
+        ticket: "url('/src/assets/images/Payment/TicketBg.png')",
       },
       backgroundColor: {
         "black-background": "#1B1A1A",
