@@ -169,7 +169,7 @@ const ProfileChangePassword = () => {
           htmlFor="password"
           className="mb-[10px] font-semibold text-[1rem]"
         >
-          New Password
+          New password
         </label>
         <div className="relative">
           <input

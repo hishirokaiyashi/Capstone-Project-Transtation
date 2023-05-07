@@ -541,7 +541,7 @@ const TripsInfo = ({ tripInfo, route }) => {
               </div>
               <div className="w-[50%] px-[46px]">
                 <div className="text-[1.5rem] font-semibold text-center mb-[30px]">
-                  Pay point
+                  Drop off point
                 </div>
                 <TripsPoint
                   type="finals"

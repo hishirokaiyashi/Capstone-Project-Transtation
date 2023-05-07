@@ -8,7 +8,7 @@ import { toast } from "react-toastify";
 const navList = [
   { name: "Home", href: "/" },
   { name: "Promotion", href: "/promotion" },
-  { name: "My Booking", href: "order-history" },
+  { name: "My Booking", href: "/order-history" },
   { name: "About us", href: "/about-us" },
 ];
 
