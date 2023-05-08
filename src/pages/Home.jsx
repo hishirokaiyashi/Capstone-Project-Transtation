@@ -110,17 +110,7 @@ const Home = () => {
           <SearchTrip />
         </div>
       </section>
-      <section
-        data-aos="fade-right"
-        data-aos-offset="200"
-        data-aos-delay="50"
-        data-aos-duration="00"
-        data-aos-easing="ease-in-out"
-        data-aos-mirror="true"
-        data-aos-once="true"
-        data-aos-anchor-placement="top-center"
-        className="popular-routes"
-      >
+      <section className="popular-routes">
         <hr className="w-[311px] bg-primaryRed h-[8px] my-14" />
         <div className="max-w-[1280px] mx-auto">
           <h2 className="text-4xl  font-extrabold mb-8">
@@ -166,17 +156,7 @@ const Home = () => {
           />
         </div>
       </section>
-      <section
-        data-aos="flip-up"
-        data-aos-offset="200"
-        data-aos-delay="50"
-        data-aos-duration="00"
-        data-aos-easing="ease-in-out"
-        data-aos-mirror="true"
-        data-aos-once="true"
-        data-aos-anchor-placement="top-center"
-        className="exclusive-routes mt-10"
-      >
+      <section className="exclusive-routes mt-10">
         <div className="max-w-[1280px] mx-auto">
           <div className="flex items-center">
             <h2 className="text-4xl  font-extrabold mr-4">
@@ -249,17 +229,7 @@ const Home = () => {
           />
         </div>
       </section>
-      <section
-        data-aos="zoom-in-up"
-        data-aos-offset="200"
-        data-aos-delay="50"
-        data-aos-duration="00"
-        data-aos-easing="ease-in-out"
-        data-aos-mirror="true"
-        data-aos-once="true"
-        data-aos-anchor-placement="top-center"
-        className="checkout bg-[#EEEDED] py-4 pb-10"
-      >
+      <section className="checkout bg-[#EEEDED] py-4 pb-10">
         <hr className="w-[311px] bg-primaryRed h-[8px] my-14" />
         <div className="w-[1280px] mx-auto flex">
           <div className="flex-1">

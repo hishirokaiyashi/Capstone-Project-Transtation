@@ -168,10 +168,10 @@ const Register = () => {
         ...error,
         dateOfBirth: "Please enter a date that is not in the future",
       });
-    } else if (age < 16) {
+    } else if (age < 18) {
       setError({
         ...error,
-        dateOfBirth: "You must be at least 16 years old",
+        dateOfBirth: "You must be at least 18 years old",
       });
     } else if (age > 100) {
       setError({
@@ -412,7 +412,7 @@ const Register = () => {
                 />
                 <p className="text-red-500 text-[0.75rem]">{error.lastName}</p>
               </div>
-              <div className="flex flex-col mt-[16px] relative border ">
+              <div className="flex flex-col mt-[16px] relative ">
                 <label
                   htmlFor="date"
                   className="absolute top-[-16px] left-[12px] bg-white p-[4px] z-10"
