@@ -255,9 +255,7 @@ const MyBooking = () => {
                     <div
                       onClick={() => setActiveTab(2)}
                       className={`${
-                        activeTab == 2
-                          ? `bg-[#D9D9D94D]`
-                          : `hover:bg-[#D9D9D94D]`
+                        activeTab == 2 ? `bg-[#D9D9D94D]` : ``
                       } py-4 cursor-pointer text-center`}
                     >
                       Payment History
@@ -266,7 +264,7 @@ const MyBooking = () => {
 
                   {/* Order history */}
 
-                  <div className="mx-auto py-14 px-14 ">
+                  <div className="mx-auto py-14 px-14 w-full">
                     {/* Order wrapper */}
                     {activeTab == 2 ? (
                       <div>
