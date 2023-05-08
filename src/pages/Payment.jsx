@@ -3,6 +3,13 @@ import { toast } from "react-toastify";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { setTickets, resetOrderState } from "../redux/order.slice.js";
+import MomoLogo from "../assets/images/Payment/MoMo_Logo.png"
+import VisaLogo from "../assets/images/Payment/Visa.jpg"
+import Vnpay from "../assets/images/Payment/Vnpay.png"
+import Napas from "../assets/images/Payment/Napas.png"
+import JCB from "../assets/images/Payment/JCB.png"
+import MasterCard from "../assets/images/Payment/MasterCard.png"
+import AmericanExpress from "../assets/images/Payment/AmericanExpress.png"
 
 import MainLayout from "../layouts/MainLayout";
 import Modal from "../components/Modal/index.jsx";
@@ -142,7 +149,7 @@ const Payment = () => {
                       <span className="text-xl font-Inter">Momo E-Wallet</span>
                       <img
                         className="w-[16px] h-[16px]"
-                        src="/src/assets/images/Payment/MoMo_Logo.png"
+                        src={MomoLogo}
                         alt="MoMo_Logo"
                       />
                     </div>
@@ -178,22 +185,22 @@ const Payment = () => {
                     <div className="flex mb-4">
                       <img
                         className="w-[26px] h-[16px]"
-                        src="/src/assets/images/Payment/MasterCard.png"
+                        src={MasterCard}
                         alt="MasterCard"
                       />
                       <img
                         className="w-[26px] h-[16px]"
-                        src="/src/assets/images/Payment/Visa.jpg"
+                        src={VisaLogo}
                         alt="Visa"
                       />
                       <img
                         className="w-[26px] h-[16px]"
-                        src="/src/assets/images/Payment/AmericanExpress.png"
+                        src={AmericanExpress}
                         alt="AmericanExpress"
                       />
                       <img
                         className="w-[26px] h-[16px]"
-                        src="/src/assets/images/Payment/JCB.png"
+                        src={JCB}
                         alt="JCB"
                       />
                     </div>
@@ -229,7 +236,7 @@ const Payment = () => {
                       </span>
                       <img
                         className="w-[36px] h-[26px] object-contain"
-                        src="/src/assets/images/Payment/Napas.png"
+                        src={Napas}
                         alt="Napas"
                       />
                     </div>
@@ -293,7 +300,7 @@ const Payment = () => {
                       <span className="text-xl font-Inter">VN Pay QR</span>
                       <img
                         className="w-[46px] h-[36px]"
-                        src="/src/assets/images/Payment/Vnpay.png"
+                        src={Vnpay}
                         alt="Vnpay"
                       />
                     </div>
