@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import MainLayout from "../layouts/MainLayout";
+import QrCode from "../assets/images/Trips/QRCODE.png"
 
 const MyTicket = () => {
   return (
@@ -67,8 +68,8 @@ const MyTicket = () => {
               </div>
               <div className="flex flex-col items-center rounded-b-[10px] pb-8 border-b-2 border-l-2 border-r-2">
                 <img
-                  src="src/assets/images/Trips/QRCODE.png"
-                  alt=""
+                  src={QrCode}
+                  alt="QrCode"
                   className="w-[200px] h-[200px] mt-[20px]"
                 />
               </div>
