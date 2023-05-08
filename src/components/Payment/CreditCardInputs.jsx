@@ -2,18 +2,22 @@ import { Icon } from "@iconify/react";
 import { useSelector } from "react-redux";
 import { usePaymentInputs } from "react-payment-inputs";
 import { useState, useEffect } from "react";
+import Visa from "../../assets/images/Payment/visa.jpeg";
+import Amex from "../../assets/images/Payment/amex.jpeg";
+import mastercard from "../../assets/images/Payment/MasterCard.png";
+import JCB from "../../assets/images/Payment/JCB.png";
+import undefineCard from "../../assets/images/Payment/undefinedCard.png";
 
 const previewCardImgs = {
-  visa: "public/img/visa.jpeg",
-  amex: "public/img/amex.jpeg",
-  mastercard: "public/img/masterCard.png",
-  jcb: "public/img/jcb.png",
+  visa:  Visa ,
+  amex:  Amex ,
+  mastercard:  mastercard ,
+  jcb:  JCB ,
 };
 
 const creditType = (cc) => {
   // remove white space
   const cardNumber = cc.replace(/ /g, "");
-  console.log(cardNumber);
 
   // Define & detect card types from Regular Expressions:
   let amex = new RegExp("^3[47][0-9]{13}$");
@@ -42,9 +46,7 @@ const creditType = (cc) => {
 };
 
 const CreditCardInputs = () => {
-  const [showPreviewCard, setShowPreviewCard] = useState(
-    "public/img/undefinedCard.png"
-  );
+  const [showPreviewCard, setShowPreviewCard] = useState( undefineCard );
   //Load Card info from Local Storage :
   let storageCardInfo = JSON.parse(localStorage.getItem("saveCard"));
 
@@ -76,12 +78,10 @@ const CreditCardInputs = () => {
         [e.target.name]: e.target.value,
       });
     }
-    console.log(card);
   };
 
   // Only update Preview Card Img  when Cardtype is changed
   useEffect(() => {
-    console.log(previewCardImgs[card.type], card.type);
     setShowPreviewCard(previewCardImgs[card.type]);
   }, [card.cardNumber]);
 
@@ -98,7 +98,6 @@ const CreditCardInputs = () => {
   }, [checkedSaveCard]);
 
   const [closeBtn, setCloseBtn] = useState(false);
-  const { order } = useSelector((state) => state.order);
 
   return (
     <div className={`mt-4 ${closeBtn ? "hidden" : "block"}`}>
@@ -237,7 +236,7 @@ const CreditCardInputs = () => {
           {/* Card preview */}
           <div>
             <img
-              src={showPreviewCard || "public/img/undefinedCard.png"}
+              src={showPreviewCard || undefineCard}
               className="max-w-[300px] "
             ></img>
           </div>
