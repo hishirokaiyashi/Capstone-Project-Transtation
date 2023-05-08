@@ -63,16 +63,16 @@ export default function App() {
           />
 
           {/* Payment routes */}
-          <Route
+          {/* <Route
             path="/payment"
             element={
               <PrivateRoute>
                 <Payment />
               </PrivateRoute>
             }
-          />
+          /> */}
           <Route
-            path="/paymentSecond"
+            path="/payment"
             element={
               <PrivateRoute>
                 <PaymentSecond />
