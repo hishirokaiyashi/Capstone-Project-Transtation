@@ -6,11 +6,13 @@ import { getOrdersByUserId } from "../firebase/firestore";
 import { isPastDate, getDDMMYY } from "../utils/convertDatetime.js";
 import MainLayout from "../layouts/MainLayout";
 import TripHistoryInfoSecond from "../components/TripHistoryInfoSecond";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Icon } from "@iconify/react";
 import PaymentHistoryList from "../components/Payment/PaymentHistoryList";
 
-const MyBooking = () => {
+const PaymentHistory = () => {
+  const navigate = useNavigate();
+
   const BookingFilter = {
     sortBy: ["Latest Booking", "Oldest Booking"],
     categories: ["Sleeper Bus", "45 Seater Bus"],
@@ -32,7 +34,7 @@ const MyBooking = () => {
   const [loading, setLoading] = useState(true);
   const [error2, setError2] = useState(false);
   const [orderInfo, setOrderInfo] = useState(null);
-  const [activeTab, setActiveTab] = useState(1);
+  const [activeTab, setActiveTab] = useState(2);
 
   useEffect(() => {
     if (user.uid) {
@@ -245,13 +247,15 @@ const MyBooking = () => {
                     >
                       My Wallet
                     </div>
-                    <div
-                      onClick={() => setActiveTab(1)}
-                      className={`py-4 border-r-[1px] border-solid border-[#D9D9D94D] cursor-pointer text-center 
+                    <Link to="/order-history">
+                      <div
+                        onClick={() => setActiveTab(1)}
+                        className={`py-4 border-r-[1px] border-solid border-[#D9D9D94D] cursor-pointer text-center 
                       ${activeTab == 1 ? `bg-[#D9D9D94D]` : ``}`}
-                    >
-                      My Booking
-                    </div>
+                      >
+                        My Booking
+                      </div>
+                    </Link>
                     <div
                       onClick={() => setActiveTab(2)}
                       className={`${
@@ -267,127 +271,68 @@ const MyBooking = () => {
                   {/* Order history */}
 
                   <div className="mx-auto py-14 px-14 ">
-                    {/* Order wrapper */}
-                    {activeTab == 2 ? (
-                      <div>
-                        {/* Render PaymentHistoryList */}
-                        <div className="flex flex-col w-full">
-                          <Link
-                            to="/"
-                            className="mb-4 font-Ballo font-medium text-xl text-[#1D7ED8]"
-                          >
-                            Back Home
-                          </Link>
-                          <div className="w-full flex flex-col gap-[20px]">
-                            {availableOrders && availableOrders?.length > 0 ? (
-                              availableOrders?.map((order, index) => {
-                                return (
-                                  <div key={index} className="mb-10">
-                                    <PaymentHistoryList orderInfo={order} />
-                                  </div>
-                                );
-                              })
-                            ) : (
-                              <div className="flex justify-center items-center flex-col">
-                                <img
-                                  src={nothing}
-                                  alt={nothing}
-                                  className="w-[200px] h-[200px] object-cover"
-                                />
-                                <h1 className="text-[1rem] mb-[10px]">
-                                  There is no bookings available at the moment!
-                                </h1>
-                              </div>
-                            )}
-                          </div>
-                        </div>
-                        <div className="flex flex-col w-full mt-[20px]">
-                          <p className="mb-[20px] text-[1.5rem] font-semibold">
-                            EXPIRED BOOKINGS
-                          </p>
-                          <div className="w-full ">
-                            {expiredOrders && expiredOrders?.length > 0 ? (
-                              expiredOrders?.map((order, index) => {
-                                return (
-                                  <div key={index} className="">
-                                    <TripHistoryInfoSecond orderInfo={order} />
-                                  </div>
-                                );
-                              })
-                            ) : (
-                              <div className="flex justify-center items-center flex-col">
-                                <img
-                                  src={nothing}
-                                  alt={nothing}
-                                  className="w-[200px] h-[200px] object-cover bg-transparent"
-                                />
-                                <h1 className="text-[1rem] mb-[10px]">
-                                  There is no bookings available at the moment!
-                                </h1>
-                              </div>
-                            )}
-                          </div>
+                    {/* Payment wrapper */}
+                    {/* __________________________ */}
+                    <div>
+                      {/* Render PaymentHistoryList */}
+                      <div className="flex flex-col w-full">
+                        <Link
+                          to="/"
+                          className="mb-8 font-Ballo font-medium text-xl text-[#1D7ED8]"
+                        >
+                          Back Home
+                        </Link>
+                        <div className="w-full flex flex-col gap-[20px]">
+                          {availableOrders && availableOrders?.length > 0 ? (
+                            availableOrders?.map((order, index) => {
+                              return (
+                                <div key={index} className="mb-10">
+                                  <PaymentHistoryList orderInfo={order} />
+                                </div>
+                              );
+                            })
+                          ) : (
+                            <div className="flex justify-center items-center flex-col">
+                              <img
+                                src={nothing}
+                                alt={nothing}
+                                className="w-[200px] h-[200px] object-cover"
+                              />
+                              <h1 className="text-[1rem] mb-[10px]">
+                                There is no bookings available at the moment!
+                              </h1>
+                            </div>
+                          )}
                         </div>
                       </div>
-                    ) : (
-                      <div>
-                        {/* Render Booking History */}
-                        <div className="flex flex-col w-full">
-                          <p className="mb-10 text-2xl text-[#535354] font-Ballo font-medium">
-                            AVAILABLE BOOOKINGS
-                          </p>
-                          <div className="w-full flex flex-col gap-[20px]">
-                            {availableOrders && availableOrders?.length > 0 ? (
-                              availableOrders?.map((order, index) => {
-                                return (
-                                  <div key={index} className="mb-10">
-                                    <TripHistoryInfoSecond orderInfo={order} />
-                                  </div>
-                                );
-                              })
-                            ) : (
-                              <div className="flex justify-center items-center flex-col">
-                                <img
-                                  src={nothing}
-                                  alt={nothing}
-                                  className="w-[200px] h-[200px] object-cover"
-                                />
-                                <h1 className="text-[1rem] mb-[10px]">
-                                  There is no bookings available at the moment!
-                                </h1>
-                              </div>
-                            )}
-                          </div>
-                        </div>
-                        <div className="flex flex-col w-full mt-[20px]">
-                          <p className="mb-[20px] text-[1.5rem] font-semibold">
-                            EXPIRED BOOKINGS
-                          </p>
-                          <div className="w-full ">
-                            {expiredOrders && expiredOrders?.length > 0 ? (
-                              expiredOrders?.map((order, index) => {
-                                return (
-                                  <div key={index} className="">
-                                    <TripHistoryInfoSecond orderInfo={order} />
-                                  </div>
-                                );
-                              })
-                            ) : (
-                              <div className="flex justify-center items-center flex-col">
-                                <img
-                                  src={nothing}
-                                  alt={nothing}
-                                  className="w-[200px] h-[200px] object-cover bg-transparent"
-                                />
-                                <h1 className="text-[1rem] mb-[10px]">
-                                  There is no bookings available at the moment!
-                                </h1>
-                              </div>
-                            )}
-                          </div>
+                      <div className="flex flex-col w-full mt-[20px]">
+                        <p className="mb-[20px] text-[1.5rem] font-semibold">
+                          EXPIRED BOOKINGS
+                        </p>
+                        <div className="w-full ">
+                          {expiredOrders && expiredOrders?.length > 0 ? (
+                            expiredOrders?.map((order, index) => {
+                              return (
+                                <div key={index} className="">
+                                  <TripHistoryInfoSecond orderInfo={order} />
+                                </div>
+                              );
+                            })
+                          ) : (
+                            <div className="flex justify-center items-center flex-col">
+                              <img
+                                src={nothing}
+                                alt={nothing}
+                                className="w-[200px] h-[200px] object-cover bg-transparent"
+                              />
+                              <h1 className="text-[1rem] mb-[10px]">
+                                There is no bookings available at the moment!
+                              </h1>
+                            </div>
+                          )}
                         </div>
                       </div>
-                    )}
+                    </div>
                   </div>
                 </div>
               </div>
@@ -399,4 +344,4 @@ const MyBooking = () => {
   );
 };
 
-export default MyBooking;
+export default PaymentHistory;

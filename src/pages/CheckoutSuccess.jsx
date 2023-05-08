@@ -57,125 +57,149 @@ const CheckoutSuccess = () => {
         </p>
         <div className="bg-[#eeeeee] py-[20px]">
           <div className="max-w-[600px] m-auto p-4 bg-white  flex justify-center flex-col ">
-            <div className="flex flex-col items-center">
+            <div className="flex flex-col items-center my-10">
               <Icon
                 icon="ic:baseline-check-circle-outline"
                 color="#e04141"
                 width="100"
                 height="100"
-                className="text-center"
+                className="text-center mb-5"
               />
-              <p className="text-[2rem] mt-[10px] font-semibold mb-[15px] tracking-wide">
+              <p className="font-Ballo text-4xl font-bold mt-[10px] mb-[15px] tracking-wide">
                 PAYMENT SUCCESSFULLY
               </p>
-              <p className="text-[#6A6A6B] tracking-wide">
+              <p className="text-[#6A6A6B] tracking-wide font-Amata font-normal">
                 Congratulations, your ticket had been issued
               </p>
             </div>
             <div className="flex flex-col justify-start">
-              <p className="w-full p-[10px] bg-[#E04141] text-white font-semibold text-[1.25rem] mt-[24px]">
-                Your trip information
-              </p>
-              <div className="py-[16px] px-[10px] flex flex-col gap-[10px] border-b-2">
-                <p className="font-semibold">
+              <div className="mx-3">
+                <div className="bg-[#E04141] mb-4 w-full p-[10px] text-white font-semibold text-[1.25rem]">
+                  Your trip information
+                </div>
+              </div>
+
+              {/* Trip Info */}
+              <div className="py-[16px] px-[10px] flex flex-col gap-[10px] border-b-2 pb-8 mx-6 mb-4">
+                <p className="font-semibold font-Ballo text-base">
                   PASSENGER NAME:{" "}
-                  <span className="font-normal">{orderInfo.displayName}</span>
+                  <span className="ml-1 font-semibold">
+                    {orderInfo.displayName.toUpperCase()}
+                  </span>
                 </p>
-                <p className="font-semibold">
-                  EMAIL: <span className="font-normal">{orderInfo.email}</span>
+                <p className="font-semibold font-Ballo text-base leading-6">
+                  EMAIL:{" "}
+                  <span className="font-normal ml-1">{orderInfo.email}</span>
                 </p>
 
-                <p className="font-semibold">
+                <p className="font-semibold font-Ballo text-base leading-6">
                   PHONE:{" "}
-                  <span className="font-normal">{orderInfo.phoneNumber}</span>
+                  <span className="font-normal ml-1">
+                    {orderInfo.phoneNumber}
+                  </span>
                 </p>
-                <p className="font-semibold">
-                  FROM: <span className="font-normal">{orderInfo.from}</span>
+                <p className="font-semibold font-Ballo text-base leading-6">
+                  FROM:{" "}
+                  <span className="font-normal ml-1">{orderInfo.from}</span>
                 </p>
-                <p className="font-semibold">
-                  TO: <span className="font-normal">{orderInfo.to}</span>
+                <p className="font-semibold font-Ballo text-base leading-6">
+                  TO: <span className="font-normal ml-1">{orderInfo.to}</span>
                 </p>
-                <p className="font-semibold">
-                  DATE: <span className="font-normal">{orderInfo.date}</span>
+                <p className="font-semibold font-Ballo text-base leading-6">
+                  DATE:{" "}
+                  <span className="font-normal ml-1">{orderInfo.date}</span>
                 </p>
-                <p className="font-semibold">
+                <p className="font-semibold font-Ballo text-base leading-6">
                   BOOKING ID:{" "}
-                  <span className="font-normal">{orderInfo.uid}</span>
+                  <span className="font-normal ml-1">{orderInfo.uid}</span>
                 </p>
               </div>
-              <div className="py-[16px] px-[10px] flex flex-col gap-[10px]">
+              <div className="py-[16px] px-[10px] flex flex-col gap-[10px] ">
                 <p className=" bg-[#1D7ED8] w-full p-[10px] text-white font-semibold text-[1.25rem]">
                   BUS INFORMATION:
                 </p>
-                <p className="font-semibold">
-                  TRIP ID:{" "}
-                  <span className="font-normal">{orderInfo.trip_id}</span>
-                </p>
-                <p className="font-semibold">
-                  BOOKING ID:{" "}
-                  <span className="font-normal">{orderInfo.uid}</span>
-                </p>
-                <p className="font-semibold">
-                  BUS TYPE:{" "}
-                  <span className="font-normal">
-                    Luxury Seater {orderInfo.type} Bus
-                  </span>
-                </p>
-                <p className="font-semibold">
-                  CAPACITY:{" "}
-                  <span className="font-normal">
-                    {orderInfo.totalSeats} Seats
-                  </span>
-                </p>
-                <p className="font-semibold">
-                  DEPARTURE TIME:{" "}
-                  <span className="font-normal">{orderInfo.departureTime}</span>
-                </p>
-                <p className="font-semibold">
-                  ARRIVAL TIME:{" "}
-                  <span className="font-normal">{orderInfo.arrivalTime}</span>
-                </p>
-                <p className="font-semibold">
-                  TICKET AMOUNT:{" "}
-                  <span className="font-normal">{orderInfo.ticketAmount}</span>
-                </p>
 
-                <p className="font-semibold">
-                  SEAT NUMBER:{" "}
-                  {orderInfo.tickets.map((seat, index) => {
-                    const isLastSeat = index === orderInfo.tickets.length - 1;
-                    return (
-                      <span key={index} className="font-normal">
-                        {seat}
-                        {!isLastSeat && ","}{" "}
-                      </span>
-                    );
-                  })}
-                </p>
-                <p className="font-semibold">
-                  PICK UP POINT:{" "}
-                  <span className="font-normal">
-                    {orderInfo.pickUp.location} - {orderInfo.pickUp.name}
-                  </span>
-                </p>
-                <p className="font-semibold">
-                  DROP OFF POINT:{" "}
-                  <span className="font-normal">
-                    {orderInfo.final.location} - {orderInfo.final.name}
-                  </span>
-                </p>
-                <p className="font-semibold">
-                  TOTAL PRICE:{" "}
-                  <span className="font-normal">
-                    {addDot(orderInfo.totalPrice)}
-                  </span>
-                </p>
+                {/* Bus Info */}
+                <div className=" mx-6 mb-2">
+                  <p className="font-semibold font-Ballo text-base leading-10">
+                    TRIP ID:{" "}
+                    <span className="font-normal ml-1">
+                      {orderInfo.trip_id}
+                    </span>
+                  </p>
+
+                  <p className="font-semibold font-Ballo text-base leading-10">
+                    BUS TYPE:{" "}
+                    <span className="font-normal ml-1">
+                      Luxury Seater {orderInfo.type} Bus
+                    </span>
+                  </p>
+                  <p className="font-semibold font-Ballo text-base leading-10">
+                    CAPACITY:{" "}
+                    <span className="font-normal ml-1">
+                      {orderInfo.totalSeats} Seats
+                    </span>
+                  </p>
+                  <p className="font-semibold font-Ballo text-base leading-10">
+                    DEPARTURE TIME:{" "}
+                    <span className="font-normal ml-1">
+                      {orderInfo.departureTime}
+                    </span>
+                  </p>
+                  <p className="font-semibold font-Ballo text-base leading-10">
+                    ARRIVAL TIME:{" "}
+                    <span className="font-normal ml-1">
+                      {orderInfo.arrivalTime}
+                    </span>
+                  </p>
+                  <p className="font-semibold font-Ballo text-base leading-10">
+                    TICKET AMOUNT:{" "}
+                    <span className="font-normal ml-1">
+                      {orderInfo.ticketAmount}
+                    </span>
+                  </p>
+
+                  <p className="font-semibold font-Ballo text-base leading-10">
+                    SEAT NUMBER:{" "}
+                    {orderInfo.tickets.map((seat, index) => {
+                      const isLastSeat = index === orderInfo.tickets.length - 1;
+                      return (
+                        <span key={index} className="font-normal">
+                          {seat}
+                          {!isLastSeat && ","}{" "}
+                        </span>
+                      );
+                    })}
+                  </p>
+                  <p className="font-semibold font-Ballo text-base leading-10">
+                    PICK UP POINT:{" "}
+                    <span className="font-normal ml-1">
+                      {orderInfo.pickUp.location} - {orderInfo.pickUp.name}
+                    </span>
+                  </p>
+                  <p className="font-semibold font-Ballo text-base leading-10">
+                    DROP OFF POINT:{" "}
+                    <span className="font-normal ml-1">
+                      {orderInfo.final.location} - {orderInfo.final.name}
+                    </span>
+                  </p>
+                  <p className="font-semibold font-Ballo text-base leading-10">
+                    TOTAL PRICE:{" "}
+                    <span className=" ml-1 text-base text-[#1D7ED8] font-bold">
+                      {addDot(orderInfo.totalPrice)}
+                    </span>
+                  </p>
+                </div>
               </div>
-              <p className="text-[#6A6A6B] m-auto">
+              <p className="text-[#6A6A6B] m-auto font-Amata text-sm ">
                 Your ticket had been sent to your email and SMS
               </p>
             </div>
-            <Link className="text-center mt-[30px] px-[60px] py-[10px] bg-[#E04141] text-white cursor-pointer">
+            <Link
+              to="/my-ticket"
+              className="font-Ballo text-lg font-semibold text-center mt-[30px] mx-2 mb-10 px-[60px] py-[10px] 
+            bg-[#E04141] text-white cursor-pointer"
+            >
               VIEW TICKET
             </Link>
           </div>

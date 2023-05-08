@@ -18,10 +18,10 @@ const TripHistoryInfoSecond = ({ orderInfo }) => {
         <img
           src={orderInfo?.type === "Bed" ? BedBus : SeatBus}
           alt=""
-          className="w-[30%] h-[300px] object-cover"
+          className="w-[35%] aspect-square object-cover"
         />
-        <div className="pl-[28px] pt-[12px] w-[70%] pr-[18px] ">
-          <div className="flex justify-between items-center">
+        <div className="pl-12 pt-6 w-[70%] pr-12 ">
+          <div className="flex justify-between gap-16 items-center mb-4">
             <div className="flex items-center justify-center font-Ballo text-[1.5rem] font-bold text-[#535354]">
               <span>{orderInfo?.from} </span>
               <span>
@@ -29,19 +29,21 @@ const TripHistoryInfoSecond = ({ orderInfo }) => {
               </span>
               <span>{orderInfo?.to}</span>
             </div>
-            <p className="text-[0.625rem] text-my-text-gray-third font-Ballo">
+            <div className=" w-1/3 text-[0.625rem] text-my-text-gray-third font-Ballo">
               Booking ID: {orderInfo?.uid}
-            </p>
+            </div>
           </div>
-          <div className="flex flex-col justify-between ">
-            <p className="mb-[10px]">
+          <div className="flex flex-col justify-between text-[#535354]">
+            <p className=" font-Ballo text-base mb-4">
               <span>Date: {orderInfo?.date} - </span>
               <span>{orderInfo?.departureTime}</span>
             </p>
-            <ul className="list-disc">
+
+            {/* Details */}
+            <ul className="list-disc font-Ballo mb-4">
               <li className="font-semibold mb-[10px]">
                 Pick up point:{" "}
-                <span className="font-normal leading-normal">
+                <span className="font-normal leading-normal ">
                   {orderInfo?.pickUp.location} - {orderInfo?.pickUp.name}
                 </span>
               </li>
@@ -55,8 +57,8 @@ const TripHistoryInfoSecond = ({ orderInfo }) => {
           </div>
           <div className="mt-[15px] flex justify-between items-center ">
             {!isPastDate(getDDMMYY(orderInfo?.date)) ? (
-              <div className="flex h-full py-[12px] px-[12px] tracking-wide bg-[#4CAF50] text-white text-[1rem]">
-                <p>TICKET ISSUED</p>
+              <div className="flex h-full py-[10px] px-[20px] tracking-wide bg-[#4CAF50] font-semibold text-white text-sm">
+                TICKET ISSUED
               </div>
             ) : (
               <div className="flex h-full py-[12px] px-[12px] tracking-wide bg-[#cccc] text-white text-[1rem]">

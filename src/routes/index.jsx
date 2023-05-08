@@ -21,6 +21,8 @@ import Payment from "../pages/Payment";
 import Profile from "../pages/Profile";
 import CheckoutGiao from "../pages/Checkout-Giao";
 import MyBooking from "../pages/MyBooking";
+import MyTicket from "../pages/MyTicket";
+import PaymentHistory from "../pages/PaymentHistory";
 
 const Wrapper = ({ children }) => {
   const location = useLocation();
@@ -92,6 +94,8 @@ export default function App() {
               </PrivateRoute>
             }
           />
+
+          {/* Payment successful */}
           <Route
             path="/checkout-success"
             element={
@@ -100,7 +104,26 @@ export default function App() {
               </PrivateRoute>
             }
           />
+          {/* Payment History
+          <Route
+            path="/payment-history"
+            element={
+              <PrivateRoute>
+                <PaymentHistory />
+              </PrivateRoute>
+            }
+          /> */}
 
+          {/* My Ticket */}
+
+          <Route
+            path="/my-ticket"
+            element={
+              <PrivateRoute>
+                <MyTicket />
+              </PrivateRoute>
+            }
+          />
           {/* Account information routes */}
 
           {/* Not found page */}
