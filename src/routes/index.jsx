@@ -17,6 +17,7 @@ import ForgotPassword from "../pages/ForgotPassword";
 import CheckoutSuccess from "../pages/CheckoutSuccess";
 import Notfound from "../pages/Notfound";
 import Payment from "../pages/Payment";
+import PaymentSecond from "../pages/PaymentSecond"
 
 import Profile from "../pages/Profile";
 import CheckoutGiao from "../pages/Checkout-Giao";
@@ -67,6 +68,14 @@ export default function App() {
             element={
               <PrivateRoute>
                 <Payment />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/paymentSecond"
+            element={
+              <PrivateRoute>
+                <PaymentSecond />
               </PrivateRoute>
             }
           />

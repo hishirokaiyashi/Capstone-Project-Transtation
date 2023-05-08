@@ -3,7 +3,7 @@ import { Link, Navigate, useNavigate, useLocation } from "react-router-dom";
 import { Icon } from "@iconify/react";
 import { toast } from "react-toastify";
 
-import { addDot } from "../utils/currencyFormat";
+import { addDot, vndToUsd, UsdToVnd } from "../utils/currencyFormat";
 import { getOrderById } from "../firebase/firestore";
 import failPayment from "../assets/images/Payment/failedPayment.jpg";
 import MainLayout from "../layouts/MainLayout";
@@ -186,7 +186,7 @@ const CheckoutSuccess = () => {
                   <p className="font-semibold font-Ballo text-base leading-10">
                     TOTAL PRICE:{" "}
                     <span className=" ml-1 text-base text-[#1D7ED8] font-bold">
-                      {addDot(orderInfo.totalPrice)}
+                      {addDot(UsdToVnd(orderInfo.totalPrice))}
                     </span>
                   </p>
                 </div>
