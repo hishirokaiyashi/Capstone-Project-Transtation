@@ -15,6 +15,7 @@ export default {
         btnRed: "#E04141",
       },
       fontFamily: {
+        Almarai: ["Almarai", "sans-serif"],
         Achivo: ["Archivo Black", "sans-serif"],
         Amata: ["Armata", "sans-serif"],
         Ballo: ["Baloo 2", "cursive"],
@@ -22,6 +23,8 @@ export default {
         Roboto: ["Roboto", "sans-serif"],
       },
       backgroundImage: {
+        "banner-about-us":
+          "url('/src/assets/images/AboutUs/phong-nam-valley-cao-bang.jpeg')",
         "chat-icon": "url('/src/assets/images/Message/Message-logo-icon.png')",
         "banner-login": "url('/src/assets/images/Login/login-banner.png')",
         "banner-home": "url('/src/assets/images/Home/Banner1.png')",
