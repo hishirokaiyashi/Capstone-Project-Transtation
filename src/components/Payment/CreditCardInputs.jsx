@@ -4,15 +4,15 @@ import { usePaymentInputs } from "react-payment-inputs";
 import { useState, useEffect } from "react";
 import Visa from "../../assets/images/Payment/visa.jpeg";
 import Amex from "../../assets/images/Payment/amex.jpeg";
-import mastercard from "../../assets/images/Payment/MasterCard.png";
+import mastercard from "../../assets/images/Payment/Mastercard.png";
 import JCB from "../../assets/images/Payment/JCB.png";
 import undefineCard from "../../assets/images/Payment/undefinedCard.png";
 
 const previewCardImgs = {
-  visa:  Visa ,
-  amex:  Amex ,
-  mastercard:  mastercard ,
-  jcb:  JCB ,
+  visa: Visa,
+  amex: Amex,
+  mastercard: mastercard,
+  jcb: JCB,
 };
 
 const creditType = (cc) => {
@@ -46,7 +46,7 @@ const creditType = (cc) => {
 };
 
 const CreditCardInputs = () => {
-  const [showPreviewCard, setShowPreviewCard] = useState( undefineCard );
+  const [showPreviewCard, setShowPreviewCard] = useState(undefineCard);
   //Load Card info from Local Storage :
   let storageCardInfo = JSON.parse(localStorage.getItem("saveCard"));
 
