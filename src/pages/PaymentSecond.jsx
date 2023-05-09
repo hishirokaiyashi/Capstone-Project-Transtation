@@ -1,15 +1,15 @@
 import React, { useState, useEffect, useRef, useMemo } from "react";
 import { toast } from "react-toastify";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { setTickets, resetOrderState } from "../redux/order.slice.js";
-import MomoLogo from "../assets/images/Payment/MoMo_Logo.png"
-import VisaLogo from "../assets/images/Payment/Visa.jpg"
-import Vnpay from "../assets/images/Payment/Vnpay.png"
-import Napas from "../assets/images/Payment/Napas.png"
-import JCB from "../assets/images/Payment/JCB.png"
-import MasterCard from "../assets/images/Payment/MasterCard.png"
-import AmericanExpress from "../assets/images/Payment/AmericanExpress.png"
+import MomoLogo from "../assets/images/Payment/MoMo_Logo.png";
+import VisaLogo from "../assets/images/Payment/Visa.jpg";
+import Vnpay from "../assets/images/Payment/Vnpay.png";
+import Napas from "../assets/images/Payment/Napas.png";
+import JCB from "../assets/images/Payment/JCB.png";
+import MasterCard from "../assets/images/Payment/MasterCard.png";
+import AmericanExpress from "../assets/images/Payment/AmericanExpress.png";
 
 import MainLayout from "../layouts/MainLayout";
 import Modal from "../components/Modal/index.jsx";
@@ -25,129 +25,131 @@ import CreditCardInputs from "../components/Payment/CreditCardInputs.jsx";
 import { checkout } from "../services/stripeApis.js";
 
 const Payment = () => {
-    const { order } = useSelector((state) => state.order);
+  const { order } = useSelector((state) => state.order);
 
-    const navigate = useNavigate();
-    const dispatch = useDispatch();
-  
-    const [failedModal, setFailedModal] = useState(false);
-    const [lostModal, setLostModal] = useState(false);
-  
-    const [selectedPaymentMethod, setSelectedPaymentMethod] =
-      useState("CreditCard");
-    const [stepContinue, setStepContinue] = useState(false);
-  
-    useEffect(() => {
-      if (stepContinue) {
-        /** Ở front end: Tạo ra một order trong Firebase với paid status == "Unpaid"
-         *  Chỉnh lại status của số ghế khách hàng đặt với trip tương ứng thành "Unavailable", chỉnh lại orderId, userId luôn
-         */
-        updateDataByOrder(); // done - Update data in table Order
-  
-        /** Call api post tới local 5000 tạo thanh toán stripe
-         * 1. Post nên cần payload --> Tạo payload phù hợp ở request call post */
-        const checkoutOrder = [
-          {
-            name: `Luxury ${order.type} Bus`,
-            image: order.image,
-            description: order.tickets,
-            booking_id: order.booking_id,
-            trip_id: order.trip_id,
-            user_id: order.user_id,
-            quanity: order.ticketAmount,
-            ticketPrice: vndToUsd(order.ticketPrice),
-            totalPrice: vndToUsd(order.totalPrice),
-            email: order.email,
-            displayName: order.displayName,
-          },
-        ];
-        checkout(checkoutOrder)
-          .then((res) => {
-            if (res.data.url) {
-              window.location.href = res.data.url;
-            }
-          })
-          .catch((err) => console.log(err.message));
-        // console.log({
-        //   ...order,
-        //   ticketPrice: vndToUsd(order.ticketPrice),
-        //   totalPrice: vndToUsd(order.totalPrice),
-        // });
-        /**
-         * 2. Chỉnh sửa lại backend
-         *   2.1 Pay load ở front end chỉnh sao thì payload backend chỉnh lại vậy.
-         *   2.2 Cài firebase vô, config như frontend rồi chỉnh lại create order là set lại order Unpaid bên trên thành Paid rồi điền thông tin thẻ thanh toán của người dùng
-         *   2.3 Nếu thanh toán thành công thì mới create order, nếu không thành công thì mình xoá order mới tạo, chỉnh lại số ghế thành Available, chỉnh là orderId và userId của ghế thành null
-         *   2.4 Ở Front end thêm 2 màn hình thành công và thất bại
-         */
-        // console.log("Test Continue");
-      }
-    }, [stepContinue]);
-  
-    const updateDataByOrder = async () => {
-      try {
-        await createOrder(order); // tạo thành order
-        await setSeatsByTripId(
-          order.trip_id,
-          order.tickets,
-          order.user_id,
-          order.booking_id
-        );
-  
-        toast.success("Order created successfully");
-      } catch (error) {
-        toast.error(error.message);
-      }
-    };
-  
-    const handlePayOrder = async () => {
-      try {
-        const res = await getUnavailableSeats(order.trip_id, order.tickets);
-        if (res.length == order.tickets.length) {
-          setFailedModal(true); // confirmation for use about the changing information of order
-          setTimeout(() => {
-            // dispatch reset
-            dispatch(resetOrderState(null));
-            navigate(-1); // go back the previous page booking
-          }, 2000);
-          return;
-        }
-        if (res.length !== 0) {
-          // toast.info(
-          //   `These following tickets has been paid by other person: ${res.toString()}`
-          // );
-  
-          /** Dispatch chỉnh lại số ghế */
-          const newAvailableTickets = order.tickets.filter(
-            (ticket) => !res.includes(ticket)
-          ); // lọc lại từ store redux lấy ra những ghế hợp lệ
-          dispatch(setTickets(newAvailableTickets));
-          setLostModal(true);
-          return;
-        }
-      } catch (error) {
-        console.log(error);
-        toast.error("There was an error happing. Please try again!");
-        return;
-      }
-      // setFailedModal(true);
-      setStepContinue(true);
-      // confirmation for use about the changing information of order
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const [failedModal, setFailedModal] = useState(false);
+  const [lostModal, setLostModal] = useState(false);
+
+  const [selectedPaymentMethod, setSelectedPaymentMethod] =
+    useState("CreditCard");
+  const [stepContinue, setStepContinue] = useState(false);
+
+  useEffect(() => {
+    if (stepContinue) {
       /** Ở front end: Tạo ra một order trong Firebase với paid status == "Unpaid"
        *  Chỉnh lại status của số ghế khách hàng đặt với trip tương ứng thành "Unavailable", chỉnh lại orderId, userId luôn
        */
-  
+      updateDataByOrder(); // done - Update data in table Order
+
       /** Call api post tới local 5000 tạo thanh toán stripe
-       * 1. Post nên cần payload --> Tạo payload phù hợp ở request call post
+       * 1. Post nên cần payload --> Tạo payload phù hợp ở request call post */
+      const checkoutOrder = [
+        {
+          name: `Luxury ${order.type} Bus`,
+          image: order.image,
+          description: order.tickets,
+          booking_id: order.booking_id,
+          trip_id: order.trip_id,
+          user_id: order.user_id,
+          quanity: order.ticketAmount,
+          ticketPrice: vndToUsd(order.ticketPrice),
+          totalPrice: vndToUsd(order.totalPrice),
+          email: order.email,
+          displayName: order.displayName,
+        },
+      ];
+      checkout(checkoutOrder)
+        .then((res) => {
+          if (res.data.url) {
+            window.location.href = res.data.url;
+          }
+        })
+        .catch((err) => console.log(err.message));
+      // console.log({
+      //   ...order,
+      //   ticketPrice: vndToUsd(order.ticketPrice),
+      //   totalPrice: vndToUsd(order.totalPrice),
+      // });
+      /**
        * 2. Chỉnh sửa lại backend
        *   2.1 Pay load ở front end chỉnh sao thì payload backend chỉnh lại vậy.
        *   2.2 Cài firebase vô, config như frontend rồi chỉnh lại create order là set lại order Unpaid bên trên thành Paid rồi điền thông tin thẻ thanh toán của người dùng
        *   2.3 Nếu thanh toán thành công thì mới create order, nếu không thành công thì mình xoá order mới tạo, chỉnh lại số ghế thành Available, chỉnh là orderId và userId của ghế thành null
        *   2.4 Ở Front end thêm 2 màn hình thành công và thất bại
        */
-    };
+      // console.log("Test Continue");
+    }
+  }, [stepContinue]);
 
-  return failedModal ? (
+  const updateDataByOrder = async () => {
+    try {
+      await createOrder(order); // tạo thành order
+      await setSeatsByTripId(
+        order.trip_id,
+        order.tickets,
+        order.user_id,
+        order.booking_id
+      );
+
+      toast.success("Order created successfully");
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
+
+  const handlePayOrder = async () => {
+    try {
+      const res = await getUnavailableSeats(order.trip_id, order.tickets);
+      if (res.length == order.tickets.length) {
+        setFailedModal(true); // confirmation for use about the changing information of order
+        setTimeout(() => {
+          // dispatch reset
+          dispatch(resetOrderState(null));
+          navigate(-1); // go back the previous page booking
+        }, 2000);
+        return;
+      }
+      if (res.length !== 0) {
+        // toast.info(
+        //   `These following tickets has been paid by other person: ${res.toString()}`
+        // );
+
+        /** Dispatch chỉnh lại số ghế */
+        const newAvailableTickets = order.tickets.filter(
+          (ticket) => !res.includes(ticket)
+        ); // lọc lại từ store redux lấy ra những ghế hợp lệ
+        dispatch(setTickets(newAvailableTickets));
+        setLostModal(true);
+        return;
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error("There was an error happing. Please try again!");
+      return;
+    }
+    // setFailedModal(true);
+    setStepContinue(true);
+    // confirmation for use about the changing information of order
+    /** Ở front end: Tạo ra một order trong Firebase với paid status == "Unpaid"
+     *  Chỉnh lại status của số ghế khách hàng đặt với trip tương ứng thành "Unavailable", chỉnh lại orderId, userId luôn
+     */
+
+    /** Call api post tới local 5000 tạo thanh toán stripe
+     * 1. Post nên cần payload --> Tạo payload phù hợp ở request call post
+     * 2. Chỉnh sửa lại backend
+     *   2.1 Pay load ở front end chỉnh sao thì payload backend chỉnh lại vậy.
+     *   2.2 Cài firebase vô, config như frontend rồi chỉnh lại create order là set lại order Unpaid bên trên thành Paid rồi điền thông tin thẻ thanh toán của người dùng
+     *   2.3 Nếu thanh toán thành công thì mới create order, nếu không thành công thì mình xoá order mới tạo, chỉnh lại số ghế thành Available, chỉnh là orderId và userId của ghế thành null
+     *   2.4 Ở Front end thêm 2 màn hình thành công và thất bại
+     */
+  };
+
+  return !order.email ? (
+    <Navigate to="/notfound" replace />
+  ) : failedModal ? (
     <Modal type="FailCheckout" />
   ) : lostModal ? (
     <Modal
@@ -251,11 +253,7 @@ const Payment = () => {
                         src={AmericanExpress}
                         alt="AmericanExpress"
                       />
-                      <img
-                        className="w-[26px] h-[16px]"
-                        src={JCB}
-                        alt="JCB"
-                      />
+                      <img className="w-[26px] h-[16px]" src={JCB} alt="JCB" />
                     </div>
                     {selectedPaymentMethod === "CreditCard" && (
                       <CreditCardInputs />
@@ -514,19 +512,6 @@ const Payment = () => {
         </div>
       </section>
     </MainLayout>
-// import React from "react";
-// import MultiRangeSlider from "../components/Slider";
-// import MainLayout from "../layouts/MainLayout";
-
-// const Payment = () => {
-//   return (
-//     <div className="mt-[50px]">
-//       <MultiRangeSlider
-//         min={0}
-//         max={1000}
-//         onChange={({ min, max }) => console.log(`min = ${min}, max = ${max}`)}
-//       />
-//     </div>
   );
 };
 
