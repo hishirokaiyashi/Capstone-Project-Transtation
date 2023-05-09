@@ -83,9 +83,9 @@ const MyTicket = () => {
               >
                 Back to Home
               </Link>
-              <p className="font-Ballo cursor-pointer text-lg pl-[30px] text-[#E04141] underline">
+              <span className="font-Ballo cursor-pointer text-lg pl-[30px] text-[#E04141] underline">
                 Print My Ticket
-              </p>
+              </span>
               <Link
                 to="/order-history"
                 className="font-Ballo text-lg font-semibold text-[#1D7ED8] underline"
