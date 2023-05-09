@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import MainLayout from "../layouts/MainLayout";
-import QrCode from "../assets/images/Trips/QRCODE.png"
+import QrCode from "../assets/images/Trips/QRCODE.png";
 
 const MyTicket = () => {
   return (
@@ -76,16 +76,19 @@ const MyTicket = () => {
             </div>
 
             {/* Optional Buttons */}
-            <div className="flex justify-between mt-3">
+            <div className="flex justify-between items-center mt-3">
               <Link
                 to="/"
                 className="font-Ballo text-lg font-semibold text-[#1D7ED8] underline "
               >
                 Back to Home
               </Link>
+              <p className="font-Ballo cursor-pointer text-lg pl-[30px] text-[#E04141] underline">
+                Print My Ticket
+              </p>
               <Link
                 to="/order-history"
-                className="font-Ballo text-lg font-semibold text-[#1D7ED8] underline "
+                className="font-Ballo text-lg font-semibold text-[#1D7ED8] underline"
               >
                 View My Booking
               </Link>
