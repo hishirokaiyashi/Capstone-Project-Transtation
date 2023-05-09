@@ -25,6 +25,7 @@ import MyBooking from "../pages/MyBooking";
 import MyTicket from "../pages/MyTicket";
 import PaymentHistory from "../pages/PaymentHistory";
 import Promotion from "../pages/Promotion";
+import AboutUs from "../pages/AboutUs";
 
 const Wrapper = ({ children }) => {
   const location = useLocation();
@@ -44,11 +45,22 @@ export default function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/forgotpassword" element={<ForgotPassword />} />
 
+          {/* Home */}
           <Route
             path="/"
             element={
               <PrivateRoute>
                 <Home />
+              </PrivateRoute>
+            }
+          />
+
+          {/* About us */}
+          <Route
+            path="/about-us"
+            element={
+              <PrivateRoute>
+                <AboutUs />
               </PrivateRoute>
             }
           />
