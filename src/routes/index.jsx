@@ -17,13 +17,14 @@ import ForgotPassword from "../pages/ForgotPassword";
 import CheckoutSuccess from "../pages/CheckoutSuccess";
 import Notfound from "../pages/Notfound";
 import Payment from "../pages/Payment";
-import PaymentSecond from "../pages/PaymentSecond"
+import PaymentSecond from "../pages/PaymentSecond";
 
 import Profile from "../pages/Profile";
 import CheckoutGiao from "../pages/Checkout-Giao";
 import MyBooking from "../pages/MyBooking";
 import MyTicket from "../pages/MyTicket";
 import PaymentHistory from "../pages/PaymentHistory";
+import AboutUs from "../pages/AboutUs";
 
 const Wrapper = ({ children }) => {
   const location = useLocation();
@@ -43,11 +44,21 @@ export default function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/forgotpassword" element={<ForgotPassword />} />
 
+          {/* Home */}
           <Route
             path="/"
             element={
               <PrivateRoute>
                 <Home />
+              </PrivateRoute>
+            }
+          />
+          {/* About US */}
+          <Route
+            path="/about-us"
+            element={
+              <PrivateRoute>
+                <AboutUs />
               </PrivateRoute>
             }
           />
