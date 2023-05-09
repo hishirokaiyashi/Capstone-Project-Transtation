@@ -10,7 +10,7 @@ import Napas from "../assets/images/Payment/Napas.png";
 import JCBLogo from "../assets/images/Payment/JCBLogo.png";
 import JCB from "../assets/images/Payment/JCB.png";
 import MasterCardLogo from "../assets/images/Payment/MasterCardLogo.png";
-import Mastercard from "../assets/images/Payment/Mastercard.png";
+import Mastercard from "../assets/images/Payment/MasterCard.png";
 import AmericanExpress from "../assets/images/Payment/AmericanExpress.png";
 
 import MainLayout from "../layouts/MainLayout";

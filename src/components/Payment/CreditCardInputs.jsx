@@ -4,7 +4,7 @@ import { usePaymentInputs } from "react-payment-inputs";
 import { useState, useEffect } from "react";
 import Visa from "../../assets/images/Payment/visa.jpeg";
 import Amex from "../../assets/images/Payment/amex.jpeg";
-import mastercard from "../../assets/images/Payment/Mastercard.png";
+import mastercard from "../../assets/images/Payment/MasterCard.png";
 import JCB from "../../assets/images/Payment/JCB.png";
 import undefineCard from "../../assets/images/Payment/undefinedCard.png";
 
