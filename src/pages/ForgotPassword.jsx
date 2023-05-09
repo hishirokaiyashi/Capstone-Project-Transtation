@@ -17,6 +17,7 @@ const ForgotPassword = () => {
 
   const { isAuthenticated } = useSelector((state) => state.user);
   const [display, setDisplay] = useState(false);
+  const [colorChange, setColorChange] = useState(true);
   const [error, setError] = useState("");
   const handleForgotPassword = async (e) => {
     e.preventDefault();
@@ -24,7 +25,6 @@ const ForgotPassword = () => {
       // Validate email
       try {
         await sendPasswordReset(forgotEmail);
-        // toast.info("Password reset link sent!");
         setDisplay(true);
       } catch (error) {
         toast.error(error.message);
@@ -37,10 +37,15 @@ const ForgotPassword = () => {
   const handleChangeEmail = (e) => {
     if (e.currentTarget.value === "") {
       setError("Email cannot be empty");
+      setColorChange(true);
     } else {
       if (validateEmail(e.currentTarget.value)) {
         setError("Email is invalid");
-      } else setError("");
+        setColorChange(true);
+      } else {
+        setError("");
+        setColorChange(false);
+      }
     }
     setForgotEmail(e.target.value);
   };
@@ -106,7 +111,9 @@ const ForgotPassword = () => {
                   </p>
                   <button
                     form="resetForm"
-                    className="w-fit font-Ballo mt-2 py-[20px] px-[80px] text-[1.625rem] bg-[#6A6A6B] text-white rounded"
+                    className={`w-fit font-Ballo mt-2 py-[20px] px-[80px] text-[1.625rem] text-white rounded ${
+                      colorChange ? "bg-[#6A6A6B]" : "bg-[#E04141]"
+                    }`}
                     type="submit"
                     // onClick={}
                   >

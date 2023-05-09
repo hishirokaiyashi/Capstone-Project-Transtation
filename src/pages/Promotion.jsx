@@ -118,8 +118,8 @@ const Promotion = () => {
                     alt={item.image}
                     className="h-[400px] w-full rounded-[10px] shadow-lg  object-cover after:bg-[rgba(0,0,0,0.5)] "
                   />
-                  <div className="w-full flex justify-center p-2 text-center z-2 absolute -translate-x-2/4 -translate-y-2/4 left-2/4 top-2/4 text-[1.875rem] text-white font-semibold">
-                    <span className="bg-[#ccc] p-4 text-black bg-opacity-70">
+                  <div className="w-full flex bg-white justify-center rounded-b-[10px] text-center z-2 absolute bottom-0 text-[1.675rem] text-white font-semibold">
+                    <span className=" w-full p-4 rounded-b-[10px] text-black bg-opacity-70">
                       {item.name}
                     </span>
                   </div>
