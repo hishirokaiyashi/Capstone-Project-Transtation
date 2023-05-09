@@ -7,8 +7,12 @@ import MomoLogo from "../assets/images/Payment/MoMo_Logo.png";
 import VisaLogo from "../assets/images/Payment/Visa.jpg";
 import Vnpay from "../assets/images/Payment/Vnpay.png";
 import Napas from "../assets/images/Payment/Napas.png";
-import JCB from "../assets/images/Payment/JCB.png";
-import MasterCard from "../assets/images/Payment/MasterCard.png";
+import JCBLogo from "../assets/images/Payment/JCBLogo.png";
+import MasterCardLogo from "../assets/images/Payment/MasterCardLogo.png";
+import Mastercard from "../assets/images/Payment/Mastercard.png";
+
+
+
 import AmericanExpress from "../assets/images/Payment/AmericanExpress.png";
 
 import MainLayout from "../layouts/MainLayout";
@@ -93,6 +97,60 @@ const Payment = () => {
         order.user_id,
         order.booking_id
       );
+
+      toast.success("Order created successfully");
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
+
+  const handlePayOrder = async () => {
+    try {
+      const res = await getUnavailableSeats(order.trip_id, order.tickets);
+      if (res.length == order.tickets.length) {
+        setFailedModal(true); // confirmation for use about the changing information of order
+        setTimeout(() => {
+          // dispatch reset
+          dispatch(resetOrderState(null));
+          navigate(-1); // go back the previous page booking
+        }, 2000);
+        return;
+      }
+      if (res.length !== 0) {
+        // toast.info(
+        //   `These following tickets has been paid by other person: ${res.toString()}`
+        // );
+
+        /** Dispatch chỉnh lại số ghế */
+        const newAvailableTickets = order.tickets.filter(
+          (ticket) => !res.includes(ticket)
+        ); // lọc lại từ store redux lấy ra những ghế hợp lệ
+        dispatch(setTickets(newAvailableTickets));
+        setLostModal(true);
+        return;
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error("There was an error happing. Please try again!");
+      return;
+    }
+    // setFailedModal(true);
+    setStepContinue(true);
+    // confirmation for use about the changing information of order
+    /** Ở front end: Tạo ra một order trong Firebase với paid status == "Unpaid"
+     *  Chỉnh lại status của số ghế khách hàng đặt với trip tương ứng thành "Unavailable", chỉnh lại orderId, userId luôn
+     */
+
+    /** Call api post tới local 5000 tạo thanh toán stripe
+     * 1. Post nên cần payload --> Tạo payload phù hợp ở request call post
+     * 2. Chỉnh sửa lại backend
+     *   2.1 Pay load ở front end chỉnh sao thì payload backend chỉnh lại vậy.
+     *   2.2 Cài firebase vô, config như frontend rồi chỉnh lại create order là set lại order Unpaid bên trên thành Paid rồi điền thông tin thẻ thanh toán của người dùng
+     *   2.3 Nếu thanh toán thành công thì mới create order, nếu không thành công thì mình xoá order mới tạo, chỉnh lại số ghế thành Available, chỉnh là orderId và userId của ghế thành null
+     *   2.4 Ở Front end thêm 2 màn hình thành công và thất bại
+     */
+  };
+
 
       toast.success("Order created successfully");
     } catch (error) {
@@ -237,11 +295,12 @@ const Payment = () => {
                       />
                       <span className="text-xl font-Inter">Credit card</span>
                     </div>
+
                     <div className="flex mb-4">
                       <img
                         className="w-[26px] h-[16px]"
-                        src={MasterCard}
-                        alt="MasterCard"
+                        src={MasterCardLogo}
+                        alt="MasterCardLogo"
                       />
                       <img
                         className="w-[26px] h-[16px]"
@@ -253,7 +312,13 @@ const Payment = () => {
                         src={AmericanExpress}
                         alt="AmericanExpress"
                       />
-                      <img className="w-[26px] h-[16px]" src={JCB} alt="JCB" />
+
+                      <img
+                        className="w-[26px] h-[16px]"
+                        src={JCBLogo}
+                        alt="JCBLogo"
+                      />
+
                     </div>
                     {selectedPaymentMethod === "CreditCard" && (
                       <CreditCardInputs />
@@ -512,6 +577,22 @@ const Payment = () => {
         </div>
       </section>
     </MainLayout>
+
+    // import React from "react";
+    // import MultiRangeSlider from "../components/Slider";
+    // import MainLayout from "../layouts/MainLayout";
+
+    // const Payment = () => {
+    //   return (
+    //     <div className="mt-[50px]">
+    //       <MultiRangeSlider
+    //         min={0}
+    //         max={1000}
+    //         onChange={({ min, max }) => console.log(`min = ${min}, max = ${max}`)}
+    //       />
+    //     </div>
+=======
+
   );
 };
 

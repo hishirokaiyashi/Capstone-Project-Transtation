@@ -24,7 +24,11 @@ import CheckoutGiao from "../pages/Checkout-Giao";
 import MyBooking from "../pages/MyBooking";
 import MyTicket from "../pages/MyTicket";
 import PaymentHistory from "../pages/PaymentHistory";
+
+import AboutUs from "../pages/AboutUs";
+
 import Promotion from "../pages/Promotion";
+
 
 const Wrapper = ({ children }) => {
   const location = useLocation();
@@ -44,11 +48,21 @@ export default function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/forgotpassword" element={<ForgotPassword />} />
 
+          {/* Home */}
           <Route
             path="/"
             element={
               <PrivateRoute>
                 <Home />
+              </PrivateRoute>
+            }
+          />
+          {/* About US */}
+          <Route
+            path="/about-us"
+            element={
+              <PrivateRoute>
+                <AboutUs />
               </PrivateRoute>
             }
           />
