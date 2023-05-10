@@ -114,7 +114,7 @@ const createOrder = async (order) => {
       paidTime: order.paidTime,
     });
   } catch (err) {
-    console.log(err);
+    console.error(err);
     toast.error(err.message);
   }
 };
@@ -150,7 +150,7 @@ const createOrder2 = async (order) => {
       paidTime: order.paidTime,
     });
   } catch (err) {
-    console.log(err);
+    console.error(err);
     toast.error(err.message);
   }
 };

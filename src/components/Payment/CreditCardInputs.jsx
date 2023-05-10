@@ -91,7 +91,6 @@ const CreditCardInputs = () => {
   };
 
   useEffect(() => {
-    console.log(card);
     checkedSaveCard &&
       window.localStorage.setItem("saveCard", JSON.stringify(card));
     return () => {};
@@ -210,7 +209,6 @@ const CreditCardInputs = () => {
 
             {/* Show error notification */}
             <div className="mt-4 text-sm text-red-600">
-              {console.log(meta.touchedInputs.cardNumber)}
               {meta.isTouched && meta.error && <span>Error: {meta.error}</span>}
             </div>
 

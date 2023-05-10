@@ -155,7 +155,6 @@ const tripsSlice = createSlice({
           return isBetween;
         });
         state.departuresList = newList;
-        console.log("Có vô");
       }
     },
     changeArrival(state, action) {
@@ -186,7 +185,6 @@ const tripsSlice = createSlice({
       }
     },
     resetFilter(state) {
-      console.log("Resetting...");
       state.filteredTrips = state.trips;
       state.sort = null;
       state.sortedList = [];

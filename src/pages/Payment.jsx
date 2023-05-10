@@ -3,13 +3,13 @@ import { toast } from "react-toastify";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { setTickets, resetOrderState } from "../redux/order.slice.js";
-import MomoLogo from "../assets/images/Payment/MoMo_Logo.png"
-import VisaLogo from "../assets/images/Payment/Visa.jpg"
-import Vnpay from "../assets/images/Payment/Vnpay.png"
-import Napas from "../assets/images/Payment/Napas.png"
-import JCB from "../assets/images/Payment/JCB.png"
-import MasterCard from "../assets/images/Payment/MasterCard.png"
-import AmericanExpress from "../assets/images/Payment/AmericanExpress.png"
+import MomoLogo from "../assets/images/Payment/MoMo_Logo.png";
+import VisaLogo from "../assets/images/Payment/Visa.jpg";
+import Vnpay from "../assets/images/Payment/Vnpay.png";
+import Napas from "../assets/images/Payment/Napas.png";
+import JCB from "../assets/images/Payment/JCB.png";
+import MasterCard from "../assets/images/Payment/MasterCard.png";
+import AmericanExpress from "../assets/images/Payment/AmericanExpress.png";
 
 import MainLayout from "../layouts/MainLayout";
 import Modal from "../components/Modal/index.jsx";
@@ -77,7 +77,6 @@ const Payment = () => {
       }
       if (res.length !== 0) {
         /** Dispatch chỉnh lại số ghế */
-        console.log(res);
         const newAvailableTickets = order.tickets.filter(
           (ticket) => !res.includes(ticket)
         ); // lọc lại từ store redux lấy ra những ghế hợp lệ
@@ -86,7 +85,7 @@ const Payment = () => {
         return;
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
       toast.error("There was an error happing. Please try again!");
       return;
     }
@@ -198,11 +197,7 @@ const Payment = () => {
                         src={AmericanExpress}
                         alt="AmericanExpress"
                       />
-                      <img
-                        className="w-[26px] h-[16px]"
-                        src={JCB}
-                        alt="JCB"
-                      />
+                      <img className="w-[26px] h-[16px]" src={JCB} alt="JCB" />
                     </div>
                     {selectedPaymentMethod === "CreditCard" && (
                       <CreditCardInputs />
@@ -461,19 +456,19 @@ const Payment = () => {
         </div>
       </section>
     </MainLayout>
-// import React from "react";
-// import MultiRangeSlider from "../components/Slider";
-// import MainLayout from "../layouts/MainLayout";
+    // import React from "react";
+    // import MultiRangeSlider from "../components/Slider";
+    // import MainLayout from "../layouts/MainLayout";
 
-// const Payment = () => {
-//   return (
-//     <div className="mt-[50px]">
-//       <MultiRangeSlider
-//         min={0}
-//         max={1000}
-//         onChange={({ min, max }) => console.log(`min = ${min}, max = ${max}`)}
-//       />
-//     </div>
+    // const Payment = () => {
+    //   return (
+    //     <div className="mt-[50px]">
+    //       <MultiRangeSlider
+    //         min={0}
+    //         max={1000}
+    //         onChange={({ min, max }) => console.log(`min = ${min}, max = ${max}`)}
+    //       />
+    //     </div>
   );
 };
 

@@ -56,7 +56,6 @@ const PaymentHistoryList = ({ orderInfo }) => {
               {" "}
               {addDot(UsdToVnd(orderInfo.totalPrice))}
             </p>
-            {console.log(orderInfo)}
           </div>
           <div
             onClick={() => setViewMoreDetails(!viewMoreDetails)}

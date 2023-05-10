@@ -12,7 +12,6 @@ import Home from "../pages/Home";
 import Login from "../pages/Login";
 import Register from "../pages/Register";
 import Trips from "../pages/Trips";
-import Test from "../pages/Test";
 import ForgotPassword from "../pages/ForgotPassword";
 import CheckoutSuccess from "../pages/CheckoutSuccess";
 import Notfound from "../pages/Notfound";
@@ -20,7 +19,6 @@ import Payment from "../pages/Payment";
 import PaymentSecond from "../pages/PaymentSecond";
 
 import Profile from "../pages/Profile";
-import CheckoutGiao from "../pages/Checkout-Giao";
 import MyBooking from "../pages/MyBooking";
 import MyTicket from "../pages/MyTicket";
 import PaymentHistory from "../pages/PaymentHistory";
@@ -89,14 +87,6 @@ export default function App() {
             element={
               <PrivateRoute>
                 <PaymentSecond />
-              </PrivateRoute>
-            }
-          />
-          <Route
-            path="/test-2"
-            element={
-              <PrivateRoute>
-                <CheckoutGiao />
               </PrivateRoute>
             }
           />

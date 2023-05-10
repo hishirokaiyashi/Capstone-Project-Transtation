@@ -2,6 +2,7 @@ import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import MainLayout from "../layouts/MainLayout";
 import NotFoundImg from "../assets/images/NotFound/404Capstone.png";
+
 const Notfound = () => {
   return (
     <MainLayout>
@@ -27,7 +28,6 @@ const Notfound = () => {
           className="w-[50%] h-[500px] object-contain"
         />
       </div>
-      {/* <div className="text-4xl text-center mb-4">Page Not Found</div> */}
     </MainLayout>
   );
 };
