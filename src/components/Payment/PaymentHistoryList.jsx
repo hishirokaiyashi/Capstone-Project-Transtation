@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-
+import { UsdToVnd } from "../../utils/currencyFormat";
 import { isPastDate, getDDMMYY } from "../../utils/convertDatetime.js";
 import { Icon } from "@iconify/react";
 import QRCODE from "../../assets/images/Trips/QRCODE.png";
@@ -54,7 +54,7 @@ const PaymentHistoryList = ({ orderInfo }) => {
             )}
             <p className=" font-Ballo text-3xl font-semibold text-[#1D7ED8]">
               {" "}
-              {addDot(orderInfo.totalPrice)}
+              {addDot(UsdToVnd(orderInfo.totalPrice))}
             </p>
             {console.log(orderInfo)}
           </div>
