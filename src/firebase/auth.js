@@ -182,8 +182,9 @@ const registerWithEmailAndPassword = async (user, email, password) => {
     // Get created user
     const currentUser = res.user;
     const verify = await sendEmailVerification(currentUser, {
-      url: "http://localhost:5173/login",
-      // url: "https://capstone-project-transtation.vercel.app/login",
+      // url: "http://localhost:5173/login",
+
+      url: "https://capstone-project-transtation.vercel.app/login",
       handleCodeInApp: true,
     });
     // Set a new user to users collection
