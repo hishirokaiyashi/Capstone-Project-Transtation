@@ -1,10 +1,25 @@
 import moment from "moment/moment";
 
 const convertFromTimestamp = (timestamp) => {
-  const converted = moment(timestamp.toDate()).format(
-    "MMMM Do YYYY, h:mm:ss a"
-  );
-  return converted;
+  // console.log(timestamp)
+  // const converted = moment(timestamp.toDate()).format(
+  //   "MMMM Do YYYY, h:mm:ss a"
+  // );
+  // return converted;
+    // Lấy giá trị giây và nanogiang từ đối tượng timestamp
+    const seconds = timestamp.seconds;
+    const nanoseconds = timestamp.nanoseconds;
+  
+    // Chuyển đổi thành mili giây
+    const milliseconds = seconds * 1000 + Math.round(nanoseconds / 1e6);
+  
+    // Tạo đối tượng ngày tháng từ mili giây
+    const date = new Date(milliseconds);
+  
+    // Sử dụng Moment.js để định dạng thời gian
+    const formattedDate = moment(date).format("MMMM Do YYYY, h:mm:ss a");
+    
+    return formattedDate;
 };
 
 const getDDMMYY = (date) => {

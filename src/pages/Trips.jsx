@@ -208,10 +208,10 @@ const Trips = ({ itemsPerPage }) => {
     }
   };
 
-  // const handleCreateSeats = () => {
-  //   const tripID = "SGAG10052317";
-  //   createSeats(tripID);
-  // };
+  const handleCreateSeats = () => {
+    const tripID = "SGAG30052306";
+    createSeats(tripID);
+  };
 
   /* Pagination */
   const [itemOffset, setItemOffset] = useState(0);
@@ -292,12 +292,12 @@ const Trips = ({ itemsPerPage }) => {
         FREE TRANSIT SERVICE FOR EVERY DESTINATION
       </p>
       <div>
-        {/* <button
+        <button
           className="p-2 bg-black text-white"
           onClick={() => handleCreateSeats()}
         >
           Thêm dữ liệu
-        </button> */}
+        </button>
         <div className="bg-banner-trip bg-no-repeat bg-cover h-[157px]"></div>
         <div className="max-w-screen-xl mx-auto flex mt-[19px]">
           <div className="w-[25%] pr-[65px]">

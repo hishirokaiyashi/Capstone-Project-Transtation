@@ -4,7 +4,7 @@ import { Icon } from "@iconify/react";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
 import logo from "../assets/images/Login/Logo.png";
-import GoogleLogo from "../assets/images/Login/icon-google.png";
+import GoogleLogo from "../assets/images/Login/icon-google.jpg";
 import {
   logInWithEmailAndPassword,
   signInWithGoogle,
@@ -181,7 +181,7 @@ const Login = () => {
                 onClick={handleSignInGoogle}
               >
                 <div className="mt-[20px] py-[10px] px-[40px] border w-fit border-[#6A6A6B] rounded-[25px] flex items-center justify-center">
-                  <img src={GoogleLogo} alt="icon-google" />
+                  <img src={GoogleLogo} alt="icon-google" className="h-[20px]"/>
                   <span className="text-[1rem] text-[#6A6A6B] ml-[18px] tracking-wide">
                     Login with Google
                   </span>

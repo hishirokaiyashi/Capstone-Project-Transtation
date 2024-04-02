@@ -70,7 +70,7 @@ const createSeats = async (tripId) => {
   const seatsRef = collection(firestore, "trips", tripId, "SEATS");
 
   for (let i = 1; i <= 20; i++) {
-    const seatId = `B${i.toString().padStart(2, "0")}`;
+    const seatId = `A${i.toString().padStart(2, "0")}`;
     const seatData = {
       id: seatId,
       status: "Available",
